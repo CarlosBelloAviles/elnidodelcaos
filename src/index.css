@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
+
+#root {
+  font-family: 'Cinzel', serif;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(31, 31, 39);
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  list-style: none;
+}
+
+
