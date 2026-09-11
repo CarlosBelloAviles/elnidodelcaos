@@ -8,10 +8,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 
-  server: {
-    allowedHosts: true,
-  },
-
   resolve: {
     alias: {
       react: path.resolve(__dirname, 'node_modules/react'),
