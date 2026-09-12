@@ -38,10 +38,8 @@ const Footer = () => {
   return (
     <footer className="mt-20 border-t border-[rgba(212,175,55,0.2)] bg-[#08060d] text-[#d8d0df]">
       <div className="mx-auto max-w-7xl px-6 py-14">
-
         {/* PARTE SUPERIOR */}
         <div className="grid gap-12 md:grid-cols-3">
-
           {/* MARCA */}
           <div>
             <h2 className="mb-4 text-2xl font-normal tracking-[2px] text-[#d4af37]">
@@ -49,9 +47,8 @@ const Footer = () => {
             </h2>
 
             <p className="max-w-xs text-[15px] leading-7 text-[#aaa2b3]">
-              Tarot, limpieza, protección y rituales.
-              Un espacio dedicado al trabajo espiritual,
-              energético y simbólico.
+              Tarot, limpieza, protección y rituales. Un espacio dedicado al
+              trabajo espiritual, energético y simbólico.
             </p>
           </div>
 
@@ -62,15 +59,25 @@ const Footer = () => {
             </h3>
 
             <ul className="space-y-3 text-[15px]">
-
               {/* INICIO */}
               <li>
                 <button
                   type="button"
                   onClick={goToHome}
-                  className="transition-colors hover:text-[#d4af37]"
+                  className="transition-colors cursor-pointer  hover:text-[#d4af37]"
                 >
                   Inicio
+                </button>
+              </li>
+
+              {/* El Nido */}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("servicios")}
+                  className="transition-colors cursor-pointer hover:text-[#d4af37]"
+                >
+                  El Nido
                 </button>
               </li>
 
@@ -79,7 +86,7 @@ const Footer = () => {
                 <button
                   type="button"
                   onClick={() => scrollToSection("servicios")}
-                  className="transition-colors hover:text-[#d4af37]"
+                  className="transition-colors cursor-pointer hover:text-[#d4af37]"
                 >
                   Servicios
                 </button>
@@ -90,7 +97,7 @@ const Footer = () => {
                 <button
                   type="button"
                   onClick={() => scrollToSection("testimonios")}
-                  className="transition-colors hover:text-[#d4af37]"
+                  className="transition-colors cursor-pointer hover:text-[#d4af37]"
                 >
                   Testimonios
                 </button>
@@ -101,12 +108,11 @@ const Footer = () => {
                 <button
                   type="button"
                   onClick={() => scrollToSection("contacto")}
-                  className="transition-colors hover:text-[#d4af37]"
+                  className="transition-colors cursor-pointer hover:text-[#d4af37]"
                 >
                   Contacto
                 </button>
               </li>
-
             </ul>
           </div>
 
@@ -121,7 +127,6 @@ const Footer = () => {
             </p>
 
             <div className="flex flex-col gap-4">
-
               {/* WHATSAPP */}
               <a
                 href={`https://wa.me/${phonoWhatssap}`}
@@ -143,10 +148,8 @@ const Footer = () => {
                 <FaInstagram size={18} />
                 Instagram
               </a>
-
             </div>
           </div>
-
         </div>
 
         {/* SEPARADOR */}
@@ -157,15 +160,12 @@ const Footer = () => {
         </div>
 
         {/* PARTE INFERIOR */}
-        <div className="flex flex-col items-center justify-between gap-4 text-center text-[13px] text-[#77707f] md:flex-row md:text-left">
-
+        <div className="flex flex-col items-center justify-center gap-4 text-center text-[13px] text-[#77707f]">
           <p>
             © {new Date().getFullYear()} Nido del Caos. Todos los derechos
             reservados.
           </p>
-
         </div>
-
       </div>
     </footer>
   );

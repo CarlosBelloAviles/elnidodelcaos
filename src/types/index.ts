@@ -50,5 +50,5 @@ export interface CategorySectionProps {
 
 export interface DetailListProps {
   title: string;
-  items?:string[];
+  items?: string | string[];
 }

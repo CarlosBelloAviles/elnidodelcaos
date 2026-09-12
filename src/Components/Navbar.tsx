@@ -99,18 +99,18 @@ const Navbar = () => {
           Nido del Caos
         </button>
 
-        {/* Botón menú móvil */}
+        {/* Botón menú móvil + tablet */}
         <button
           type="button"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-          className="flex cursor-pointer items-center justify-center p-2 text-[#d4af37] md:hidden"
+          className="flex cursor-pointer items-center justify-center p-2 text-[#d4af37] lg:hidden"
         >
           {menuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
 
         {/* Menú escritorio */}
-        <div className="hidden items-center gap-2.5 md:flex">
+        <div className="hidden items-center gap-2.5 lg:flex">
 
           <button
             type="button"
@@ -125,7 +125,7 @@ const Navbar = () => {
             onClick={() => scrollToSection("sobre-mi")}
             className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
           >
-            Sobre mí
+            El Nido
           </button>
 
           <button
@@ -181,9 +181,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Menú móvil */}
+      {/* Menú móvil + tablet */}
       {menuOpen && (
-        <div className="absolute left-0 top-full z-50 w-full border-t border-[rgba(212,175,55,0.25)] bg-black md:hidden">
+        <div className="absolute left-0 top-full z-50 w-full border-t border-[rgba(212,175,55,0.25)] bg-black lg:hidden">
           <div className="flex flex-col px-4 py-3">
 
             <button
@@ -199,7 +199,7 @@ const Navbar = () => {
               onClick={() => scrollToSection("sobre-mi")}
               className="cursor-pointer border-b border-[rgba(212,175,55,0.15)] px-4 py-3 text-center text-[16px] text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
             >
-              Sobre mí
+              El Nido
             </button>
 
             <button
@@ -226,7 +226,7 @@ const Navbar = () => {
               Contacto
             </button>
 
-            {/* Redes sociales móvil */}
+            {/* Redes sociales móvil + tablet */}
             <div className="flex items-center justify-center gap-8 px-4 py-5">
 
               <a
@@ -258,3 +258,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+

@@ -73,7 +73,7 @@ const About = () => {
             SOBRE EL NIDO DEL CAOS
           </span>
 
-          <h2 className="mb-[30px] font-serif text-[38px] font-medium leading-[1.08] text-white sm:text-[clamp(38px,4vw,56px)]">
+          <h2 className="mb-[30px] font-serif text-[38px] font-AbrilFatface leading-[1.08] text-white sm:text-[clamp(38px,4vw,56px)]">
             Magia, conocimiento
             <span className="mt-[5px] block text-[#a875c9]">
               y transformación

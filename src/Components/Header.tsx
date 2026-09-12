@@ -28,14 +28,15 @@ const Header = () => {
   return (
     <header
       className="
-        header
-        flex
-        w-full
-        items-center
-        px-4
-        sm:px-8
-        md:px-12
-        lg:px-16
+         header
+         flex
+         w-full
+         items-center
+         px-4
+         sm:px-8
+         md:px-12
+         lg:px-16
+         min-[641px]:max-[1023px]:mt-[60px]
       "
     >
       <div

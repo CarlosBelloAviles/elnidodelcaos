@@ -3,6 +3,7 @@ import { cld } from "../utils/cloudinary";
 import { testimonials } from "../services/data";
 import { auto as qualityAuto } from "@cloudinary/url-gen/qualifiers/quality";
 import useCarousel from "../Hooks/useCarousel";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Testimonials = () => {
   const {
@@ -154,7 +155,7 @@ const Testimonials = () => {
           onClick={prevSlide}
           aria-label="Testimonio anterior"
         >
-          ←
+          <ChevronLeft size={24} />
         </button>
 
         <div
@@ -296,7 +297,7 @@ const Testimonials = () => {
           onClick={nextSlide}
           aria-label="Siguiente testimonio"
         >
-          →
+          <ChevronRight size={24} />
         </button>
       </div>
 

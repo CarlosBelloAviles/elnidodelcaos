@@ -59,7 +59,7 @@ const ProductDetail = () => {
       <div className="mx-auto flex w-full max-w-[900px] flex-1 flex-col rounded-[14px] border border-[rgba(212,175,55,0.45)] bg-[rgba(30,15,45,0.9)] p-4 shadow-[0_0_35px_rgba(120,60,180,0.25)] sm:rounded-[18px] sm:p-6 md:p-10">
 
         {/* Título */}
-        <h1 className="mb-5 text-center text-[28px] font-normal leading-tight text-[#d4af37] [text-shadow:0_0_15px_rgba(212,175,55,0.35)] sm:text-[34px] md:mb-[25px] md:text-[42px]">
+        <h1 className="mb-5 text-center text-[28px] font-AbrilFatface leading-tight text-[#d4af37] [text-shadow:0_0_15px_rgba(212,175,55,0.35)] sm:text-[34px] md:mb-[25px] md:text-[42px]">
           {data.name}
         </h1>
 
@@ -71,7 +71,7 @@ const ProductDetail = () => {
         />
 
         {/* Descripción principal */}
-        <p className="mb-5 text-center text-[18px] font-medium leading-[1.6] text-[#d4af37] [text-shadow:0_0_10px_rgba(212,175,55,0.2)] sm:text-[20px] md:text-[22px] md:leading-[1.7]">
+        <p className="mb-5 text-center text-[18px] font-PoiretOne leading-[1.6] text-[#d4af37] [text-shadow:0_0_10px_rgba(212,175,55,0.2)] sm:text-[20px] md:text-[22px] md:leading-[1.7]">
           {data.description}
         </p>
 
@@ -139,6 +139,12 @@ const ProductDetail = () => {
         <DetailList
           title="¿Para qué sirve?"
           items={data.product_details?.para_que_sirve}
+        />
+
+        {/* Para qué sirve */}
+        <DetailList
+          title="Duracion"
+          items={data.product_details?.duracion}
         />
 
         {/* Incluye */}

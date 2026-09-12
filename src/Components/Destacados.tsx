@@ -94,6 +94,7 @@ const Destacados = () => {
           className="
             absolute left-2 top-1/2 z-[5]
             flex h-9 w-9
+            cursor-pointer
             -translate-y-1/2
             items-center justify-center
             rounded-full
@@ -232,6 +233,7 @@ const Destacados = () => {
           className="
             absolute right-2 top-1/2 z-[5]
             flex h-9 w-9
+            cursor-pointer
             -translate-y-1/2
             items-center justify-center
             rounded-full

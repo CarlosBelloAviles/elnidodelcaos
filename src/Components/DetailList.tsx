@@ -1,7 +1,9 @@
 import type { DetailListProps } from "../types";
 
-const DetailList = ({ title, items } : DetailListProps) => {
-  if (!items?.length) return null;
+const DetailList = ({ title, items }: DetailListProps) => {
+  if (!items || (Array.isArray(items) && !items.length)) return null;
+
+  const itemsArray = Array.isArray(items) ? items : [items];
 
   return (
     <section className="mt-[35px]">
@@ -10,7 +12,7 @@ const DetailList = ({ title, items } : DetailListProps) => {
       </h2>
 
       <ul className="list-disc pl-[25px] leading-[2] text-[#ddd]">
-        {items.map((item) => (
+        {itemsArray.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
