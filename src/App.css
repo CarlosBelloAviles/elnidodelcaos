@@ -1,7 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Poiret+One&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Poiret+One&family=Vollkorn+SC:wght@400;600;700;900&display=swap');
 @import "tailwindcss";
 
 @theme {
+  --font-VollkornSC: "Vollkorn SC", serif;
   --font-AbrilFatface: "Abril Fatface", serif;
   --font-PoiretOne: "Poiret One", serif;
   --font-Newsreader: "Newsreader", serif;

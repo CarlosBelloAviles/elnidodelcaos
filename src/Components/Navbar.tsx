@@ -85,10 +85,10 @@ const Navbar = () => {
 
   return (
     <nav
-      ref={navRef}
-      className="fixed top-0 left-0 z-50 w-full bg-black px-4 py-4 sm:px-6"
-    >
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+  ref={navRef}
+  className="fixed top-0 left-0 z-50 h-[60px] w-full bg-black px-4 sm:px-6"
+>
+  <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between">
 
         {/* Nombre / Logo */}
         <button

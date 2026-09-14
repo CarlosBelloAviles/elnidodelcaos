@@ -27,23 +27,20 @@ const Header = () => {
 
   return (
     <header
-      className="
-         header
-         flex
-         w-full
-         items-center
-         px-4
-         sm:px-8
-         md:px-12
-         lg:px-16
-         min-[641px]:max-[1023px]:mt-[60px]
-      "
-    >
+  
+   className="
+    header
+    flex
+    w-full
+    items-center
+  "
+>
       <div
         className="
           w-full
           max-w-[58%]
           text-left
+          pl-5
           sm:max-w-[55%]
           md:max-w-[50%]
           lg:max-w-[48%]
@@ -51,11 +48,11 @@ const Header = () => {
       >
         <h1
           className="
-            font-AbrilFatface
+            font-VollkornSC
             font-style-normal
             text-[1.8rem]
             font-semibold
-            uppercase
+           
             leading-[0.9]
             tracking-wide
             bg-linear-to-b

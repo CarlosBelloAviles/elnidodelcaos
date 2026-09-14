@@ -62,7 +62,7 @@ const Home = () => {
       </div>
     }
   >
-    <div className="pt-[65px]">
+    <div className="pt-[60px]">
       <Header />
 
       <About />
