@@ -89,6 +89,10 @@ const ProductDetail = () => {
 
   const variantes = data.ProductDetails?.variantes;
 
+  console.log("DATA COMPLETA EN PRODUCT DETAIL:", data);
+console.log("CONTENIDO:", data.ProductDetails?.contenido);
+console.log(typeof data.ProductDetails?.contenido);
+
   if (!variantes?.length && data.price != null) {
     structuredData.offers = {
       "@type": "Offer",
@@ -197,11 +201,13 @@ const ProductDetail = () => {
             </div>
           )}
 
-          {data.ProductDetails?.contenido && (
+          
+
+           {data.ProductDetails?.contenido && (
             <section className="border-t border-[rgba(212,175,55,0.25)] pt-6 md:pt-[30px]">
               {renderContenido(data.ProductDetails.contenido)}
             </section>
-          )}
+          )} 
 
           <ServiceContact
             serviceName={data.name}

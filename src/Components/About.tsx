@@ -95,9 +95,8 @@ const About = () => {
           </p>
 
           <p className="mb-[14px] max-w-full text-[15px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
-            Cada trabajo parte de una comprensión individual de la situación.
-            No existen fórmulas universales: la práctica se adapta al
-            propósito, al contexto y a la intención de cada persona.
+            Cada trabajo parte de una comprensión particular de la situación y se adapta al propósito, contexto e intención de cada persona, considerando sus necesidades, circunstancias y aquello que busca transformar o trabajar en su camino.
+
           </p>
 
           {/* SERVICIOS */}
@@ -118,11 +117,40 @@ const About = () => {
 
               <div>
                 <h3 className="mb-[6px] font-serif text-[17px] font-medium text-[#e6d7b8]">
-                  Trabajos mágicos
+                  Rituales personalizados
                 </h3>
 
                 <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
-                  Rituales y trabajos orientados a objetivos específicos.
+                  Rituales y trabajos mágicos diseñados de forma personalizada según tu propósito, intención y situación particular, adaptando cada trabajo a las necesidades de cada persona.
+
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="
+                group flex gap-[14px] rounded-[12px] border
+                border-[rgba(212,175,55,0.16)]
+                bg-[rgba(55,25,75,0.18)]
+                p-[18px]
+                transition-all duration-300 ease-in-out
+                hover:-translate-y-[3px]
+                hover:border-[rgba(212,175,55,0.45)]
+                hover:bg-[rgba(70,32,92,0.25)]
+              "
+            >
+              <span className="shrink-0 text-[18px] text-[#d4af37]">✦</span>
+
+              <div>
+                <h3 className="mb-[6px] font-serif text-[17px] font-medium text-[#e6d7b8]">
+                  Limpieza profunda de magia negra
+                </h3>
+
+                <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
+                  Trabajos profundos destinados a limpiar y deshacer
+                  influencias, cargas y energías asociadas a trabajos de magia
+                  negra, bloqueos o situaciones que afectan tu bienestar y tu
+                  camino.
                 </p>
               </div>
             </div>
@@ -147,7 +175,9 @@ const About = () => {
                 </h3>
 
                 <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
-                  Trabajos destinados a limpiar, proteger y equilibrar.
+                  Trabajos destinados a limpiar, proteger y armonizar tu
+                  energía y tus espacios, ayudando a mantener un entorno más
+                  equilibrado y protegido.
                 </p>
               </div>
             </div>
@@ -172,8 +202,9 @@ const About = () => {
                 </h3>
 
                 <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
-                  Herramientas de interpretación para comprender diferentes
-                  situaciones y posibilidades.
+                  Tarot y oráculos para explorar situaciones, tendencias y
+                  posibles caminos, aportando claridad y orientación para
+                  comprender mejor aquello que estás viviendo.
                 </p>
               </div>
             </div>
@@ -270,3 +301,6 @@ const About = () => {
 };
 
 export default About;
+
+
+

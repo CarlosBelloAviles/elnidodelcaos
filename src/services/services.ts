@@ -1,4 +1,4 @@
-import type { Category, Product, Testimonial } from "../types";
+import type { Category, Product, ProductDetails, Testimonial } from "../types";
 import supabase from "../utils/supabase";
 
 export const servicesData = async (): Promise<Category[]> => {
@@ -57,8 +57,8 @@ export const getProductBySlug = async (
 
   return {
     ...data,
-    ProductDetails: data.ProductDetails?.[0] ?? null,
-  } as Product;
+    ProductDetails: data.ProductDetails as unknown as ProductDetails | null,
+  };
 };
 
 export const getTestimonials = async (): Promise<Testimonial[]> => {
@@ -73,4 +73,4 @@ export const getTestimonials = async (): Promise<Testimonial[]> => {
   }
 
   return data as Testimonial[];
-};
+}
