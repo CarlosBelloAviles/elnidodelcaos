@@ -1,17 +1,32 @@
+import { useQuery } from "@tanstack/react-query";
 import { AdvancedImage } from "@cloudinary/react";
 import { cld } from "../utils/cloudinary";
-import { testimonials } from "../services/data";
 import { auto as qualityAuto } from "@cloudinary/url-gen/qualifiers/quality";
+import { getTestimonials } from "../services/services";
 import useCarousel from "../Hooks/useCarousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Testimonials = () => {
+  const { data: testimonials = [], isLoading } = useQuery({
+    queryKey: ["testimonials"],
+    queryFn: getTestimonials,
+  });
+
   const {
     currentSlide,
     nextSlide,
     prevSlide,
-    setCurrentSlide,
+    isPaused,
+    togglePause,
   } = useCarousel(testimonials, 22000);
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (testimonials.length === 0) {
+    return null;
+  }
 
   const getVisibleTestimonials = () => {
     const total = testimonials.length;
@@ -40,12 +55,12 @@ const Testimonials = () => {
         sm:px-5 sm:py-[60px]
         lg:px-10 lg:py-[80px]
         pb-[60px]
-
         bg-[radial-gradient(circle_at_50%_45%,rgba(91,43,116,0.18),transparent_45%),radial-gradient(circle_at_10%_20%,rgba(115,54,150,0.12),transparent_30%),#08060d]
-
         text-white
       "
     >
+      {/* TÍTULO */}
+
       <div
         className="
           mb-[30px]
@@ -53,52 +68,50 @@ const Testimonials = () => {
           lg:mb-[55px]
         "
       >
-       
         <div
-        className="
-          mb-[10px]
-          flex items-center justify-center
-          gap-3
-          min-[901px]:gap-[25px]
-        "
-      >
-        <span
           className="
-            h-px w-[35px]
-            bg-gradient-to-r
-            from-transparent via-[#b8944a] to-transparent
-            min-[601px]:w-[60px]
-            min-[901px]:w-[100px]
-          "
-        />
-
-       <h2
-          className="
-            my-2 mb-[10px]
-            font-serif
-            text-[2rem]
-            font-medium
-            tracking-[4px]
-            text-[#f4df9b]
-            [text-shadow:0_0_10px_rgba(218,174,65,0.25),0_0_25px_rgba(218,174,65,0.12)]
-            sm:text-[2.5rem]
-            lg:text-[3.2rem]
+            mb-[10px]
+            flex items-center justify-center
+            gap-3
+            min-[901px]:gap-[25px]
           "
         >
-          TESTIMONIOS
-        </h2>
+          <span
+            className="
+              h-px w-[35px]
+              bg-gradient-to-r
+              from-transparent via-[#b8944a] to-transparent
+              min-[601px]:w-[60px]
+              min-[901px]:w-[100px]
+            "
+          />
 
-        <span
-          className="
-            h-px w-[35px]
-            bg-gradient-to-r
-            from-transparent via-[#b8944a] to-transparent
-            min-[601px]:w-[60px]
-            min-[901px]:w-[100px]
-          "
-        />
-      </div>
-       
+          <h2
+            className="
+              my-2 mb-[10px]
+              font-serif
+              text-[2rem]
+              font-medium
+              tracking-[4px]
+              text-[#f4df9b]
+              [text-shadow:0_0_10px_rgba(218,174,65,0.25),0_0_25px_rgba(218,174,65,0.12)]
+              sm:text-[2.5rem]
+              lg:text-[3.2rem]
+            "
+          >
+            TESTIMONIOS
+          </h2>
+
+          <span
+            className="
+              h-px w-[35px]
+              bg-gradient-to-r
+              from-transparent via-[#b8944a] to-transparent
+              min-[601px]:w-[60px]
+              min-[901px]:w-[100px]
+            "
+          />
+        </div>
 
         <p
           className="
@@ -109,11 +122,12 @@ const Testimonials = () => {
             text-[#ddd6d0]
           "
         >
-          Experiencias reales de personas que han transformado
-          <br className="max-[650px]:hidden" />
-          su energía y su vida con Nido del Caos.
+          Experiencias reales de personas que han transformado su vida con
+          Nido del Caos.
         </p>
       </div>
+
+      {/* CARRUSEL */}
 
       <div
         className="
@@ -125,6 +139,8 @@ const Testimonials = () => {
           justify-center
         "
       >
+        {/* ANTERIOR */}
+
         <button
           type="button"
           className="
@@ -157,6 +173,8 @@ const Testimonials = () => {
         >
           <ChevronLeft size={24} />
         </button>
+
+        {/* TESTIMONIOS */}
 
         <div
           className="
@@ -236,6 +254,7 @@ const Testimonials = () => {
                     cldImg={imagen}
                     alt="Testimonio de cliente"
                     draggable={false}
+                    onClick={isActive ? togglePause : undefined}
                     className={`
                       block
                       h-full
@@ -246,7 +265,7 @@ const Testimonials = () => {
                       duration-500
                       ${
                         isActive
-                          ? "brightness-100 saturate-100"
+                          ? "cursor-pointer brightness-100 saturate-100"
                           : "brightness-[0.55] saturate-[0.8]"
                       }
                     `}
@@ -266,6 +285,8 @@ const Testimonials = () => {
             );
           })}
         </div>
+
+        {/* SIGUIENTE */}
 
         <button
           type="button"
@@ -301,6 +322,8 @@ const Testimonials = () => {
         </button>
       </div>
 
+      {/* INDICADOR */}
+
       <div
         className="
           mt-[30px]
@@ -310,35 +333,39 @@ const Testimonials = () => {
           gap-3
         "
       >
-        {testimonials.map((_, index) => (
-          <button
-            key={index}
-            type="button"
-            className={`
-              h-[9px]
-              w-[9px]
-              cursor-pointer
-              rounded-full
-              border
-              border-[rgba(216,184,90,0.2)]
-              transition-all
-              duration-300
+        <span
+          className="
+            font-serif
+            text-sm
+            tracking-[2px]
+            text-[#e2bd51]
+          "
+        >
+          {currentSlide + 1} / {testimonials.length}
+        </span>
 
-              ${
-                currentSlide === index
-                  ? `
-                    scale-125
-                    bg-[#e2bd51]
-                    shadow-[0_0_10px_rgba(226,189,81,0.7)]
-                  `
-                  : "bg-[#332443]"
-              }
-            `}
-            onClick={() => setCurrentSlide(index)}
-            aria-label={`Ir al testimonio ${index + 1}`}
-          />
-        ))}
+        <span
+          className="
+            h-px
+            w-[35px]
+            bg-[#b8944a]
+            opacity-40
+          "
+        />
+
+        <span
+          className="
+            font-serif
+            text-xs
+            tracking-[1px]
+            text-[#aaa2a0]
+          "
+        >
+          {isPaused ? "PAUSADO" : "REPRODUCIENDO"}
+        </span>
       </div>
+
+      {/* CONTACTO */}
 
       <div
         id="contacto"
@@ -424,3 +451,4 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+

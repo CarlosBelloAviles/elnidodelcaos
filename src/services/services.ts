@@ -1,18 +1,14 @@
-import type { Category, Product } from "../types";
+import type { Category, Product, Testimonial } from "../types";
 import supabase from "../utils/supabase";
 
-
 export const servicesData = async (): Promise<Category[]> => {
-
- 
   const { data, error } = await supabase
     .from("Categories")
-    .select(
-      `
+    .select(`
       id,
       name,
       slug,
-      products: Products (
+      products:Products (
         id,
         name,
         description,
@@ -21,9 +17,8 @@ export const servicesData = async (): Promise<Category[]> => {
         img_url,
         slug
       )
-    `,
-    )
-   .order("created_at", { ascending: true})
+    `)
+    .order("created_at", { ascending: true });
 
   if (error) {
     console.error("Error:", error);
@@ -31,8 +26,7 @@ export const servicesData = async (): Promise<Category[]> => {
   }
 
   return data as Category[];
-}; 
- 
+};
 
 export const getProductBySlug = async (
   slug: string
@@ -47,7 +41,12 @@ export const getProductBySlug = async (
       Currency,
       img_url,
       slug,
-      product_details
+      ProductDetails (
+        id,
+        product_id,
+        contenido,
+        variantes
+      )
     `)
     .eq("slug", slug)
     .single();
@@ -56,5 +55,22 @@ export const getProductBySlug = async (
     throw new Error(error.message);
   }
 
-  return data as Product;
+  return {
+    ...data,
+    ProductDetails: data.ProductDetails?.[0] ?? null,
+  } as Product;
+};
+
+export const getTestimonials = async (): Promise<Testimonial[]> => {
+  const { data, error } = await supabase
+    .from("Testimonials")
+    .select("id, imagen, display_order")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error al obtener testimonios:", error);
+    return [];
+  }
+
+  return data as Testimonial[];
 };

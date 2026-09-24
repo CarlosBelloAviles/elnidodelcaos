@@ -1,15 +1,7 @@
 export type ProductDetails = {
-  resumen: string;
-  descripcion: string;
-
-  beneficios?: string[];
-  para_que_sirve?: string[];
-  incluye?: string[];
-  caracteristicas?: string[];
-
-  duracion?: string;
-  como_funciona?: string;
-
+  id: string;
+  product_id: string;
+  contenido?: string;
   variantes?: {
     nombre: string;
     precio: number;
@@ -24,8 +16,8 @@ export type Product = {
   price: number;
   Currency: string;
   img_url: string;
-  product_details: ProductDetails;
   slug: string;
+  ProductDetails?: ProductDetails | null;
 };
 
 export type Category = {
@@ -40,15 +32,16 @@ export type Testimonials = {
   imagen: string;
 };
 
+export type Testimonial = {
+  id: string;
+  imagen: string;
+  display_order: number;
+};
+
 export interface ServiceCardProps {
   producto: Product;
 }
 
 export interface CategorySectionProps {
   categoria: Category;
-}
-
-export interface DetailListProps {
-  title: string;
-  items?: string | string[];
 }

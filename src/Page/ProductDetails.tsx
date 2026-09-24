@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getProductBySlug } from "../services/services";
 
-import DetailList from "../Components/DetailList";
 import ServiceContact from "../Components/ServiceContact";
 import Variants from "../Components/Variants";
 import SEO from "../Components/SEO";
@@ -18,17 +17,9 @@ const ProductDetail = () => {
     error,
   } = useQuery({
     queryKey: ["product", slug],
-
     queryFn: () => getProductBySlug(slug!),
-
     enabled: !!slug,
   });
-
-  /*
-   * --------------------------------
-   * SCROLL AL INICIO
-   * --------------------------------
-   */
 
   useEffect(() => {
     try {
@@ -39,18 +30,11 @@ const ProductDetail = () => {
       });
 
       document.documentElement.scrollTop = 0;
-
       document.body.scrollTop = 0;
     } catch {
       // noop
     }
   }, [slug]);
-
-  /*
-   * --------------------------------
-   * LOADING
-   * --------------------------------
-   */
 
   if (isPending) {
     return (
@@ -60,12 +44,6 @@ const ProductDetail = () => {
     );
   }
 
-  /*
-   * --------------------------------
-   * ERROR
-   * --------------------------------
-   */
-
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)] text-[#eee]">
@@ -74,12 +52,6 @@ const ProductDetail = () => {
     );
   }
 
-  /*
-   * --------------------------------
-   * PRODUCTO NO ENCONTRADO
-   * --------------------------------
-   */
-
   if (!data) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)] text-[#eee]">
@@ -87,12 +59,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  /*
-   * --------------------------------
-   * SEO
-   * --------------------------------
-   */
 
   const title = `${data.name} | Nido del Caos`;
 
@@ -104,28 +70,15 @@ const ProductDetail = () => {
   const canonicalUrl =
     `https://www.elnidodelcaos.cl/servicios/${data.slug}`;
 
-  /*
-   * --------------------------------
-   * DATOS ESTRUCTURADOS
-   * --------------------------------
-   */
-
   const structuredData: Record<string, unknown> = {
     "@context": "https://schema.org",
-
     "@type": "Service",
-
     name: data.name,
-
     description,
-
     url: canonicalUrl,
-
     provider: {
       "@type": "Organization",
-
       name: "Nido del Caos",
-
       url: "https://www.elnidodelcaos.cl/",
     },
   };
@@ -134,33 +87,67 @@ const ProductDetail = () => {
     structuredData.image = data.img_url;
   }
 
-  /*
-   * --------------------------------
-   * PRECIO
-   * --------------------------------
-   *
-   * Solo se agrega Offer cuando
-   * el servicio no tiene variantes.
-   */
-
-  const variantes =
-    data.product_details?.variantes;
+  const variantes = data.ProductDetails?.variantes;
 
   if (!variantes?.length && data.price != null) {
     structuredData.offers = {
       "@type": "Offer",
-
       price: data.price,
-
-      priceCurrency:
-        data.Currency || "CLP",
-
-      availability:
-        "https://schema.org/InStock",
-
+      priceCurrency: data.Currency || "CLP",
+      availability: "https://schema.org/InStock",
       url: canonicalUrl,
     };
   }
+
+  const renderContenido = (contenido: string) => {
+    const lineas = contenido.split("\n");
+
+    return lineas.map((linea, index) => {
+      const texto = linea.trim();
+
+      if (!texto) {
+        return (
+          <div
+            key={index}
+            className="h-3"
+          />
+        );
+      }
+
+      if (texto.startsWith("## ")) {
+        const titulo = texto.replace(/^##\s+/, "");
+
+        return (
+          <h2
+            key={index}
+            className="mb-4 mt-8 text-[24px] font-AbrilFatface text-[#d4af37] [text-shadow:0_0_10px_rgba(212,175,55,0.25)] sm:text-[27px] md:text-[30px]"
+          >
+            {titulo}
+          </h2>
+        );
+      }
+
+      if (texto.startsWith("•")) {
+        return (
+          <p
+            key={index}
+            className="mb-2 pl-4 text-[15px] leading-[1.7] text-[#d8d0df] sm:text-[16px] md:text-[17px]"
+          >
+            {texto}
+          </p>
+        );
+      }
+
+      return (
+        <p
+          key={index}
+          className="mb-4 text-[15px] leading-[1.7] text-[#d8d0df] sm:text-[16px] md:text-[17px] md:leading-[1.8]"
+        >
+          {texto}
+        </p>
+      );
+    });
+  };
 
   return (
     <>
@@ -180,13 +167,9 @@ const ProductDetail = () => {
 
         <div className="mx-auto flex w-full max-w-[900px] flex-1 flex-col rounded-[14px] border border-[rgba(212,175,55,0.45)] bg-[rgba(30,15,45,0.9)] p-4 shadow-[0_0_35px_rgba(120,60,180,0.25)] sm:rounded-[18px] sm:p-6 md:p-10">
 
-          {/* Título */}
-
           <h1 className="mb-5 text-center text-[28px] font-AbrilFatface leading-tight text-[#d4af37] [text-shadow:0_0_15px_rgba(212,175,55,0.35)] sm:text-[34px] md:mb-[25px] md:text-[42px]">
             {data.name}
           </h1>
-
-          {/* Imagen */}
 
           <img
             src={data.img_url}
@@ -194,13 +177,9 @@ const ProductDetail = () => {
             className="mx-auto mb-5 block h-[220px] w-full max-w-[600px] rounded-[10px] border border-[rgba(212,175,55,0.5)] object-cover shadow-[0_10px_30px_rgba(0,0,0,0.5)] sm:h-[280px] sm:rounded-[14px] md:mb-[30px] md:h-[350px]"
           />
 
-          {/* Descripción */}
-
           <p className="mb-5 text-center text-[18px] font-PoiretOne leading-[1.6] text-[#d4af37] [text-shadow:0_0_10px_rgba(212,175,55,0.2)] sm:text-[20px] md:text-[22px] md:leading-[1.7]">
             {data.description}
           </p>
-
-          {/* Precio */}
 
           {!variantes?.length && (
             <p className="mb-8 text-center text-[23px] font-bold text-[#d4af37] sm:text-[25px] md:mb-10 md:text-[28px]">
@@ -209,98 +188,20 @@ const ProductDetail = () => {
             </p>
           )}
 
-          {/* Variantes */}
-
-          {variantes &&
-            variantes.length > 0 && (
-              <div className="mb-8 md:mb-10">
-                <Variants
-                  variantes={variantes}
-                  currency={data.Currency}
-                />
-              </div>
-            )}
-
-          {/* Resumen y descripción */}
-
-          <section className="border-t border-[rgba(212,175,55,0.25)] pt-6 md:pt-[30px]">
-
-            {data.product_details?.resumen && (
-              <p className="mb-5 text-[15px] leading-[1.7] text-[#d8d0df] sm:text-[16px] md:text-[17px] md:leading-[1.8]">
-                {data.product_details.resumen}
-              </p>
-            )}
-
-            {data.product_details?.descripcion && (
-              <p className="text-[15px] leading-[1.7] text-[#d8d0df] sm:text-[16px] md:text-[17px] md:leading-[1.8]">
-                {data.product_details.descripcion}
-              </p>
-            )}
-
-          </section>
-
-          {/* Cómo funciona */}
-
-          {data.product_details?.como_funciona && (
-            <section className="mt-7 md:mt-[35px]">
-
-              <h2 className="mb-3 text-[22px] font-normal text-[#d4af37] sm:text-[24px] md:mb-[15px] md:text-[27px]">
-                ¿Cómo funciona?
-              </h2>
-
-              <p className="text-[15px] leading-[1.7] text-[#d8d0df] sm:text-[16px] md:text-[17px] md:leading-[1.8]">
-                {data.product_details.como_funciona}
-              </p>
-
-            </section>
+          {variantes && variantes.length > 0 && (
+            <div className="mb-8 md:mb-10">
+              <Variants
+                variantes={variantes}
+                currency={data.Currency}
+              />
+            </div>
           )}
 
-          {/* Características */}
-
-          <DetailList
-            title="Características"
-            items={
-              data.product_details?.caracteristicas
-            }
-          />
-
-          {/* Beneficios */}
-
-          <DetailList
-            title="Beneficios"
-            items={
-              data.product_details?.beneficios
-            }
-          />
-
-          {/* Para qué sirve */}
-
-          <DetailList
-            title="¿Para qué sirve?"
-            items={
-              data.product_details?.para_que_sirve
-            }
-          />
-
-          {/* Duración */}
-
-          <DetailList
-            title="Duración"
-            items={
-              data.product_details?.duracion
-            }
-          />
-
-          {/* Incluye */}
-
-          <DetailList
-            title="Incluye"
-            items={
-              data.product_details?.incluye
-            }
-          />
-
-          {/* Contacto */}
+          {data.ProductDetails?.contenido && (
+            <section className="border-t border-[rgba(212,175,55,0.25)] pt-6 md:pt-[30px]">
+              {renderContenido(data.ProductDetails.contenido)}
+            </section>
+          )}
 
           <ServiceContact
             serviceName={data.name}
