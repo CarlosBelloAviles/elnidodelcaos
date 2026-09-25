@@ -89,11 +89,8 @@ const ProductDetail = () => {
 
   const variantes = data.ProductDetails?.variantes;
 
-  console.log("DATA COMPLETA EN PRODUCT DETAIL:", data);
-console.log("CONTENIDO:", data.ProductDetails?.contenido);
-console.log(typeof data.ProductDetails?.contenido);
-
-  if (!variantes?.length && data.price != null) {
+  
+if (!variantes?.length && data.price != null) {
     structuredData.offers = {
       "@type": "Offer",
       price: data.price,
