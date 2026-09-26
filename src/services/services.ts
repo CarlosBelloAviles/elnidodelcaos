@@ -1,4 +1,9 @@
-import type { Category, Product, ProductDetails, Testimonial } from "../types";
+import type {
+  Category,
+  Product,
+  ProductDetails,
+  Testimonial,
+} from "../types";
 import supabase from "../utils/supabase";
 
 export const servicesData = async (): Promise<Category[]> => {
@@ -15,9 +20,11 @@ export const servicesData = async (): Promise<Category[]> => {
         price,
         Currency,
         img_url,
-        slug
+        slug,
+        show_on_home
       )
     `)
+    .eq("products.show_on_home", true)
     .order("created_at", { ascending: true });
 
   if (error) {
@@ -57,7 +64,8 @@ export const getProductBySlug = async (
 
   return {
     ...data,
-    ProductDetails: data.ProductDetails as unknown as ProductDetails | null,
+    ProductDetails:
+      data.ProductDetails as unknown as ProductDetails | null,
   };
 };
 
@@ -68,9 +76,14 @@ export const getTestimonials = async (): Promise<Testimonial[]> => {
     .order("display_order", { ascending: true });
 
   if (error) {
-    console.error("Error al obtener testimonios:", error);
+    console.error(
+      "Error al obtener testimonios:",
+      error,
+    );
+
     return [];
   }
 
   return data as Testimonial[];
-}
+};
+
