@@ -35,6 +35,8 @@ export const servicesData = async (): Promise<Category[]> => {
   return data as Category[];
 };
 
+
+
 export const getProductBySlug = async (
   slug: string
 ): Promise<Product> => {
@@ -48,6 +50,7 @@ export const getProductBySlug = async (
       Currency,
       img_url,
       slug,
+      show_on_home,
       ProductDetails (
         id,
         product_id,
@@ -56,9 +59,14 @@ export const getProductBySlug = async (
       )
     `)
     .eq("slug", slug)
+    .eq("show_on_home", true)
     .single();
 
   if (error) {
+    if (error.code === "PGRST116") {
+      throw new Error("SERVICE_NOT_FOUND");
+    }
+
     throw new Error(error.message);
   }
 
@@ -68,6 +76,8 @@ export const getProductBySlug = async (
       data.ProductDetails as unknown as ProductDetails | null,
   };
 };
+
+
 
 export const getTestimonials = async (): Promise<Testimonial[]> => {
   const { data, error } = await supabase

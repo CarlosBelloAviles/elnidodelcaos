@@ -44,13 +44,24 @@ const ProductDetail = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)] text-[#eee]">
-        <p>Error al cargar el servicio.</p>
-      </div>
-    );
-  }
+  
+if (error) {
+  const isServiceNotFound =
+    error instanceof Error &&
+    error.message === "SERVICE_NOT_FOUND";
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)] text-[#eee]">
+      <p>
+        {isServiceNotFound
+          ? "Servicio no encontrado."
+          : "Error al cargar el servicio."}
+      </p>
+    </div>
+  );
+}
+
+
 
   if (!data) {
     return (
