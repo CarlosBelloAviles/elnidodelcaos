@@ -21,35 +21,31 @@ export default {
     const url = new URL(request.url);
 
     /*
-     * --------------------------------
+     * ---------------------------------------------------------
      * ROBOTS.TXT
-     * --------------------------------
+     * ---------------------------------------------------------
      */
-
     if (url.pathname === "/robots.txt") {
-      return new Response(
-        `User-agent: *
+      return withSecurityHeaders(
+        new Response(
+          `User-agent: *
 Allow: /
-
 Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
-        {
-          headers: {
-            "Content-Type":
-              "text/plain; charset=UTF-8",
-
-            "Cache-Control":
-              "public, max-age=3600",
+          {
+            headers: {
+              "Content-Type": "text/plain; charset=UTF-8",
+              "Cache-Control": "public, max-age=3600",
+            },
           },
-        },
+        ),
       );
     }
 
     /*
-     * --------------------------------
+     * ---------------------------------------------------------
      * SITEMAP.XML
-     * --------------------------------
+     * ---------------------------------------------------------
      */
-
     if (url.pathname === "/sitemap.xml") {
       try {
         const response = await fetch(
@@ -57,22 +53,20 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
           {
             headers: {
               apikey: env.SUPABASE_KEY,
-              Authorization:
-                `Bearer ${env.SUPABASE_KEY}`,
+              Authorization: `Bearer ${env.SUPABASE_KEY}`,
             },
           },
         );
 
         if (!response.ok) {
-          return new Response(
-            "Error al generar sitemap.",
-            {
+          return withSecurityHeaders(
+            new Response("Error al generar sitemap.", {
               status: 500,
               headers: {
                 "Content-Type":
                   "text/plain; charset=UTF-8",
               },
-            },
+            }),
           );
         }
 
@@ -82,11 +76,7 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
           }[];
 
         const urls = [
-          `
-          <url>
-            <loc>https://www.elnidodelcaos.cl/</loc>
-          </url>
-          `,
+          `<url><loc>https://www.elnidodelcaos.cl/</loc></url>`,
 
           ...products
             .filter(
@@ -97,12 +87,12 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
             )
             .map(
               (product) => `
-          <url>
-            <loc>https://www.elnidodelcaos.cl/servicios/${escapeXml(
-              product.slug,
-            )}</loc>
-          </url>
-          `,
+        <url>
+          <loc>https://www.elnidodelcaos.cl/servicios/${escapeXml(
+            product.slug,
+          )}</loc>
+        </url>
+      `,
             ),
         ];
 
@@ -112,58 +102,53 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
 ${urls.join("\n")}
 </urlset>`;
 
-        return new Response(sitemap, {
-          headers: {
-            "Content-Type":
-              "application/xml; charset=UTF-8",
-
-            "Cache-Control":
-              "public, max-age=3600",
-          },
-        });
+        return withSecurityHeaders(
+          new Response(sitemap, {
+            headers: {
+              "Content-Type":
+                "application/xml; charset=UTF-8",
+              "Cache-Control":
+                "public, max-age=3600",
+            },
+          }),
+        );
       } catch {
-        return new Response(
-          "Error al generar sitemap.",
-          {
+        return withSecurityHeaders(
+          new Response("Error al generar sitemap.", {
             status: 500,
             headers: {
               "Content-Type":
                 "text/plain; charset=UTF-8",
             },
-          },
+          }),
         );
       }
     }
 
     /*
-     * --------------------------------
-     * SEO DINÁMICO DE PRODUCTOS
-     * --------------------------------
+     * ---------------------------------------------------------
+     * SEO DINÁMICO PARA /servicios/:slug
+     * ---------------------------------------------------------
      */
-
-    if (
-      url.pathname.startsWith("/servicios/")
-    ) {
+    if (url.pathname.startsWith("/servicios/")) {
       const slug = decodeURIComponent(
-        url.pathname.replace(
-          "/servicios/",
-          "",
-        ),
+        url.pathname.replace("/servicios/", ""),
       );
 
       if (slug) {
         try {
-          const productResponse =
-            await fetch(
-              `${env.SUPABASE_URL}/rest/v1/Products?select=name,description,slug,img_url&slug=eq.${encodeURIComponent(slug)}&limit=1`,
-              {
-                headers: {
-                  apikey: env.SUPABASE_KEY,
-                  Authorization:
-                    `Bearer ${env.SUPABASE_KEY}`,
-                },
+          const productResponse = await fetch(
+            `${env.SUPABASE_URL}/rest/v1/Products?select=name,description,slug,img_url&slug=eq.${encodeURIComponent(
+              slug,
+            )}&limit=1`,
+            {
+              headers: {
+                apikey: env.SUPABASE_KEY,
+                Authorization:
+                  `Bearer ${env.SUPABASE_KEY}`,
               },
-            );
+            },
+          );
 
           if (productResponse.ok) {
             const products =
@@ -172,28 +157,16 @@ ${urls.join("\n")}
             const product = products[0];
 
             if (product) {
-              /*
-               * Obtenemos el index.html
-               * generado por Vite.
-               */
-
               const assetResponse =
-  await env.ASSETS.fetch(
-    new Request(
-      new URL(
-        "/",
-        request.url,
-      ),
-      request,
-    ),
-  );
+                await env.ASSETS.fetch(
+                  new Request(
+                    new URL("/", request.url),
+                    request,
+                  ),
+                );
 
               const html =
                 await assetResponse.text();
-
-              /*
-               * Datos SEO
-               */
 
               const title =
                 `${product.name} | Nido del Caos`;
@@ -209,113 +182,217 @@ ${urls.join("\n")}
                 product.img_url ||
                 "https://www.elnidodelcaos.cl/seo_nido.png";
 
-              /*
-               * Reemplazamos los datos
-               * del <head>.
-               */
-
               const modifiedHtml =
                 html
                   .replace(
                     /<title>[\s\S]*?<\/title>/i,
                     `<title>${escapeHtml(title)}</title>`,
                   )
-
                   .replace(
                     /<meta\s+name=["']description["'][^>]*>/i,
-                    `<meta name="description" content="${escapeHtml(description)}">`,
+                    `<meta name="description" content="${escapeHtml(
+                      description,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+property=["']og:type["'][^>]*>/i,
                     `<meta property="og:type" content="website">`,
                   )
-
                   .replace(
                     /<meta\s+property=["']og:title["'][^>]*>/i,
-                    `<meta property="og:title" content="${escapeHtml(title)}">`,
+                    `<meta property="og:title" content="${escapeHtml(
+                      title,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+property=["']og:description["'][^>]*>/i,
-                    `<meta property="og:description" content="${escapeHtml(description)}">`,
+                    `<meta property="og:description" content="${escapeHtml(
+                      description,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+property=["']og:url["'][^>]*>/i,
-                    `<meta property="og:url" content="${escapeHtml(canonical)}">`,
+                    `<meta property="og:url" content="${escapeHtml(
+                      canonical,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+property=["']og:image["'][^>]*>/i,
-                    `<meta property="og:image" content="${escapeHtml(image)}">`,
+                    `<meta property="og:image" content="${escapeHtml(
+                      image,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+property=["']og:image:alt["'][^>]*>/i,
-                    `<meta property="og:image:alt" content="${escapeHtml(product.name)}">`,
+                    `<meta property="og:image:alt" content="${escapeHtml(
+                      product.name,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+name=["']twitter:title["'][^>]*>/i,
-                    `<meta name="twitter:title" content="${escapeHtml(title)}">`,
+                    `<meta name="twitter:title" content="${escapeHtml(
+                      title,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+name=["']twitter:description["'][^>]*>/i,
-                    `<meta name="twitter:description" content="${escapeHtml(description)}">`,
+                    `<meta name="twitter:description" content="${escapeHtml(
+                      description,
+                    )}">`,
                   )
-
                   .replace(
                     /<meta\s+name=["']twitter:image["'][^>]*>/i,
-                    `<meta name="twitter:image" content="${escapeHtml(image)}">`,
+                    `<meta name="twitter:image" content="${escapeHtml(
+                      image,
+                    )}">`,
                   );
 
               const headers =
-                new Headers(
-                  assetResponse.headers,
-                );
+                new Headers(assetResponse.headers);
 
               headers.set(
                 "Content-Type",
                 "text/html; charset=UTF-8",
               );
 
-              return new Response(
-                modifiedHtml,
-                {
+              return withSecurityHeaders(
+                new Response(modifiedHtml, {
                   status: assetResponse.status,
                   headers,
-                },
+                }),
               );
             }
           }
         } catch {
-          /*
-           * Si falla la consulta SEO,
-           * dejamos que React funcione
-           * normalmente.
-           */
+          // Si falla el SEO dinámico,
+          // React continúa funcionando normalmente.
         }
       }
     }
 
     /*
-     * --------------------------------
-     * ARCHIVOS ESTÁTICOS / REACT
-     * --------------------------------
+     * ---------------------------------------------------------
+     * ASSETS / REACT
+     * ---------------------------------------------------------
      */
+    const assetResponse =
+      await env.ASSETS.fetch(request);
 
-    return env.ASSETS.fetch(request);
+    return withSecurityHeaders(assetResponse);
   },
 };
 
 /*
- * --------------------------------
- * ESCAPE HTML
- * --------------------------------
+ * ---------------------------------------------------------
+ * SECURITY HEADERS
+ * ---------------------------------------------------------
  */
+function withSecurityHeaders(
+  response: Response,
+): Response {
+  const headers = new Headers(
+    response.headers,
+  );
 
+  /*
+   * HTTPS obligatorio durante 1 año.
+   */
+  headers.set(
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains",
+  );
+
+  /*
+   * Content Security Policy
+   *
+   * self:
+   * - React
+   * - Vite
+   * - archivos JS/CSS propios
+   *
+   * Supabase:
+   * - consultas desde Supabase JS
+   * - Storage
+   *
+   * Cloudinary:
+   * - imágenes de testimonios
+   *
+   * Google Fonts:
+   * - hojas de estilos
+   * - archivos .woff2
+   */
+  headers.set(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+
+      "script-src 'self'",
+
+      "connect-src 'self' https://*.supabase.co",
+
+      "img-src 'self' data: blob: https://*.supabase.co https://res.cloudinary.com",
+
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+
+      "font-src 'self' data: https://fonts.gstatic.com",
+
+      "object-src 'none'",
+
+      "base-uri 'self'",
+
+      "form-action 'self'",
+
+      "frame-ancestors 'none'",
+    ].join("; "),
+  );
+
+  /*
+   * Evita MIME sniffing.
+   */
+  headers.set(
+    "X-Content-Type-Options",
+    "nosniff",
+  );
+
+  /*
+   * Evita que el sitio pueda cargarse dentro
+   * de un iframe.
+   */
+  headers.set(
+    "X-Frame-Options",
+    "DENY",
+  );
+
+  /*
+   * Controla qué información de origen se
+   * envía al navegar hacia otros sitios.
+   */
+  headers.set(
+    "Referrer-Policy",
+    "strict-origin-when-cross-origin",
+  );
+
+  /*
+   * Desactiva APIs del navegador que el sitio
+   * no necesita.
+   */
+  headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()",
+  );
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+/*
+ * ---------------------------------------------------------
+ * HTML ESCAPING
+ * ---------------------------------------------------------
+ */
 function escapeHtml(
   value: string,
 ): string {
@@ -328,11 +405,10 @@ function escapeHtml(
 }
 
 /*
- * --------------------------------
- * ESCAPE XML
- * --------------------------------
+ * ---------------------------------------------------------
+ * XML ESCAPING
+ * ---------------------------------------------------------
  */
-
 function escapeXml(
   value: string,
 ): string {
