@@ -1,19 +1,27 @@
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const SHOW_NEAR_BOTTOM_PX = 600;
+const SHOW_BEFORE_TESTIMONIALS_PX = 300;
 
 function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const pageBottom = document.documentElement.scrollHeight;
+      const testimonials = document.getElementById("testimonios");
+
+      if (!testimonials) {
+        setIsVisible(false);
+        return;
+      }
+
+      const testimonialsTop =
+        testimonials.getBoundingClientRect().top;
 
       setIsVisible(
-        pageBottom - scrollPosition <= SHOW_NEAR_BOTTOM_PX &&
-          window.scrollY > window.innerHeight,
+        window.scrollY > window.innerHeight &&
+          testimonialsTop <=
+            window.innerHeight + SHOW_BEFORE_TESTIMONIALS_PX,
       );
     };
 
