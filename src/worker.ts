@@ -27,20 +27,22 @@ export default {
      */
 
     if (url.pathname === "/robots.txt") {
-      return new Response(
-        `User-agent: *
+      return withSecurityHeaders(
+        new Response(
+          `User-agent: *
 Allow: /
 
 Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
-        {
-          headers: {
-            "Content-Type":
-              "text/plain; charset=UTF-8",
+          {
+            headers: {
+              "Content-Type":
+                "text/plain; charset=UTF-8",
 
-            "Cache-Control":
-              "public, max-age=3600",
+              "Cache-Control":
+                "public, max-age=3600",
+            },
           },
-        },
+        ),
       );
     }
 
@@ -64,15 +66,17 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
         );
 
         if (!response.ok) {
-          return new Response(
-            "Error al generar sitemap.",
-            {
-              status: 500,
-              headers: {
-                "Content-Type":
-                  "text/plain; charset=UTF-8",
+          return withSecurityHeaders(
+            new Response(
+              "Error al generar sitemap.",
+              {
+                status: 500,
+                headers: {
+                  "Content-Type":
+                    "text/plain; charset=UTF-8",
+                },
               },
-            },
+            ),
           );
         }
 
@@ -112,25 +116,29 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
 ${urls.join("\n")}
 </urlset>`;
 
-        return new Response(sitemap, {
-          headers: {
-            "Content-Type":
-              "application/xml; charset=UTF-8",
-
-            "Cache-Control":
-              "public, max-age=3600",
-          },
-        });
-      } catch {
-        return new Response(
-          "Error al generar sitemap.",
-          {
-            status: 500,
+        return withSecurityHeaders(
+          new Response(sitemap, {
             headers: {
               "Content-Type":
-                "text/plain; charset=UTF-8",
+                "application/xml; charset=UTF-8",
+
+              "Cache-Control":
+                "public, max-age=3600",
             },
-          },
+          }),
+        );
+      } catch {
+        return withSecurityHeaders(
+          new Response(
+            "Error al generar sitemap.",
+            {
+              status: 500,
+              headers: {
+                "Content-Type":
+                  "text/plain; charset=UTF-8",
+              },
+            },
+          ),
         );
       }
     }
@@ -178,15 +186,15 @@ ${urls.join("\n")}
                */
 
               const assetResponse =
-  await env.ASSETS.fetch(
-    new Request(
-      new URL(
-        "/",
-        request.url,
-      ),
-      request,
-    ),
-  );
+                await env.ASSETS.fetch(
+                  new Request(
+                    new URL(
+                      "/",
+                      request.url,
+                    ),
+                    request,
+                  ),
+                );
 
               const html =
                 await assetResponse.text();
@@ -281,12 +289,14 @@ ${urls.join("\n")}
                 "text/html; charset=UTF-8",
               );
 
-              return new Response(
-                modifiedHtml,
-                {
-                  status: assetResponse.status,
-                  headers,
-                },
+              return withSecurityHeaders(
+                new Response(
+                  modifiedHtml,
+                  {
+                    status: assetResponse.status,
+                    headers,
+                  },
+                ),
               );
             }
           }
@@ -306,9 +316,75 @@ ${urls.join("\n")}
      * --------------------------------
      */
 
-    return env.ASSETS.fetch(request);
+    return withSecurityHeaders(
+      await env.ASSETS.fetch(request),
+    );
   },
 };
+
+/*
+ * --------------------------------
+ * CABECERAS DE SEGURIDAD
+ * --------------------------------
+ */
+
+function withSecurityHeaders(
+  response: Response,
+): Response {
+  const headers = new Headers(
+    response.headers,
+  );
+
+  headers.set(
+    "X-Content-Type-Options",
+    "nosniff",
+  );
+
+  headers.set(
+    "Referrer-Policy",
+    "strict-origin-when-cross-origin",
+  );
+
+  headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()",
+  );
+
+  headers.set(
+    "X-Frame-Options",
+    "SAMEORIGIN",
+  );
+
+  headers.set(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'self'",
+      "form-action 'self'",
+      "script-src 'self'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: blob: https://qxidvvmpahtzcriyrdcc.supabase.co https://res.cloudinary.com",
+      "connect-src 'self' https://qxidvvmpahtzcriyrdcc.supabase.co",
+    ].join("; "),
+  );
+
+  headers.set(
+    "Strict-Transport-Security",
+    "max-age=31536000",
+  );
+
+  return new Response(
+    response.body,
+    {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    },
+  );
+}
 
 /*
  * --------------------------------
