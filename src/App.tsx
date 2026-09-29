@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar";
 import Home from "./Page/Home";
 import ProductDetail from "./Page/ProductDetails";
 import ErrorBoundary from "./Components/ErrorBoundary";
+import ScrollToTop from "./Components/ScrollToTop";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
