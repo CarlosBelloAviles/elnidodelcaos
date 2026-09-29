@@ -1,4 +1,5 @@
 import type { Testimonials } from "../types";
+import { cloudinaryImage } from "../utils/cloudinary";
 
 import tarot from "../assets/Images/tarotnido.webp";
 import tarotDestacado from "../assets/Images/tarotpredectivo.webp";
@@ -156,50 +157,50 @@ export const testimonials: Testimonials[] = [
 export const destacados = [
   {
     id: 1,
-    image: tarot,
-    imageMobile: tarotnidoMobile,
+    image: cloudinaryImage("destacados/tarotnido"),
+    imageMobile: cloudinaryImage("destacados/tarotnidoMobile"),
     alt: "Tarot - 3 preguntas",
   },
 
   {
     id: 2,
-    image: tarotDestacado,
-    imageMobile: tarotDestacadoMobile,
+    image: cloudinaryImage("destacados/tarotpredectivo"),
+    imageMobile: cloudinaryImage("destacados/tarotpredectivomobil"),
     alt: "Tarot Predictivo",
   },
 
   {
     id: 3,
-    image: proteccionAutonoma,
-    imageMobile: ProteccionAutonomaMobile,
+    image: cloudinaryImage("destacados/proteccionautonoma"),
+    imageMobile: cloudinaryImage("destacados/protecionautonomamobil"),
     alt: "Ritual de protección autónoma",
   },
 
   {
     id: 4,
-    image: ritualPersonalizado,
-    imageMobile: ritualPersonalizadoMobile,
+    image: cloudinaryImage("destacados/ritualpersonalizado"),
+    imageMobile: cloudinaryImage("destacados/ritualpersonalizadomobil"),
     alt: "Ritual Personalizado",
   },
 
   {
     id: 5,
-    image: limpiezaEnergetica,
-    imageMobile: limpiezaEnergeticaMobile,
+    image: cloudinaryImage("destacados/limpiezaenergetica"),
+    imageMobile: cloudinaryImage("destacados/limpiezaenergeticamobil"),
     alt: "Limpieza Energética",
   },
 
   {
     id: 6,
-    image: corteBrujeria,
-    imageMobile: corteBrujeriaMobile,
+    image: cloudinaryImage("destacados/cortemagianegra"),
+    imageMobile: cloudinaryImage("destacados/cortemagianegraMobil"),
     alt: "Limpieza y corte de brujería",
   },
 
   {
     id: 7,
-    image: abundanciaPersonalizada,
-    imageMobile: abundanciaPersonalizadaMobile,
+    image: cloudinaryImage("destacados/abundanciaPersonalizada"),
+    imageMobile: cloudinaryImage("destacados/abundanciaPersonalzadaMobil"),
     alt: "Ritual de Abundancia Personalizada",
   },
 ];
