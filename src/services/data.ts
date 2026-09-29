@@ -1,22 +1,6 @@
 import type { Testimonials } from "../types";
 import { cloudinaryImage } from "../utils/cloudinary";
 
-import tarot from "../assets/Images/tarotnido.webp";
-import tarotDestacado from "../assets/Images/tarotpredectivo.webp";
-import proteccionAutonoma from "../assets/Images/proteccionautonoma.webp";
-import ritualPersonalizado from "../assets/Images/ritualpersonalizado.webp";
-import limpiezaEnergetica from "../assets/Images/limpiezaenergetica.webp";
-import tarotnidoMobile from "../assets/Images/tarotnidoMobile.webp";
-import corteBrujeria from "../assets/Images/cortemagianegra.webp";
-import abundanciaPersonalizada from "../assets/Images/abundanciaPersonalizada.webp";
-
-import tarotDestacadoMobile from "../assets/Images/tarotpredectivomobil.webp";
-import ProteccionAutonomaMobile from "../assets/Images/protecionautonomamobil.webp";
-import ritualPersonalizadoMobile from "../assets/Images/ritualpersonalizadomobil.webp";
-import limpiezaEnergeticaMobile from "../assets/Images/limpiezaenergeticamobil.webp";
-import corteBrujeriaMobile from "../assets/Images/cortemagianegraMobil.webp";
-import abundanciaPersonalizadaMobile from "../assets/Images/abundanciaPersonalzadaMobil.webp";
-
 export const testimonials: Testimonials[] = [
   {
     id: 1,
