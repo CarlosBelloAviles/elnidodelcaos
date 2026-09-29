@@ -48,7 +48,7 @@ function ScrollToTop() {
       onClick={scrollToTop}
       aria-label="Volver arriba"
       title="Volver arriba"
-      className="fixed right-5 bottom-5 z-50 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[#c9a227]/70 bg-[#100b18]/95 text-[#d4af37] shadow-lg shadow-black/30 backdrop-blur-sm transition-all duration-200 hover:border-[#d4af37] hover:bg-[#1a1024] hover:text-[#f0d77a] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d4af37] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08060d] sm:right-7 sm:bottom-7"
+      className="fixed right-5 bottom-24 z-50 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[#c9a227]/70 bg-[#100b18]/95 text-[#d4af37] shadow-lg shadow-black/30 backdrop-blur-sm transition-all duration-200 hover:border-[#d4af37] hover:bg-[#1a1024] hover:text-[#f0d77a] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d4af37] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08060d] sm:right-7 sm:bottom-24"
     >
       <ArrowUp size={20} strokeWidth={1.8} aria-hidden="true" />
     </button>
