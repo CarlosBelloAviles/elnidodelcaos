@@ -20,6 +20,19 @@ export default {
   ): Promise<Response> {
     const url = new URL(request.url);
 
+    // Fuerza todo el tráfico HTTP a HTTPS antes de procesar cualquier ruta.
+    if (url.protocol === "http:") {
+      url.protocol = "https:";
+
+      return new Response(null, {
+        status: 301,
+        headers: {
+          Location: url.toString(),
+          "Cache-Control": "public, max-age=31536000",
+        },
+      });
+    }
+
     /*
      * --------------------------------
      * ROBOTS.TXT
