@@ -1,68 +1,52 @@
-import tarot from "../assets/Images/tarotnido.webp";
-import tarotDestacado from "../assets/Images/tarotpredectivo.webp";
-import proteccionAutonoma from "../assets/Images/proteccionautonoma.webp";
-import ritualPersonalizado from "../assets/Images/ritualpersonalizado.webp";
-import limpiezaEnergetica from "../assets/Images/limpiezaenergetica.webp";
-import tarotnidoMobile from "../assets/Images/tarotnidoMobile.webp";
-import corteBrujeria from "../assets/Images/cortemagianegra.webp";
-import abundanciaPersonalizada from "../assets/Images/abundanciaPersonalizada.webp";
-
-import tarotDestacadoMobile from "../assets/Images/tarotpredectivomobil.webp";
-import ProteccionAutonomaMobile from "../assets/Images/protecionautonomamobil.webp";
-import ritualPersonalizadoMobile from "../assets/Images/ritualpersonalizadomobil.webp";
-import limpiezaEnergeticaMobile from "../assets/Images/limpiezaenergeticamobil.webp";
-import corteBrujeriaMobile from "../assets/Images/cortemagianegraMobil.webp";
-import abundanciaPersonalizadaMobile from "../assets/Images/abundanciaPersonalzadaMobil.webp";
-
-
+import { cloudinaryImage } from "../utils/cloudinary";
 
 export const destacados = [
   {
     id: 1,
-    image: tarot,
-    imageMobile: tarotnidoMobile,
+    image: cloudinaryImage("destacados/tarotnido"),
+    imageMobile: cloudinaryImage("destacados/tarotnidoMobile"),
     alt: "Tarot - 3 preguntas",
   },
 
   {
     id: 2,
-    image: tarotDestacado,
-    imageMobile: tarotDestacadoMobile,
+    image: cloudinaryImage("destacados/tarotpredectivo"),
+    imageMobile: cloudinaryImage("destacados/tarotpredectivomobil"),
     alt: "Tarot Predictivo",
   },
 
   {
     id: 3,
-    image: proteccionAutonoma,
-    imageMobile: ProteccionAutonomaMobile,
+    image: cloudinaryImage("destacados/proteccionautonoma"),
+    imageMobile: cloudinaryImage("destacados/protecionautonomamobil"),
     alt: "Ritual de protección autónoma",
   },
 
   {
     id: 4,
-    image: ritualPersonalizado,
-    imageMobile: ritualPersonalizadoMobile,
+    image: cloudinaryImage("destacados/ritualpersonalizado"),
+    imageMobile: cloudinaryImage("destacados/ritualpersonalizadomobil"),
     alt: "Ritual Personalizado",
   },
 
   {
     id: 5,
-    image: limpiezaEnergetica,
-    imageMobile: limpiezaEnergeticaMobile,
+    image: cloudinaryImage("destacados/limpiezaenergetica"),
+    imageMobile: cloudinaryImage("destacados/limpiezaenergeticamobil"),
     alt: "Limpieza Energética",
   },
 
   {
     id: 6,
-    image: corteBrujeria,
-    imageMobile: corteBrujeriaMobile,
+    image: cloudinaryImage("destacados/cortemagianegra"),
+    imageMobile: cloudinaryImage("destacados/cortemagianegraMobil"),
     alt: "Limpieza y corte de brujería",
   },
 
   {
     id: 7,
-    image: abundanciaPersonalizada,
-    imageMobile: abundanciaPersonalizadaMobile,
+    image: cloudinaryImage("destacados/abundanciaPersonalizada"),
+    imageMobile: cloudinaryImage("destacados/abundanciaPersonalzadaMobil"),
     alt: "Ritual de Abundancia Personalizada",
   },
 ];
