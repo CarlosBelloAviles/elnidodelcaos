@@ -79,7 +79,7 @@ if (error) {
   }`;
 
   const canonicalUrl =
-    `https://www.elnidodelcaos.cl/servicios/${data.slug}`;
+    `https://elnidodelcaos.cl/servicios/${data.slug}`;
 
   const structuredData: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -90,7 +90,7 @@ if (error) {
     provider: {
       "@type": "Organization",
       name: "Nido del Caos",
-      url: "https://www.elnidodelcaos.cl/",
+      url: "https://elnidodelcaos.cl/",
     },
   };
 
@@ -169,7 +169,7 @@ if (!variantes?.length && data.price != null) {
         canonical={canonicalUrl}
         image={
           data.img_url ||
-          "https://www.elnidodelcaos.cl/seo_nido.png"
+          "https://elnidodelcaos.cl/seo_nido.png"
         }
         type="service"
         structuredData={structuredData}
