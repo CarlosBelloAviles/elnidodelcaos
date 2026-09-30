@@ -20,6 +20,18 @@ export default {
   ): Promise<Response> {
     const url = new URL(request.url);
 
+    // Fuerza todo el tráfico HTTP a HTTPS antes de procesar cualquier ruta.
+    if (url.protocol === "http:") {
+      url.protocol = "https:";
+      return new Response(null, {
+        status: 301,
+        headers: {
+          Location: url.toString(),
+          "Cache-Control": "public, max-age=31536000",
+        },
+      });
+    }
+
     /*
      * ---------------------------------------------------------
      * ROBOTS.TXT
@@ -30,7 +42,7 @@ export default {
         new Response(
           `User-agent: *
 Allow: /
-Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
+Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
           {
             headers: {
               "Content-Type": "text/plain; charset=UTF-8",
@@ -76,7 +88,7 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
           }[];
 
         const urls = [
-          `<url><loc>https://www.elnidodelcaos.cl/</loc></url>`,
+          `<url><loc>https://elnidodelcaos.cl/</loc></url>`,
 
           ...products
             .filter(
@@ -88,7 +100,7 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
             .map(
               (product) => `
         <url>
-          <loc>https://www.elnidodelcaos.cl/servicios/${escapeXml(
+          <loc>https://elnidodelcaos.cl/servicios/${escapeXml(
             product.slug,
           )}</loc>
         </url>
@@ -176,11 +188,11 @@ ${urls.join("\n")}
                 "Servicio disponible en Nido del Caos.";
 
               const canonical =
-                `https://www.elnidodelcaos.cl/servicios/${product.slug}`;
+                `https://elnidodelcaos.cl/servicios/${product.slug}`;
 
               const image =
                 product.img_url ||
-                "https://www.elnidodelcaos.cl/seo_nido.png";
+                "https://elnidodelcaos.cl/seo_nido.png";
 
               const modifiedHtml =
                 html
@@ -192,6 +204,12 @@ ${urls.join("\n")}
                     /<meta\s+name=["']description["'][^>]*>/i,
                     `<meta name="description" content="${escapeHtml(
                       description,
+                    )}">`,
+                  )
+                  .replace(
+                    /<link\s+rel=["']canonical["'][^>]*>/i,
+                    `<link rel="canonical" href="${escapeHtml(
+                      canonical,
                     )}">`,
                   )
                   .replace(
