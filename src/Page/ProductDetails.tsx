@@ -102,7 +102,7 @@ const ProductDetail = () => {
   }`;
 
   const canonicalUrl =
-    `https://www.elnidodelcaos.cl/servicios/${data.slug}`;
+    `https://elnidodelcaos.cl/servicios/${data.slug}`;
 
   /*
    * --------------------------------
@@ -126,7 +126,7 @@ const ProductDetail = () => {
 
       name: "Nido del Caos",
 
-      url: "https://www.elnidodelcaos.cl/",
+      url: "https://elnidodelcaos.cl/",
     },
   };
 
@@ -170,7 +170,7 @@ const ProductDetail = () => {
         canonical={canonicalUrl}
         image={
           data.img_url ||
-          "https://www.elnidodelcaos.cl/seo_nido.png"
+          "https://elnidodelcaos.cl/seo_nido.png"
         }
         type="service"
         structuredData={structuredData}
