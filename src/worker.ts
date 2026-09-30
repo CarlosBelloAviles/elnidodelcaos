@@ -45,7 +45,7 @@ export default {
           `User-agent: *
 Allow: /
 
-Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
+Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
           {
             headers: {
               "Content-Type":
@@ -101,7 +101,7 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
         const urls = [
           `
           <url>
-            <loc>https://www.elnidodelcaos.cl/</loc>
+            <loc>https://elnidodelcaos.cl/</loc>
           </url>
           `,
 
@@ -115,7 +115,7 @@ Sitemap: https://www.elnidodelcaos.cl/sitemap.xml`,
             .map(
               (product) => `
           <url>
-            <loc>https://www.elnidodelcaos.cl/servicios/${escapeXml(
+            <loc>https://elnidodelcaos.cl/servicios/${escapeXml(
               product.slug,
             )}</loc>
           </url>
@@ -224,11 +224,11 @@ ${urls.join("\n")}
                 "Servicio disponible en Nido del Caos.";
 
               const canonical =
-                `https://www.elnidodelcaos.cl/servicios/${product.slug}`;
+                `https://elnidodelcaos.cl/servicios/${product.slug}`;
 
               const image =
                 product.img_url ||
-                "https://www.elnidodelcaos.cl/seo_nido.png";
+                "https://elnidodelcaos.cl/seo_nido.png";
 
               /*
                * Reemplazamos los datos
