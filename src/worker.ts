@@ -248,6 +248,11 @@ ${urls.join("\n")}
                   )
 
                   .replace(
+                    /<link\s+rel=["']canonical["'][^>]*>/i,
+                    `<link rel="canonical" href="${escapeHtml(canonical)}">`,
+                  )
+
+                  .replace(
                     /<meta\s+property=["']og:type["'][^>]*>/i,
                     `<meta property="og:type" content="website">`,
                   )
