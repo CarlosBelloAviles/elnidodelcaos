@@ -33,12 +33,6 @@ export default {
       });
     }
 
-    /*
-     * ---------------------------------------------------------
-     * ROBOTS.TXT
-     * ---------------------------------------------------------
-     */
-
     if (url.pathname === "/robots.txt") {
       return withSecurityHeaders(
         new Response(
@@ -55,25 +49,26 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
       );
     }
 
-    /*
-     * ---------------------------------------------------------
-     * SITEMAP.XML
-     * ---------------------------------------------------------
-     */
-
     if (url.pathname === "/sitemap.xml") {
       try {
+        const supabase = getSupabaseConfig(env);
+
         const response = await fetch(
-          `${env.SUPABASE_URL}/rest/v1/Products?select=slug`,
+          `${supabase.url}/rest/v1/Products?select=slug&slug=not.is.null`,
           {
-            headers: {
-              apikey: env.SUPABASE_KEY,
-              Authorization: `Bearer ${env.SUPABASE_KEY}`,
-            },
+            headers: supabase.headers,
           },
         );
 
         if (!response.ok) {
+          const errorBody = await response.text();
+
+          console.error("Sitemap: Supabase request failed.", {
+            status: response.status,
+            statusText: response.statusText,
+            body: errorBody.slice(0, 1000),
+          });
+
           return withSecurityHeaders(
             new Response("Error al generar sitemap.", {
               status: 500,
@@ -133,7 +128,9 @@ ${urls.join("\n")}
             },
           }),
         );
-      } catch {
+      } catch (error) {
+        console.error("Sitemap: unexpected error.", error);
+
         return withSecurityHeaders(
           new Response("Error al generar sitemap.", {
             status: 500,
@@ -146,12 +143,6 @@ ${urls.join("\n")}
       }
     }
 
-    /*
-     * ---------------------------------------------------------
-     * SEO DINÁMICO PARA /servicios/:slug
-     * ---------------------------------------------------------
-     */
-
     if (url.pathname.startsWith("/servicios/")) {
       const slug = decodeURIComponent(
         url.pathname.slice("/servicios/".length),
@@ -159,20 +150,27 @@ ${urls.join("\n")}
 
       if (slug) {
         try {
+          const supabase = getSupabaseConfig(env);
+
           const productResponse = await fetch(
-            `${env.SUPABASE_URL}/rest/v1/Products?select=name,description,slug,img_url&slug=eq.${encodeURIComponent(
+            `${supabase.url}/rest/v1/Products?select=name,description,slug,img_url&slug=eq.${encodeURIComponent(
               slug,
             )}&limit=1`,
             {
-              headers: {
-                apikey: env.SUPABASE_KEY,
-                Authorization:
-                  `Bearer ${env.SUPABASE_KEY}`,
-              },
+              headers: supabase.headers,
             },
           );
 
-          if (productResponse.ok) {
+          if (!productResponse.ok) {
+            const errorBody = await productResponse.text();
+
+            console.error("Service SEO: Supabase request failed.", {
+              status: productResponse.status,
+              statusText: productResponse.statusText,
+              slug,
+              body: errorBody.slice(0, 1000),
+            });
+          } else {
             const products =
               (await productResponse.json()) as ProductSEO[];
 
@@ -202,19 +200,12 @@ ${urls.join("\n")}
                   product.slug,
                 )}`;
 
-              // Mantiene URLs absolutas (por ejemplo Cloudinary)
-              // y convierte rutas relativas en URLs completas.
               const image = product.img_url
                 ? new URL(
                     product.img_url,
                     url.origin,
                   ).toString()
                 : "https://elnidodelcaos.cl/seo_nido.png";
-
-              /*
-               * Eliminamos las etiquetas SEO que pueda haber
-               * generado React para evitar duplicados.
-               */
 
               const cleanedHtml = html
                 .replace(
@@ -223,6 +214,10 @@ ${urls.join("\n")}
                 )
                 .replace(
                   /<meta\s+name=["']description["'][^>]*>/i,
+                  "",
+                )
+                .replace(
+                  /<meta\s+name=["']robots["'][^>]*>/i,
                   "",
                 )
                 .replace(
@@ -238,17 +233,17 @@ ${urls.join("\n")}
                   "",
                 );
 
-              /*
-               * Open Graph + Twitter Card.
-               * La imagen viene del servicio concreto en Supabase.
-               */
-
               const seoTags = `
 <title>${escapeHtml(title)}</title>
 
 <meta
   name="description"
   content="${escapeHtml(description)}"
+>
+
+<meta
+  name="robots"
+  content="index, follow"
 >
 
 <link
@@ -317,10 +312,6 @@ ${urls.join("\n")}
 >
 `;
 
-              /*
-               * Insertamos los metadatos antes de </head>.
-               */
-
               const modifiedHtml =
                 cleanedHtml.replace(
                   /<\/head>/i,
@@ -335,6 +326,11 @@ ${urls.join("\n")}
                 "text/html; charset=UTF-8",
               );
 
+              headers.set(
+                "Cache-Control",
+                "public, max-age=300, must-revalidate",
+              );
+
               return withSecurityHeaders(
                 new Response(modifiedHtml, {
                   status: assetResponse.status,
@@ -343,18 +339,14 @@ ${urls.join("\n")}
               );
             }
           }
-        } catch {
-          // Si falla el SEO dinámico,
-          // React continúa funcionando normalmente.
+        } catch (error) {
+          console.error("Service SEO: unexpected error.", {
+            slug,
+            error,
+          });
         }
       }
     }
-
-    /*
-     * ---------------------------------------------------------
-     * ASSETS / REACT
-     * ---------------------------------------------------------
-     */
 
     const assetResponse =
       await env.ASSETS.fetch(request);
@@ -363,11 +355,27 @@ ${urls.join("\n")}
   },
 };
 
-/*
- * ---------------------------------------------------------
- * SECURITY HEADERS
- * ---------------------------------------------------------
- */
+function getSupabaseConfig(env: Env): {
+  url: string;
+  headers: HeadersInit;
+} {
+  const url = env.SUPABASE_URL?.trim().replace(/\/$/, "");
+  const key = env.SUPABASE_KEY?.trim();
+
+  if (!url || !key) {
+    throw new Error(
+      "SUPABASE_URL y SUPABASE_KEY deben estar configuradas en el Worker.",
+    );
+  }
+
+  return {
+    url,
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+    },
+  };
+}
 
 function withSecurityHeaders(
   response: Response,
@@ -376,18 +384,10 @@ function withSecurityHeaders(
     response.headers,
   );
 
-  /*
-   * HTTPS obligatorio durante 1 año.
-   */
-
   headers.set(
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains",
   );
-
-  /*
-   * Content Security Policy
-   */
 
   headers.set(
     "Content-Security-Policy",
@@ -405,39 +405,20 @@ function withSecurityHeaders(
     ].join("; "),
   );
 
-  /*
-   * Evita MIME sniffing.
-   */
-
   headers.set(
     "X-Content-Type-Options",
     "nosniff",
   );
-
-  /*
-   * Evita que el sitio pueda cargarse dentro
-   * de un iframe.
-   */
 
   headers.set(
     "X-Frame-Options",
     "DENY",
   );
 
-  /*
-   * Controla qué información de origen se
-   * envía al navegar hacia otros sitios.
-   */
-
   headers.set(
     "Referrer-Policy",
     "strict-origin-when-cross-origin",
   );
-
-  /*
-   * Desactiva APIs del navegador que el sitio
-   * no necesita.
-   */
 
   headers.set(
     "Permissions-Policy",
@@ -454,12 +435,6 @@ function withSecurityHeaders(
   );
 }
 
-/*
- * ---------------------------------------------------------
- * HTML ESCAPING
- * ---------------------------------------------------------
- */
-
 function escapeHtml(
   value: string,
 ): string {
@@ -470,12 +445,6 @@ function escapeHtml(
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
-
-/*
- * ---------------------------------------------------------
- * XML ESCAPING
- * ---------------------------------------------------------
- */
 
 function escapeXml(
   value: string,
