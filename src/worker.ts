@@ -23,6 +23,7 @@ export default {
     // Fuerza todo el tráfico HTTP a HTTPS antes de procesar cualquier ruta.
     if (url.protocol === "http:") {
       url.protocol = "https:";
+
       return new Response(null, {
         status: 301,
         headers: {
@@ -37,6 +38,7 @@ export default {
      * ROBOTS.TXT
      * ---------------------------------------------------------
      */
+
     if (url.pathname === "/robots.txt") {
       return withSecurityHeaders(
         new Response(
@@ -58,6 +60,7 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
      * SITEMAP.XML
      * ---------------------------------------------------------
      */
+
     if (url.pathname === "/sitemap.xml") {
       try {
         const response = await fetch(
@@ -75,8 +78,7 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
             new Response("Error al generar sitemap.", {
               status: 500,
               headers: {
-                "Content-Type":
-                  "text/plain; charset=UTF-8",
+                "Content-Type": "text/plain; charset=UTF-8",
               },
             }),
           );
@@ -88,7 +90,11 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
           }[];
 
         const urls = [
-          `<url><loc>https://elnidodelcaos.cl/</loc></url>`,
+          `
+        <url>
+          <loc>https://elnidodelcaos.cl/</loc>
+        </url>
+      `,
 
           ...products
             .filter(
@@ -97,15 +103,18 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
               ): product is { slug: string } =>
                 Boolean(product.slug),
             )
-            .map(
-              (product) => `
+            .map((product) => {
+              const encodedSlug =
+                encodeURIComponent(product.slug);
+
+              return `
         <url>
           <loc>https://elnidodelcaos.cl/servicios/${escapeXml(
-            product.slug,
+            encodedSlug,
           )}</loc>
         </url>
-      `,
-            ),
+      `;
+            }),
         ];
 
         const sitemap =
@@ -142,9 +151,10 @@ ${urls.join("\n")}
      * SEO DINÁMICO PARA /servicios/:slug
      * ---------------------------------------------------------
      */
+
     if (url.pathname.startsWith("/servicios/")) {
       const slug = decodeURIComponent(
-        url.pathname.replace("/servicios/", ""),
+        url.pathname.slice("/servicios/".length),
       );
 
       if (slug) {
@@ -188,82 +198,134 @@ ${urls.join("\n")}
                 "Servicio disponible en Nido del Caos.";
 
               const canonical =
-                `https://elnidodelcaos.cl/servicios/${product.slug}`;
+                `https://elnidodelcaos.cl/servicios/${encodeURIComponent(
+                  product.slug,
+                )}`;
 
-              const image =
-                product.img_url ||
-                "https://elnidodelcaos.cl/seo_nido.png";
+              // Mantiene URLs absolutas (por ejemplo Cloudinary)
+              // y convierte rutas relativas en URLs completas.
+              const image = product.img_url
+                ? new URL(
+                    product.img_url,
+                    url.origin,
+                  ).toString()
+                : "https://elnidodelcaos.cl/seo_nido.png";
+
+              /*
+               * Eliminamos las etiquetas SEO que pueda haber
+               * generado React para evitar duplicados.
+               */
+
+              const cleanedHtml = html
+                .replace(
+                  /<title>[\s\S]*?<\/title>/i,
+                  "",
+                )
+                .replace(
+                  /<meta\s+name=["']description["'][^>]*>/i,
+                  "",
+                )
+                .replace(
+                  /<link\s+rel=["']canonical["'][^>]*>/i,
+                  "",
+                )
+                .replace(
+                  /<meta\s+property=["']og:[^"']+["'][^>]*>/gi,
+                  "",
+                )
+                .replace(
+                  /<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi,
+                  "",
+                );
+
+              /*
+               * Open Graph + Twitter Card.
+               * La imagen viene del servicio concreto en Supabase.
+               */
+
+              const seoTags = `
+<title>${escapeHtml(title)}</title>
+
+<meta
+  name="description"
+  content="${escapeHtml(description)}"
+>
+
+<link
+  rel="canonical"
+  href="${escapeHtml(canonical)}"
+>
+
+<meta
+  property="og:type"
+  content="website"
+>
+
+<meta
+  property="og:title"
+  content="${escapeHtml(title)}"
+>
+
+<meta
+  property="og:description"
+  content="${escapeHtml(description)}"
+>
+
+<meta
+  property="og:url"
+  content="${escapeHtml(canonical)}"
+>
+
+<meta
+  property="og:image"
+  content="${escapeHtml(image)}"
+>
+
+<meta
+  property="og:image:alt"
+  content="${escapeHtml(product.name)}"
+>
+
+<meta
+  property="og:site_name"
+  content="Nido del Caos"
+>
+
+<meta
+  property="og:locale"
+  content="es_CL"
+>
+
+<meta
+  name="twitter:card"
+  content="summary_large_image"
+>
+
+<meta
+  name="twitter:title"
+  content="${escapeHtml(title)}"
+>
+
+<meta
+  name="twitter:description"
+  content="${escapeHtml(description)}"
+>
+
+<meta
+  name="twitter:image"
+  content="${escapeHtml(image)}"
+>
+`;
+
+              /*
+               * Insertamos los metadatos antes de </head>.
+               */
 
               const modifiedHtml =
-                html
-                  .replace(
-                    /<title>[\s\S]*?<\/title>/i,
-                    `<title>${escapeHtml(title)}</title>`,
-                  )
-                  .replace(
-                    /<meta\s+name=["']description["'][^>]*>/i,
-                    `<meta name="description" content="${escapeHtml(
-                      description,
-                    )}">`,
-                  )
-                  .replace(
-                    /<link\s+rel=["']canonical["'][^>]*>/i,
-                    `<link rel="canonical" href="${escapeHtml(
-                      canonical,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+property=["']og:type["'][^>]*>/i,
-                    `<meta property="og:type" content="website">`,
-                  )
-                  .replace(
-                    /<meta\s+property=["']og:title["'][^>]*>/i,
-                    `<meta property="og:title" content="${escapeHtml(
-                      title,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+property=["']og:description["'][^>]*>/i,
-                    `<meta property="og:description" content="${escapeHtml(
-                      description,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+property=["']og:url["'][^>]*>/i,
-                    `<meta property="og:url" content="${escapeHtml(
-                      canonical,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+property=["']og:image["'][^>]*>/i,
-                    `<meta property="og:image" content="${escapeHtml(
-                      image,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+property=["']og:image:alt["'][^>]*>/i,
-                    `<meta property="og:image:alt" content="${escapeHtml(
-                      product.name,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+name=["']twitter:title["'][^>]*>/i,
-                    `<meta name="twitter:title" content="${escapeHtml(
-                      title,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+name=["']twitter:description["'][^>]*>/i,
-                    `<meta name="twitter:description" content="${escapeHtml(
-                      description,
-                    )}">`,
-                  )
-                  .replace(
-                    /<meta\s+name=["']twitter:image["'][^>]*>/i,
-                    `<meta name="twitter:image" content="${escapeHtml(
-                      image,
-                    )}">`,
-                  );
+                cleanedHtml.replace(
+                  /<\/head>/i,
+                  `${seoTags}\n</head>`,
+                );
 
               const headers =
                 new Headers(assetResponse.headers);
@@ -293,6 +355,7 @@ ${urls.join("\n")}
      * ASSETS / REACT
      * ---------------------------------------------------------
      */
+
     const assetResponse =
       await env.ASSETS.fetch(request);
 
@@ -305,6 +368,7 @@ ${urls.join("\n")}
  * SECURITY HEADERS
  * ---------------------------------------------------------
  */
+
 function withSecurityHeaders(
   response: Response,
 ): Response {
@@ -315,6 +379,7 @@ function withSecurityHeaders(
   /*
    * HTTPS obligatorio durante 1 año.
    */
+
   headers.set(
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains",
@@ -322,44 +387,20 @@ function withSecurityHeaders(
 
   /*
    * Content Security Policy
-   *
-   * self:
-   * - React
-   * - Vite
-   * - archivos JS/CSS propios
-   *
-   * Supabase:
-   * - consultas desde Supabase JS
-   * - Storage
-   *
-   * Cloudinary:
-   * - imágenes de testimonios
-   *
-   * Google Fonts:
-   * - hojas de estilos
-   * - archivos .woff2
    */
+
   headers.set(
     "Content-Security-Policy",
     [
       "default-src 'self'",
-
       "script-src 'self'",
-
       "connect-src 'self' https://*.supabase.co",
-
       "img-src 'self' data: blob: https://*.supabase.co https://res.cloudinary.com",
-
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-
       "font-src 'self' data: https://fonts.gstatic.com",
-
       "object-src 'none'",
-
       "base-uri 'self'",
-
       "form-action 'self'",
-
       "frame-ancestors 'none'",
     ].join("; "),
   );
@@ -367,6 +408,7 @@ function withSecurityHeaders(
   /*
    * Evita MIME sniffing.
    */
+
   headers.set(
     "X-Content-Type-Options",
     "nosniff",
@@ -376,6 +418,7 @@ function withSecurityHeaders(
    * Evita que el sitio pueda cargarse dentro
    * de un iframe.
    */
+
   headers.set(
     "X-Frame-Options",
     "DENY",
@@ -385,6 +428,7 @@ function withSecurityHeaders(
    * Controla qué información de origen se
    * envía al navegar hacia otros sitios.
    */
+
   headers.set(
     "Referrer-Policy",
     "strict-origin-when-cross-origin",
@@ -394,16 +438,20 @@ function withSecurityHeaders(
    * Desactiva APIs del navegador que el sitio
    * no necesita.
    */
+
   headers.set(
     "Permissions-Policy",
     "camera=(), microphone=(), geolocation=()",
   );
 
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
-  });
+  return new Response(
+    response.body,
+    {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    },
+  );
 }
 
 /*
@@ -411,6 +459,7 @@ function withSecurityHeaders(
  * HTML ESCAPING
  * ---------------------------------------------------------
  */
+
 function escapeHtml(
   value: string,
 ): string {
@@ -427,6 +476,7 @@ function escapeHtml(
  * XML ESCAPING
  * ---------------------------------------------------------
  */
+
 function escapeXml(
   value: string,
 ): string {
