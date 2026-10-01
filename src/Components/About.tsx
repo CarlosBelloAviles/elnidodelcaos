@@ -80,21 +80,21 @@ const About = () => {
             </span>
           </h2>
 
-          <p className="mb-[14px] max-w-full text-[15px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
+          <p className="mb-[14px] max-w-full font-Newsreader text-[15px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
             El Nido del Caos es un espacio dedicado a la práctica de la magia
             y la brujería, donde se ofrecen servicios y trabajos mágicos
             orientados a abordar distintas necesidades y aspectos de la vida de
             cada persona.
           </p>
 
-          <p className="mb-[14px] max-w-full text-[15px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
+          <p className="mb-[14px] max-w-full font-Newsreader text-[15px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
             A través de rituales, trabajos mágicos, limpiezas energéticas,
             protección, volteos, aperturas de caminos, abundancia, amor y otras
             prácticas, se realizan trabajos orientados a necesidades concretas
             y situaciones particulares.
           </p>
 
-          <p className="mb-[14px] max-w-full text-[15px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
+          <p className="mb-[14px] max-w-full font-Newsreader text-[15px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
             Cada trabajo parte de una comprensión particular de la situación y se adapta al propósito, contexto e intención de cada persona, considerando sus necesidades, circunstancias y aquello que busca transformar o trabajar en su camino.
 
           </p>
@@ -120,7 +120,7 @@ const About = () => {
                   Rituales personalizados
                 </h3>
 
-                <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
                   Rituales y trabajos mágicos diseñados de forma personalizada según tu propósito, intención y situación particular, adaptando cada trabajo a las necesidades de cada persona.
 
                 </p>
@@ -146,7 +146,7 @@ const About = () => {
                   Limpieza profunda de magia negra
                 </h3>
 
-                <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
                   Trabajos profundos destinados a limpiar y deshacer
                   influencias, cargas y energías asociadas a trabajos de magia
                   negra, bloqueos o situaciones que afectan tu bienestar y tu
@@ -174,7 +174,7 @@ const About = () => {
                   Limpieza y protección
                 </h3>
 
-                <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
                   Trabajos destinados a limpiar, proteger y armonizar tu
                   energía y tus espacios, ayudando a mantener un entorno más
                   equilibrado y protegido.
@@ -201,7 +201,7 @@ const About = () => {
                   Lecturas y orientación
                 </h3>
 
-                <p className="m-0 text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
                   Tarot y oráculos para explorar situaciones, tendencias y
                   posibles caminos, aportando claridad y orientación para
                   comprender mejor aquello que estás viviendo.
