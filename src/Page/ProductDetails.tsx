@@ -26,6 +26,7 @@ const ProductDetail = () => {
     queryFn: () =>
       getRelatedProducts(data!.category_id!, data!.slug),
     enabled: !!data?.category_id && !!data?.slug,
+    gcTime: 0,
   });
 
   useEffect(() => {
