@@ -201,6 +201,7 @@ const Testimonials = () => {
                 className={`
                   relative
                   aspect-[3/4]
+                  h-[calc(106.6667vw_-_2px)]
                   w-[80%]
                   overflow-hidden
                   rounded-[18px]
@@ -231,7 +232,7 @@ const Testimonials = () => {
 
                   sm:block
                   sm:w-[34%]
-                  sm:h-[450px]
+                  sm:h-[420px]
 
                   lg:w-[31%]
                   lg:h-auto
