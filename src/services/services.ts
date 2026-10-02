@@ -120,12 +120,19 @@ export const getRelatedProducts = async (
     .eq("show_on_home", true)
     .neq("slug", currentSlug)
     .order("name", { ascending: true })
-    .limit(3);
+    );
 
   if (error) {
     console.error("Error al obtener servicios relacionados:", error);
     return [];
   }
 
-  return data as Product[];
+  const products = data as Product[];
+
+  for (let i = products.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [products[i], products[j]] = [products[j], products[i]];
+  }
+
+  return products.slice(0, 3);
 };
