@@ -6,7 +6,7 @@ import ServiceCard from "./ServiceCard";
 
 const CategorySection = ({ categoria }: CategorySectionProps) => {
   return (
-    <section className="max-w-[1600px] mx-auto my-12 px-5 sm:px-10">
+    <section id={categoria.slug} className="max-w-[1600px] mx-auto my-12 px-5 sm:px-10">
       {/* Título de categoría */}
       <div className="flex items-center gap-3 text-white">
         <WandSparkles color="gold" />
