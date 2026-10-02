@@ -100,8 +100,55 @@ const About = () => {
 
           </p>
 
+        </div>
+
+        {/* IMAGEN */}
+        <div className="order-none flex justify-center min-[951px]:order-none">
+          <div
+            className="
+              relative w-full max-w-[470px] rounded-[20px]
+              border border-[rgba(212,175,55,0.75)]
+              bg-[#100b17] p-2
+              shadow-[0_0_12px_rgba(212,175,55,0.12),0_20px_55px_rgba(0,0,0,0.55)]
+              before:pointer-events-none
+              before:absolute before:-inset-[6px]
+              before:rounded-[26px]
+              before:border
+              before:border-[rgba(168,117,201,0.22)]
+              before:content-['']
+            "
+          >
+            <img
+              src={sobrenido}
+              alt="El Nido del Caos"
+              className="block h-[370px] w-full rounded-[14px] object-cover sm:h-[560px]"
+            />
+
+            {/* TEXTO SOBRE IMAGEN */}
+            <div
+              className="
+                absolute bottom-[25px] left-[25px]
+                flex flex-col gap-[5px]
+                rounded-r-[8px]
+                border-l-2 border-[#d4af37]
+                bg-[rgba(8,6,13,0.78)]
+                px-[18px] py-[14px]
+                backdrop-blur-[6px]
+              "
+            >
+              <span className="text-[13px] font-semibold tracking-[2px] text-[#d4af37]">
+                EL NIDO DEL CAOS
+              </span>
+
+              <small className="text-[12px] text-[#c0b9c7]">
+                Magia · Brujería · Rituales
+              </small>
+            </div>
+          </div>
+        </div>
+
           {/* SERVICIOS */}
-          <div className="mt-[38px] grid grid-cols-1 gap-[22px] min-[651px]:grid-cols-2 min-[951px]:mx-auto min-[951px]:w-[92%] min-[951px]:max-w-[760px]">
+          <div className="mt-[38px] grid grid-cols-1 gap-[22px] min-[651px]:grid-cols-2 min-[951px]:mx-auto min-[951px]:w-[92%] min-[951px]:max-w-[900px]">
             <div
               className="
                 group flex gap-[14px] rounded-[12px] border
@@ -210,52 +257,6 @@ const About = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* IMAGEN */}
-        <div className="order-none flex justify-center min-[951px]:order-none">
-          <div
-            className="
-              relative w-full max-w-[470px] rounded-[20px]
-              border border-[rgba(212,175,55,0.75)]
-              bg-[#100b17] p-2
-              shadow-[0_0_12px_rgba(212,175,55,0.12),0_20px_55px_rgba(0,0,0,0.55)]
-              before:pointer-events-none
-              before:absolute before:-inset-[6px]
-              before:rounded-[26px]
-              before:border
-              before:border-[rgba(168,117,201,0.22)]
-              before:content-['']
-            "
-          >
-            <img
-              src={sobrenido}
-              alt="El Nido del Caos"
-              className="block h-[370px] w-full rounded-[14px] object-cover sm:h-[560px]"
-            />
-
-            {/* TEXTO SOBRE IMAGEN */}
-            <div
-              className="
-                absolute bottom-[25px] left-[25px]
-                flex flex-col gap-[5px]
-                rounded-r-[8px]
-                border-l-2 border-[#d4af37]
-                bg-[rgba(8,6,13,0.78)]
-                px-[18px] py-[14px]
-                backdrop-blur-[6px]
-              "
-            >
-              <span className="text-[13px] font-semibold tracking-[2px] text-[#d4af37]">
-                EL NIDO DEL CAOS
-              </span>
-
-              <small className="text-[12px] text-[#c0b9c7]">
-                Magia · Brujería · Rituales
-              </small>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* ANIMACIONES */}
