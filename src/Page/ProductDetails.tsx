@@ -44,6 +44,19 @@ const ProductDetail = () => {
     }
   }, [slug]);
 
+  const scrollToCategory = (categoryId: string) => {
+    const element = document.getElementById(categoryId);
+
+    if (!element) {
+      return;
+    }
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)]">
@@ -270,21 +283,33 @@ if (!variantes?.length && data.price != null) {
 
             <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-center sm:gap-6">
               <Link
-                to="/#rituales"
+                to="#rituales"
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToCategory("rituales");
+                }}
                 className="font-Newsreader text-[16px] tracking-[1px] text-[#d4af37] transition-opacity duration-300 hover:opacity-70 sm:text-[17px]"
               >
                 ✦ RITUALES
               </Link>
 
               <Link
-                to="/#tarot-oraculos"
+                to="#tarot-oraculos"
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToCategory("tarot-oraculos");
+                }}
                 className="font-Newsreader text-[16px] tracking-[1px] text-[#d4af37] transition-opacity duration-300 hover:opacity-70 sm:text-[17px]"
               >
                 ✦ TAROT &amp; ORÁCULOS
               </Link>
 
               <Link
-                to="/#limpiezas-energeticas-diagnosticos"
+                to="#limpiezas-energeticas-diagnosticos"
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToCategory("limpiezas-energeticas-diagnosticos");
+                }}
                 className="font-Newsreader text-[16px] tracking-[1px] text-[#d4af37] transition-opacity duration-300 hover:opacity-70 sm:text-[17px]"
               >
                 ✦ LIMPIEZAS Y DIAGNÓSTICOS
