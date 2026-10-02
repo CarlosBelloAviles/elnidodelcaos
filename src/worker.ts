@@ -134,8 +134,7 @@ ${urls.join("\n")}
           new Response("Error al generar sitemap.", {
             status: 500,
             headers: {
-              "Content-Type":
-                "text/plain; charset=UTF-8",
+              "Content-Type": "text/plain; charset=UTF-8",
             },
           }),
         );
@@ -191,10 +190,8 @@ ${urls.join("\n")}
                 `${product.name} | Nido del Caos`;
 
               const description =
-                product.slug === "tarot-predictivo"
-                  ? "Tarot Predictivo en Nido del Caos."
-                  : product.description?.trim() ||
-                    "Servicio disponible en Nido del Caos.";
+                product.description?.trim() ||
+                "Servicio disponible en Nido del Caos.";
 
               const canonical =
                 `https://elnidodelcaos.cl/servicios/${encodeURIComponent(
