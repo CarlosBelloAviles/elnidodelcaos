@@ -113,6 +113,22 @@ const Home = () => {
         <div className="pt-[60px]">
           <Header />
 
+          {/* DIVISOR ORNAMENTAL CIRCULAR */}
+          <div
+            aria-hidden="true"
+            className="
+              relative -mt-px flex h-[34px] w-full items-center justify-center
+              overflow-hidden bg-[#08060d]
+              before:absolute before:inset-x-0 before:top-0 before:h-[20px]
+              before:bg-[linear-gradient(to_bottom,rgba(8,6,13,0),#08060d)]
+              before:content-['']
+            "
+          >
+            <div className="absolute left-[8%] right-[8%] h-px bg-[linear-gradient(to_right,transparent,rgba(212,175,55,0.16),rgba(168,117,201,0.24),transparent)] sm:left-[12%] sm:right-[12%]" />
+
+            <div className="relative z-[1] h-[18px] w-[18px] rounded-full border border-[rgba(212,175,55,0.42)] bg-[#0d0912] shadow-[0_0_16px_rgba(168,117,201,0.16),0_0_10px_rgba(212,175,55,0.08)]" />
+          </div>
+
           <About />
 
           <Features />
