@@ -113,20 +113,38 @@ const Home = () => {
         <div className="pt-[60px]">
           <Header />
 
-          {/* DIVISOR ORNAMENTAL CIRCULAR */}
+          {/* TRANSICIÓN ATMOSFÉRICA */}
           <div
             aria-hidden="true"
             className="
-              relative -mt-px flex h-[34px] w-full items-center justify-center
-              overflow-hidden bg-[#08060d]
-              before:absolute before:inset-x-0 before:top-0 before:h-[20px]
-              before:bg-[linear-gradient(to_bottom,rgba(8,6,13,0),#08060d)]
-              before:content-['']
+              relative -mt-px h-[58px] w-full overflow-hidden
+              bg-[#08060d]
             "
           >
-            <div className="absolute left-[8%] right-[8%] h-px bg-[linear-gradient(to_right,transparent,rgba(212,175,55,0.16),rgba(168,117,201,0.24),transparent)] sm:left-[12%] sm:right-[12%]" />
+            <div
+              className="
+                absolute -top-[35px] left-1/2 h-[110px] w-[85%]
+                -translate-x-1/2 rounded-full
+                bg-[radial-gradient(ellipse_at_center,rgba(125,55,170,0.22),rgba(90,40,130,0.10)_38%,transparent_72%)]
+                blur-[22px]
+              "
+            />
 
-            <div className="relative z-[1] h-[18px] w-[18px] rounded-full border border-[rgba(212,175,55,0.42)] bg-[#0d0912] shadow-[0_0_16px_rgba(168,117,201,0.16),0_0_10px_rgba(212,175,55,0.08)]" />
+            <div
+              className="
+                absolute -top-[15px] left-1/2 h-[65px] w-[55%]
+                -translate-x-1/2 rounded-full
+                bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07),transparent_68%)]
+                blur-[18px]
+              "
+            />
+
+            <div
+              className="
+                absolute inset-x-0 bottom-0 h-[28px]
+                bg-[linear-gradient(to_bottom,transparent,#08060d)]
+              "
+            />
           </div>
 
           <About />
