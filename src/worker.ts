@@ -20,7 +20,6 @@ export default {
   ): Promise<Response> {
     const url = new URL(request.url);
 
-    // Fuerza todo el tráfico HTTP a HTTPS antes de procesar cualquier ruta.
     if (url.protocol === "http:") {
       url.protocol = "https:";
 
@@ -200,12 +199,29 @@ ${urls.join("\n")}
                   product.slug,
                 )}`;
 
-              const image = product.img_url
-                ? new URL(
-                    product.img_url,
-                    url.origin,
-                  ).toString()
-                : "https://elnidodelcaos.cl/seo_nido.png";
+              const isTarotPredictivo =
+                product.slug === "tarot-predictivo";
+
+              const image = isTarotPredictivo
+                ? "https://res.cloudinary.com/pnvel4tk/image/upload/v1790910844/nido/og/tarot-predictivo-og.webp"
+                : product.img_url
+                  ? new URL(
+                      product.img_url,
+                      url.origin,
+                    ).toString()
+                  : "https://elnidodelcaos.cl/seo_nido.png";
+
+              const imageType = isTarotPredictivo
+                ? "image/webp"
+                : "image/webp";
+
+              const imageWidth = isTarotPredictivo
+                ? "1200"
+                : undefined;
+
+              const imageHeight = isTarotPredictivo
+                ? "630"
+                : undefined;
 
               const cleanedHtml = html
                 .replace(
@@ -232,6 +248,20 @@ ${urls.join("\n")}
                   /<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi,
                   "",
                 );
+
+              const imageDimensions = imageWidth && imageHeight
+                ? `
+<meta
+  property="og:image:width"
+  content="${imageWidth}"
+>
+
+<meta
+  property="og:image:height"
+  content="${imageHeight}"
+>
+`
+                : "";
 
               const seoTags = `
 <title>${escapeHtml(title)}</title>
@@ -278,19 +308,9 @@ ${urls.join("\n")}
 
 <meta
   property="og:image:type"
-  content="image/webp"
+  content="${imageType}"
 >
-
-<meta
-  property="og:image:width"
-  content="1254"
->
-
-<meta
-  property="og:image:height"
-  content="1254"
->
-
+${imageDimensions}
 <meta
   property="og:image:alt"
   content="${escapeHtml(product.name)}"
