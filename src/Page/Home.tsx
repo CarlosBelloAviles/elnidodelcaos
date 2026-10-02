@@ -141,6 +141,25 @@ const Home = () => {
 
             <div
               className="
+                absolute left-[8%] right-[8%] top-1/2 h-px
+                -translate-y-1/2
+                bg-[linear-gradient(to_right,transparent,rgba(212,175,55,0.16),rgba(168,117,201,0.24),transparent)]
+                sm:left-[12%] sm:right-[12%]
+              "
+            />
+
+            <div
+              className="
+                absolute left-1/2 top-1/2 z-[1]
+                h-[18px] w-[18px] -translate-x-1/2 -translate-y-1/2
+                rounded-full border border-[rgba(212,175,55,0.42)]
+                bg-[#0d0912]
+                shadow-[0_0_16px_rgba(168,117,201,0.16),0_0_10px_rgba(212,175,55,0.08)]
+              "
+            />
+
+            <div
+              className="
                 absolute inset-x-0 bottom-0 h-[28px]
                 bg-[linear-gradient(to_bottom,transparent,#08060d)]
               "
