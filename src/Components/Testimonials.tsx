@@ -231,7 +231,7 @@ const Testimonials = () => {
 
                   sm:block
                   sm:w-[34%]
-                  sm:h-[420px]
+                  sm:h-[450px]
 
                   lg:w-[31%]
                   lg:h-auto
@@ -451,4 +451,3 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
-
