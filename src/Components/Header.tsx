@@ -128,20 +128,23 @@ const Header = () => {
             mt-4
             cursor-pointer
             border
-            border-[#c9a45c]
-            bg-[#c9a45c]/5
+            border-[#c9a45c]/75
+            bg-[#120d18]/70
             px-4
             py-2
             font-occult
             text-[0.6rem]
             uppercase
             tracking-[0.08em]
-            text-[#e4c878]
+            text-[#f0d28a]
+            shadow-[0_0_14px_rgba(212,175,55,0.12)]
+            backdrop-blur-[3px]
             transition-all
             duration-300
             hover:border-[#f0d28a]
-            hover:bg-[#c9a45c]/15
-            hover:text-[#f0d28a]
+            hover:bg-[#1a1220]/80
+            hover:text-[#ffe7a3]
+            hover:shadow-[0_0_18px_rgba(212,175,55,0.2)]
             sm:mt-7
             sm:px-6
             sm:py-3
