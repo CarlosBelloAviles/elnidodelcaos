@@ -277,6 +277,21 @@ ${urls.join("\n")}
 >
 
 <meta
+  property="og:image:type"
+  content="image/webp"
+>
+
+<meta
+  property="og:image:width"
+  content="1254"
+>
+
+<meta
+  property="og:image:height"
+  content="1254"
+>
+
+<meta
   property="og:image:alt"
   content="${escapeHtml(product.name)}"
 >
