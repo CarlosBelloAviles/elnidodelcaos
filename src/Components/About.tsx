@@ -80,21 +80,21 @@ const About = () => {
             </span>
           </h2>
 
-          <p className="mb-[14px] max-w-full font-Newsreader text-[16px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
+          <p className="mb-[14px] max-w-full font-Newsreader text-[18px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[19px] sm:leading-[1.85]">
             El Nido del Caos es un espacio dedicado a la práctica de la magia
             y la brujería, donde se ofrecen servicios y trabajos mágicos
             orientados a abordar distintas necesidades y aspectos de la vida de
             cada persona.
           </p>
 
-          <p className="mb-[14px] max-w-full font-Newsreader text-[16px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
+          <p className="mb-[14px] max-w-full font-Newsreader text-[18px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[19px] sm:leading-[1.85]">
             A través de rituales, trabajos mágicos, limpiezas energéticas,
             protección, volteos, aperturas de caminos, abundancia, amor y otras
             prácticas, se realizan trabajos orientados a necesidades concretas
             y situaciones particulares.
           </p>
 
-          <p className="mb-[14px] max-w-full font-Newsreader text-[16px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[17px] sm:leading-[1.85]">
+          <p className="mb-[14px] max-w-full font-Newsreader text-[18px] leading-[1.65] text-[#d8d5db] sm:mb-[18px] sm:max-w-[680px] sm:text-[19px] sm:leading-[1.85]">
             Cada trabajo parte de una comprensión particular de la situación y se adapta al propósito, contexto e intención de cada persona, considerando sus necesidades, circunstancias y aquello que busca transformar o trabajar en su camino.
 
           </p>
