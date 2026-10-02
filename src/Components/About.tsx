@@ -155,6 +155,7 @@ const About = () => {
                 border-[rgba(212,175,55,0.16)]
                 bg-[rgba(55,25,75,0.18)]
                 p-[18px]
+                min-[951px]:min-h-[180px]
                 transition-all duration-300 ease-in-out
                 hover:-translate-y-[3px]
                 hover:border-[rgba(212,175,55,0.45)]
@@ -181,6 +182,7 @@ const About = () => {
                 border-[rgba(212,175,55,0.16)]
                 bg-[rgba(55,25,75,0.18)]
                 p-[18px]
+                min-[951px]:min-h-[180px]
                 transition-all duration-300 ease-in-out
                 hover:-translate-y-[3px]
                 hover:border-[rgba(212,175,55,0.45)]
@@ -209,6 +211,7 @@ const About = () => {
                 border-[rgba(212,175,55,0.16)]
                 bg-[rgba(55,25,75,0.18)]
                 p-[18px]
+                min-[951px]:min-h-[180px]
                 transition-all duration-300 ease-in-out
                 hover:-translate-y-[3px]
                 hover:border-[rgba(212,175,55,0.45)]
@@ -236,6 +239,7 @@ const About = () => {
                 border-[rgba(212,175,55,0.16)]
                 bg-[rgba(55,25,75,0.18)]
                 p-[18px]
+                min-[951px]:min-h-[180px]
                 transition-all duration-300 ease-in-out
                 hover:-translate-y-[3px]
                 hover:border-[rgba(212,175,55,0.45)]
