@@ -152,9 +152,20 @@ const Home = () => {
               className="
                 absolute left-1/2 top-1/2 z-[1]
                 h-[18px] w-[18px] -translate-x-1/2 -translate-y-1/2
-                rounded-full border border-[rgba(212,175,55,0.42)]
+                rounded-full border border-[rgba(212,175,55,0.55)]
                 bg-[#0d0912]
-                shadow-[0_0_16px_rgba(168,117,201,0.16),0_0_10px_rgba(212,175,55,0.08)]
+                shadow-[0_0_16px_rgba(168,117,201,0.16),0_0_10px_rgba(212,175,55,0.1)]
+                after:absolute after:-inset-[6px]
+                after:rounded-full
+                after:border after:border-[rgba(212,175,55,0.28)]
+                after:content-['']
+                before:absolute before:-inset-[9px]
+                before:rounded-full
+                before:border-[3px]
+                before:border-[rgba(212,175,55,0.38)]
+                before:[mask-image:repeating-conic-gradient(from_0deg,black_0deg_10deg,transparent_10deg_20deg)]
+                before:[-webkit-mask-image:repeating-conic-gradient(from_0deg,black_0deg_10deg,transparent_10deg_20deg)]
+                before:content-['']
               "
             />
 
