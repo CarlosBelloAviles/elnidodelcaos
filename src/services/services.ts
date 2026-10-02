@@ -118,9 +118,7 @@ export const getRelatedProducts = async (
     `)
     .eq("category_id", categoryId)
     .eq("show_on_home", true)
-    .neq("slug", currentSlug)
-    .order("name", { ascending: true })
-    );
+    .neq("slug", currentSlug);
 
   if (error) {
     console.error("Error al obtener servicios relacionados:", error);
