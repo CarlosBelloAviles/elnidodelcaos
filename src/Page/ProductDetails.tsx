@@ -44,19 +44,6 @@ const ProductDetail = () => {
     }
   }, [slug]);
 
-  const scrollToCategory = (categoryId: string) => {
-    const element = document.getElementById(categoryId);
-
-    if (!element) {
-      return;
-    }
-
-    element.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
-
   if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)]">
