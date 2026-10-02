@@ -66,18 +66,18 @@ const Home = () => {
       return true;
     };
 
-    const timer = setTimeout(() => {
-      if (scrollToElement()) {
-        window.history.replaceState(
-          {},
-          document.title,
-          "/",
-        );
+    let attempts = 0;
+
+    const timer = window.setInterval(() => {
+      attempts += 1;
+
+      if (scrollToElement() || attempts >= 50) {
+        window.clearInterval(timer);
       }
-    }, 150);
+    }, 100);
 
     return () => {
-      clearTimeout(timer);
+      window.clearInterval(timer);
     };
   }, [location.state]);
 
