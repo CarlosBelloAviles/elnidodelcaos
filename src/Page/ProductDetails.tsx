@@ -283,33 +283,24 @@ if (!variantes?.length && data.price != null) {
 
             <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-center sm:gap-6">
               <Link
-                to="#rituales"
-                onClick={(event) => {
-                  event.preventDefault();
-                  scrollToCategory("rituales");
-                }}
+                to="/"
+                state={{ scrollTo: "rituales" }}
                 className="font-Newsreader text-[16px] tracking-[1px] text-[#d4af37] transition-opacity duration-300 hover:opacity-70 sm:text-[17px]"
               >
                 ✦ RITUALES
               </Link>
 
               <Link
-                to="#tarot-oraculos"
-                onClick={(event) => {
-                  event.preventDefault();
-                  scrollToCategory("tarot-oraculos");
-                }}
+                to="/"
+                state={{ scrollTo: "tarot-oraculos" }}
                 className="font-Newsreader text-[16px] tracking-[1px] text-[#d4af37] transition-opacity duration-300 hover:opacity-70 sm:text-[17px]"
               >
                 ✦ TAROT &amp; ORÁCULOS
               </Link>
 
               <Link
-                to="#limpiezas-energeticas-diagnosticos"
-                onClick={(event) => {
-                  event.preventDefault();
-                  scrollToCategory("limpiezas-energeticas-diagnosticos");
-                }}
+                to="/"
+                state={{ scrollTo: "limpiezas-energeticas-diagnosticos" }}
                 className="font-Newsreader text-[16px] tracking-[1px] text-[#d4af37] transition-opacity duration-300 hover:opacity-70 sm:text-[17px]"
               >
                 ✦ LIMPIEZAS Y DIAGNÓSTICOS
@@ -318,7 +309,8 @@ if (!variantes?.length && data.price != null) {
           </section>
 
           <Link
-            to="/#servicios"
+            to="/"
+            state={{ scrollTo: "servicios" }}
             className="mx-auto mt-8 inline-flex w-fit items-center justify-center rounded-[8px] border border-[rgba(212,175,55,0.5)] px-6 py-3 font-Newsreader text-[17px] tracking-[1px] text-[#d4af37] transition-all duration-300 hover:border-[rgba(212,175,55,0.8)] hover:bg-[rgba(212,175,55,0.08)] sm:mt-10 sm:px-8 sm:text-[18px]"
           >
             Explorar nuestros servicios
