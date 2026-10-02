@@ -25,6 +25,10 @@ const Services = lazy(
   () => import("../Components/Services"),
 );
 
+const HowItWorks = lazy(
+  () => import("../Components/HowItWorks"),
+);
+
 const Testimonials = lazy(
   () => import("../Components/Testimonials"),
 );
@@ -116,6 +120,8 @@ const Home = () => {
           <Destacados />
 
           <Services />
+
+          <HowItWorks />
 
           <Testimonials />
 
