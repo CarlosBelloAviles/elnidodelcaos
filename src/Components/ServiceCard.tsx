@@ -88,7 +88,7 @@ const ServiceCard = ({ producto }: ServiceCardProps) => {
       className="
         mb-3
         font-PoiretOne
-        text-[13px]
+        text-[14px]
         leading-[1.35]
         text-[rgb(245,222,158)]
         sm:mb-[10px]
