@@ -74,7 +74,7 @@ const Footer = () => {
               <li>
                 <button
                   type="button"
-                  onClick={() => scrollToSection("servicios")}
+                  onClick={() => scrollToSection("sobre-mi")}
                   className="transition-colors cursor-pointer hover:text-[#d4af37]"
                 >
                   El Nido
@@ -89,6 +89,17 @@ const Footer = () => {
                   className="transition-colors cursor-pointer hover:text-[#d4af37]"
                 >
                   Servicios
+                </button>
+              </li>
+
+              {/* CÓMO FUNCIONA */}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("como-funciona")}
+                  className="transition-colors cursor-pointer hover:text-[#d4af37]"
+                >
+                  Cómo funciona
                 </button>
               </li>
 
