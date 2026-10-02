@@ -165,11 +165,11 @@ const About = () => {
               <span className="shrink-0 text-[18px] text-[#d4af37]">✦</span>
 
               <div>
-                <h3 className="mb-[6px] font-serif text-[17px] font-medium text-[#e6d7b8]">
+                <h3 className="mb-[6px] font-serif text-[19px] font-medium text-[#e6d7b8] min-[951px]:text-[19px]">
                   Rituales personalizados
                 </h3>
 
-                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1] min-[951px]:text-[16px] min-[951px]:leading-[1.7]">
                   Rituales y trabajos mágicos diseñados de forma personalizada según tu propósito, intención y situación particular, adaptando cada trabajo a las necesidades de cada persona.
 
                 </p>
@@ -192,11 +192,11 @@ const About = () => {
               <span className="shrink-0 text-[18px] text-[#d4af37]">✦</span>
 
               <div>
-                <h3 className="mb-[6px] font-serif text-[17px] font-medium text-[#e6d7b8]">
+                <h3 className="mb-[6px] font-serif text-[19px] font-medium text-[#e6d7b8] min-[951px]:text-[19px]">
                   Limpieza profunda de magia negra
                 </h3>
 
-                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1] min-[951px]:text-[16px] min-[951px]:leading-[1.7]">
                   Trabajos profundos destinados a limpiar y deshacer
                   influencias, cargas y energías asociadas a trabajos de magia
                   negra, bloqueos o situaciones que afectan tu bienestar y tu
@@ -221,11 +221,11 @@ const About = () => {
               <span className="shrink-0 text-[18px] text-[#d4af37]">✦</span>
 
               <div>
-                <h3 className="mb-[6px] font-serif text-[17px] font-medium text-[#e6d7b8]">
+                <h3 className="mb-[6px] font-serif text-[19px] font-medium text-[#e6d7b8] min-[951px]:text-[19px]">
                   Limpieza y protección
                 </h3>
 
-                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1] min-[951px]:text-[16px] min-[951px]:leading-[1.7]">
                   Trabajos destinados a limpiar, proteger y armonizar tu
                   energía y tus espacios, ayudando a mantener un entorno más
                   equilibrado y protegido.
@@ -249,11 +249,11 @@ const About = () => {
               <span className="shrink-0 text-[18px] text-[#d4af37]">✦</span>
 
               <div>
-                <h3 className="mb-[6px] font-serif text-[17px] font-medium text-[#e6d7b8]">
+                <h3 className="mb-[6px] font-serif text-[19px] font-medium text-[#e6d7b8] min-[951px]:text-[19px]">
                   Lecturas y orientación
                 </h3>
 
-                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1]">
+                <p className="m-0 font-Newsreader text-[14px] leading-[1.6] text-[#c9c5d1] min-[951px]:text-[16px] min-[951px]:leading-[1.7]">
                   Tarot y oráculos para explorar situaciones, tendencias y
                   posibles caminos, aportando claridad y orientación para
                   comprender mejor aquello que estás viviendo.
