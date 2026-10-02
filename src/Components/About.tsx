@@ -101,7 +101,7 @@ const About = () => {
           </p>
 
           {/* SERVICIOS */}
-          <div className="mt-[38px] grid grid-cols-1 gap-[22px] min-[651px]:grid-cols-2">
+          <div className="mt-[38px] grid grid-cols-1 gap-[22px] min-[651px]:grid-cols-2 min-[951px]:mx-auto min-[951px]:w-[92%] min-[951px]:max-w-[760px]">
             <div
               className="
                 group flex gap-[14px] rounded-[12px] border
