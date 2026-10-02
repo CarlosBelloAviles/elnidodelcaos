@@ -151,7 +151,7 @@ if (!variantes?.length && data.price != null) {
         return (
           <p
             key={index}
-            className="mb-2 pl-4 text-[15px] leading-[1.7] text-[#d8d0df] sm:text-[16px] md:text-[17px]"
+            className="mb-2 pl-4 text-[16px] leading-[1.7] text-[#d8d0df] sm:text-[17px] md:text-[18px]"
           >
             {texto}
           </p>
@@ -161,7 +161,7 @@ if (!variantes?.length && data.price != null) {
       return (
         <p
           key={index}
-          className="mb-4 text-[15px] leading-[1.7] text-[#d8d0df] sm:text-[16px] md:text-[17px] md:leading-[1.8]"
+          className="mb-4 text-[16px] leading-[1.7] text-[#d8d0df] sm:text-[17px] md:text-[18px] md:leading-[1.8]"
         >
           {texto}
         </p>
