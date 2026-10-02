@@ -138,6 +138,14 @@ const Navbar = () => {
 
           <button
             type="button"
+            onClick={() => scrollToSection("como-funciona")}
+            className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
+          >
+            Cómo funciona
+          </button>
+
+          <button
+            type="button"
             onClick={() => scrollToSection("testimonios")}
             className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
           >
@@ -208,6 +216,14 @@ const Navbar = () => {
               className="cursor-pointer border-b border-[rgba(212,175,55,0.15)] px-4 py-3 text-center text-[16px] text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
             >
               Servicios
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollToSection("como-funciona")}
+              className="cursor-pointer border-b border-[rgba(212,175,55,0.15)] px-4 py-3 text-center text-[16px] text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
+            >
+              Cómo funciona
             </button>
 
             <button
