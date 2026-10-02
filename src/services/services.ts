@@ -44,6 +44,7 @@ export const getProductBySlug = async (
     .from("Products")
     .select(`
       id,
+      category_id,
       name,
       description,
       price,
@@ -97,3 +98,34 @@ export const getTestimonials = async (): Promise<Testimonial[]> => {
   return data as Testimonial[];
 };
 
+
+
+export const getRelatedProducts = async (
+  categoryId: string,
+  currentSlug: string,
+): Promise<Product[]> => {
+  const { data, error } = await supabase
+    .from("Products")
+    .select(`
+      id,
+      name,
+      description,
+      price,
+      Currency,
+      img_url,
+      slug,
+      show_on_home
+    `)
+    .eq("category_id", categoryId)
+    .eq("show_on_home", true)
+    .neq("slug", currentSlug)
+    .order("name", { ascending: true })
+    .limit(3);
+
+  if (error) {
+    console.error("Error al obtener servicios relacionados:", error);
+    return [];
+  }
+
+  return data as Product[];
+};
