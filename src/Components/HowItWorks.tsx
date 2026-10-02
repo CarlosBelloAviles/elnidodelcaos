@@ -1,17 +1,17 @@
 const HowItWorks = () => {
   const steps = [
     {
-      number: "01",
+      number: "①",
       title: "CUÉNTANOS TU SITUACIÓN",
       text: "Explícanos brevemente qué estás viviendo, qué quieres trabajar o qué buscas comprender.",
     },
     {
-      number: "02",
+      number: "②",
       title: "ELEGIMOS EL TRABAJO",
       text: "Revisamos tu situación y vemos qué servicio puede corresponder mejor al propósito que planteas.",
     },
     {
-      number: "03",
+      number: "③",
       title: "REALIZAMOS EL TRABAJO",
       text: "Una vez coordinado el servicio, se realiza el trabajo correspondiente y se te informa sobre el proceso y sus resultados.",
     },
@@ -48,7 +48,7 @@ const HowItWorks = () => {
           {steps.map((step) => (
             <article key={step.number} className="text-center">
               <div className="mb-4 flex items-center justify-center">
-                <span className="font-serif text-[14px] tracking-[3px] text-[#b8944a]">
+                <span className="font-serif text-[18px] tracking-[1px] text-[#b8944a]">
                   {step.number}
                 </span>
               </div>
