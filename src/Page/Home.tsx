@@ -66,6 +66,14 @@ const Home = () => {
       return true;
     };
 
+    const clearScrollState = () => {
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname,
+      );
+    };
+
     let attempts = 0;
 
     const timer = window.setInterval(() => {
@@ -73,6 +81,7 @@ const Home = () => {
 
       if (scrollToElement() || attempts >= 50) {
         window.clearInterval(timer);
+        clearScrollState();
       }
     }, 100);
 
