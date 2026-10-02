@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { getProductBySlug } from "../services/services";
+import { getProductBySlug, getRelatedProducts } from "../services/services";
 
 import ServiceContact from "../Components/ServiceContact";
 import Variants from "../Components/Variants";
@@ -19,6 +19,13 @@ const ProductDetail = () => {
     queryKey: ["product", slug],
     queryFn: () => getProductBySlug(slug!),
     enabled: !!slug,
+  });
+
+  const relatedQuery = useQuery({
+    queryKey: ["related-products", data?.category_id, data?.slug],
+    queryFn: () =>
+      getRelatedProducts(data!.category_id!, data!.slug),
+    enabled: !!data?.category_id && !!data?.slug,
   });
 
   useEffect(() => {
@@ -220,6 +227,40 @@ if (!variantes?.length && data.price != null) {
           <ServiceContact
             serviceName={data.name}
           />
+
+          {relatedQuery.data && relatedQuery.data.length > 0 && (
+            <section className="mt-10 border-t border-[rgba(212,175,55,0.25)] pt-8 md:mt-12 md:pt-[30px]">
+              <h2 className="mb-6 text-center text-[24px] font-AbrilFatface text-[#d4af37] [text-shadow:0_0_10px_rgba(212,175,55,0.25)] sm:text-[27px] md:mb-8 md:text-[30px]">
+                También podría interesarte
+              </h2>
+
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+                {relatedQuery.data.map((service) => (
+                  <Link
+                    key={service.id}
+                    to={`/servicios/${service.slug}`}
+                    className="group overflow-hidden rounded-[12px] border border-[rgba(212,175,55,0.35)] bg-[rgba(20,10,30,0.7)] shadow-[0_0_20px_rgba(120,60,180,0.15)] transition-all duration-300 hover:border-[rgba(212,175,55,0.7)] hover:shadow-[0_0_25px_rgba(120,60,180,0.25)]"
+                  >
+                    <img
+                      src={service.img_url}
+                      alt={`${service.name} - Nido del Caos`}
+                      className="h-[180px] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03] sm:h-[150px] md:h-[145px]"
+                    />
+
+                    <div className="p-4">
+                      <h3 className="mb-2 text-[18px] font-AbrilFatface leading-tight text-[#d4af37]">
+                        {service.name.trim()}
+                      </h3>
+
+                      <p className="text-[14px] leading-[1.6] text-[#d8d0df]">
+                        {service.description?.trim()}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
         </div>
       </div>
