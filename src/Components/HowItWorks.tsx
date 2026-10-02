@@ -19,6 +19,7 @@ const HowItWorks = () => {
 
   return (
     <section
+      id="como-funciona"
       className="
         w-full
         border-t border-[rgba(212,175,55,0.18)]
