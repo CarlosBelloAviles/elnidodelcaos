@@ -11,6 +11,7 @@ export type ProductDetails = {
 
 export type Product = {
   id: string;
+  category_id?: string | null;
   name: string;
   description: string;
   price: number;
