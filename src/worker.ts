@@ -191,8 +191,10 @@ ${urls.join("\n")}
                 `${product.name} | Nido del Caos`;
 
               const description =
-                product.description?.trim() ||
-                "Servicio disponible en Nido del Caos.";
+                product.slug === "tarot-predictivo"
+                  ? "Tarot Predictivo en Nido del Caos."
+                  : product.description?.trim() ||
+                    "Servicio disponible en Nido del Caos.";
 
               const canonical =
                 `https://elnidodelcaos.cl/servicios/${encodeURIComponent(
