@@ -37,7 +37,8 @@ export default {
         new Response(
           `User-agent: *
 Allow: /
-Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
+Sitemap: https://elnidodelcaos.cl/sitemap.xml
+`,
           {
             headers: {
               "Content-Type": "text/plain; charset=UTF-8",
@@ -83,6 +84,17 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
             slug: string | null;
           }[];
 
+        const serviceSlugs = [
+          ...new Set(
+            products
+              .map((product) => product.slug?.trim())
+              .filter(
+                (slug): slug is string =>
+                  Boolean(slug),
+              ),
+          ),
+        ];
+
         const urls = [
           `
         <url>
@@ -90,25 +102,18 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml`,
         </url>
       `,
 
-          ...products
-            .filter(
-              (
-                product,
-              ): product is { slug: string } =>
-                Boolean(product.slug),
-            )
-            .map((product) => {
-              const encodedSlug =
-                encodeURIComponent(product.slug);
+          ...serviceSlugs.map((slug) => {
+            const encodedSlug =
+              encodeURIComponent(slug);
 
-              return `
+            return `
         <url>
           <loc>https://elnidodelcaos.cl/servicios/${escapeXml(
             encodedSlug,
           )}</loc>
         </url>
       `;
-            }),
+          }),
         ];
 
         const sitemap =
