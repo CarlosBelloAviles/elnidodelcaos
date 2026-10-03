@@ -42,7 +42,8 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml
           {
             headers: {
               "Content-Type": "text/plain; charset=UTF-8",
-              "Cache-Control": "public, max-age=3600",
+              "Cache-Control": "no-store",
+              "Content-Disposition": "inline",
             },
           },
         ),
@@ -127,8 +128,8 @@ ${urls.join("\n")}
             headers: {
               "Content-Type":
                 "application/xml; charset=UTF-8",
-              "Cache-Control":
-                "public, max-age=3600",
+              "Cache-Control": "no-store",
+              "Content-Disposition": "inline",
             },
           }),
         );
