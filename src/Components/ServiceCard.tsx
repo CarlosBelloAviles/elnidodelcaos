@@ -1,15 +1,13 @@
 import { CircleChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type {  ServiceCardProps } from "../types";
 
 
 
 const ServiceCard = ({ producto }: ServiceCardProps) => {
-  const navigate = useNavigate();
-
   return (
-    <div
-  onClick={() => navigate(`/servicios/${producto.slug}`)}
+    <Link
+  to={`/servicios/${producto.slug}`}
   className="
     flex
     w-full
@@ -123,7 +121,7 @@ const ServiceCard = ({ producto }: ServiceCardProps) => {
       />
     </div>
   </div>
-</div>
+</Link>
   );
 };
 
