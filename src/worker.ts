@@ -55,7 +55,7 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml
         const supabase = getSupabaseConfig(env);
 
         const response = await fetch(
-          `${supabase.url}/rest/v1/Products?select=slug&slug=not.is.null`,
+          `${supabase.url}/rest/v1/Products?select=slug&slug=not.is.null&show_on_home=eq.true`,
           {
             headers: supabase.headers,
           },
@@ -159,7 +159,7 @@ ${urls.join("\n")}
           const productResponse = await fetch(
             `${supabase.url}/rest/v1/Products?select=name,description,slug,img_url&slug=eq.${encodeURIComponent(
               slug,
-            )}&limit=1`,
+            )}&show_on_home=eq.true&limit=1`,
             {
               headers: supabase.headers,
             },
