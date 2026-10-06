@@ -204,29 +204,14 @@ ${urls.join("\n")}
                   product.slug,
                 )}`;
 
-              const isTarotPredictivo =
-                product.slug === "tarot-predictivo";
+              const image = product.img_url
+                ? new URL(
+                    product.img_url,
+                    url.origin,
+                  ).toString()
+                : "https://elnidodelcaos.cl/seo_nido.png";
 
-              const image = isTarotPredictivo
-                ? "https://res.cloudinary.com/pnvel4tk/image/upload/v1790910844/nido/og/tarot-predictivo-og.webp"
-                : product.img_url
-                  ? new URL(
-                      product.img_url,
-                      url.origin,
-                    ).toString()
-                  : "https://elnidodelcaos.cl/seo_nido.png";
-
-              const imageType = isTarotPredictivo
-                ? "image/webp"
-                : "image/webp";
-
-              const imageWidth = isTarotPredictivo
-                ? "1200"
-                : undefined;
-
-              const imageHeight = isTarotPredictivo
-                ? "630"
-                : undefined;
+              const imageType = "image/webp";
 
               const cleanedHtml = html
                 .replace(
