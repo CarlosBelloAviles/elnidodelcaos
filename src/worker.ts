@@ -239,19 +239,7 @@ ${urls.join("\n")}
                   "",
                 );
 
-              const imageDimensions = imageWidth && imageHeight
-                ? `
-<meta
-  property="og:image:width"
-  content="${imageWidth}"
->
-
-<meta
-  property="og:image:height"
-  content="${imageHeight}"
->
-`
-                : "";
+              const imageDimensions = "";
 
               const seoTags = `
 <title>${escapeHtml(title)}</title>
