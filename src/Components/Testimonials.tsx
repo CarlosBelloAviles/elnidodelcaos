@@ -396,9 +396,13 @@ const Testimonials = () => {
           El primer paso es decidir cambiar.
         </p>
 
-        <button
+        <a
+          href={`https://wa.me/${import.meta.env.VITE_WHATSSAP}`}
+          target="_blank"
+          rel="noopener noreferrer"
           className="
             mt-5
+            inline-block
             cursor-pointer
             rounded-[7px]
             border
@@ -417,7 +421,7 @@ const Testimonials = () => {
           "
         >
           WhatsApp
-        </button>
+        </a>
       </div>
     </section>
   );
