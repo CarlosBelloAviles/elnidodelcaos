@@ -1,37 +1,15 @@
-import { lazy, Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import SEO from "../Components/SEO";
-
-const Header = lazy(() => import("../Components/Header"));
-
-const WhatsAppButton = lazy(
-  () => import("../Components/WhattsAppButton"),
-);
-
-const About = lazy(
-  () => import("../Components/About"),
-);
-
-const Features = lazy(
-  () => import("../Components/Features"),
-);
-
-const Destacados = lazy(
-  () => import("../Components/Destacados"),
-);
-
-const Services = lazy(
-  () => import("../Components/Services"),
-);
-
-const HowItWorks = lazy(
-  () => import("../Components/HowItWorks"),
-);
-
-const Testimonials = lazy(
-  () => import("../Components/Testimonials"),
-);
+import Header from "../Components/Header";
+import WhatsAppButton from "../Components/WhattsAppButton";
+import About from "../Components/About";
+import Features from "../Components/Features";
+import Destacados from "../Components/Destacados";
+import Services from "../Components/Services";
+import HowItWorks from "../Components/HowItWorks";
+import Testimonials from "../Components/Testimonials";
 
 const Home = () => {
   const location = useLocation();
@@ -103,14 +81,7 @@ const Home = () => {
   image="https://elnidodelcaos.cl/seo_nido.png"
 />
 
-      <Suspense
-        fallback={
-          <div className="flex min-h-screen items-center justify-center bg-[rgb(31,31,39)]">
-            <div className="loader"></div>
-          </div>
-        }
-      >
-        <div className="pt-[60px]">
+      <div className="pt-[60px]">
           <Header />
 
           {/* TRANSICIÓN ATMOSFÉRICA */}
@@ -190,8 +161,7 @@ const Home = () => {
           <Testimonials />
 
           <WhatsAppButton />
-        </div>
-      </Suspense>
+      </div>
     </>
   );
 };
