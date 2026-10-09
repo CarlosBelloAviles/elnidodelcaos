@@ -32,7 +32,13 @@ window.addEventListener("vite:preloadError", (event) => {
       String(Date.now()),
     );
   } catch {
-    // If sessionStorage is unavailable, still attempt one recovery reload.
+    // Without sessionStorage, do not reload automatically: a persistent
+    // import failure could otherwise cause an endless reload loop.
+    console.error(
+      "No se pudo comprobar el límite de recargas automáticas.",
+      event.payload,
+    );
+    return;
   }
 
   window.location.reload();
