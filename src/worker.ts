@@ -339,9 +339,11 @@ ${imageDimensions}
                 "text/html; charset=UTF-8",
               );
 
+              // HTML must be revalidated so clients do not keep references
+              // to hashed JavaScript chunks from an older deployment.
               headers.set(
                 "Cache-Control",
-                "public, max-age=300, must-revalidate",
+                "no-cache, must-revalidate",
               );
 
               return withSecurityHeaders(
@@ -364,7 +366,29 @@ ${imageDimensions}
     const assetResponse =
       await env.ASSETS.fetch(request);
 
-    return withSecurityHeaders(assetResponse);
+    // Revalidate HTML documents after deployments; keep asset caching unchanged.
+    const responseHeaders = new Headers(assetResponse.headers);
+    const isHtmlDocument =
+      request.method === "GET" &&
+      (request.headers.get("accept")?.includes("text/html") ||
+        responseHeaders.get("content-type")?.includes("text/html"));
+
+    if (isHtmlDocument) {
+      responseHeaders.set(
+        "Cache-Control",
+        "no-cache, must-revalidate",
+      );
+    }
+
+    return withSecurityHeaders(
+      isHtmlDocument
+        ? new Response(assetResponse.body, {
+            status: assetResponse.status,
+            statusText: assetResponse.statusText,
+            headers: responseHeaders,
+          })
+        : assetResponse,
+    );
   },
 };
 
