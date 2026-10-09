@@ -13,12 +13,24 @@ function App() {
       <Navbar />
 
       <main className="flex flex-1 flex-col">
-        <ErrorBoundary>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/servicios/:slug" element={<ProductDetail />} />
-          </Routes>
-        </ErrorBoundary>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ErrorBoundary>
+                <Home />
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path="/servicios/:slug"
+            element={
+              <ErrorBoundary>
+                <ProductDetail />
+              </ErrorBoundary>
+            }
+          />
+        </Routes>
       </main>
 
       <Footer />
