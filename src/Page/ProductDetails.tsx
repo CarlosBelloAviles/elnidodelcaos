@@ -272,6 +272,14 @@ if (!variantes?.length && data.price != null) {
             Explorar nuestros servicios
           </Link>
 
+          <Link
+            to="/"
+            state={{ scrollTo: "testimonios" }}
+            className="mx-auto mt-3 inline-flex w-fit items-center justify-center rounded-[8px] border border-[rgba(212,175,55,0.65)] bg-[rgba(20,10,30,0.55)] px-5 py-3 text-center font-Newsreader text-[16px] tracking-[0.5px] text-[#f4df9b] transition-all duration-300 hover:border-[#d4af37] hover:bg-[rgba(212,175,55,0.08)] sm:px-7 sm:text-[17px]"
+          >
+            Ver recomendaciones de nuestros clientes
+          </Link>
+
           <section className="mt-10 border-t border-[rgba(212,175,55,0.25)] pt-8 md:mt-12 md:pt-[30px]">
             <h2 className="mb-4 text-center font-AbrilFatface text-[22px] text-[#d4af37] sm:text-[25px]">
               Conoce la experiencia de nuestros clientes
