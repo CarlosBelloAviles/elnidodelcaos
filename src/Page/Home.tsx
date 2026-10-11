@@ -151,12 +151,20 @@ const Home = () => {
           <div className="flex justify-center px-4 pb-8 pt-2 sm:pb-10">
             <button
               type="button"
-              onClick={() =>
-                document.getElementById("testimonios")?.scrollIntoView({
+              onClick={() => {
+                const section = document.getElementById("testimonios");
+                if (!section) return;
+
+                const navHeight =
+                  document.querySelector("nav")?.getBoundingClientRect().height ?? 0;
+                const sectionTop =
+                  section.getBoundingClientRect().top + window.scrollY;
+
+                window.scrollTo({
+                  top: sectionTop - navHeight,
                   behavior: "smooth",
-                  block: "start",
-                })
-              }
+                });
+              }}
               className="inline-flex items-center justify-center gap-2 rounded-[8px] border border-[rgba(212,175,55,0.65)] bg-[rgba(30,15,45,0.75)] px-5 py-3 text-center font-Newsreader text-[16px] tracking-[0.5px] text-[#f4df9b] shadow-[0_0_18px_rgba(120,60,180,0.15)] transition-all duration-300 hover:border-[#d4af37] hover:bg-[rgba(212,175,55,0.08)] sm:px-7 sm:text-[18px]"
             >
               Ver recomendaciones de clientes
