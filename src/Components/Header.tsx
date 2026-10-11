@@ -159,6 +159,60 @@ const Header = () => {
         >
           EXPLORAR SERVICIOS
         </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (location.pathname === "/") {
+              document.getElementById("testimonios")?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+              return;
+            }
+
+            navigate("/", {
+              state: {
+                scrollTo: "testimonios",
+              },
+            });
+          }}
+          className="
+            mt-3
+            ml-0
+            cursor-pointer
+            border
+            border-[#c9a45c]/75
+            bg-[#120d18]/70
+            px-4
+            py-2
+            font-occult
+            text-[0.6rem]
+            uppercase
+            tracking-[0.08em]
+            text-[#f0d28a]
+            shadow-[0_0_14px_rgba(212,175,55,0.12)]
+            backdrop-blur-[3px]
+            transition-all
+            duration-300
+            hover:border-[#f0d28a]
+            hover:bg-[#1a1220]/80
+            hover:text-[#ffe7a3]
+            hover:shadow-[0_0_18px_rgba(212,175,55,0.2)]
+            sm:ml-3
+            sm:mt-0
+            sm:px-6
+            sm:py-3
+            sm:text-xs
+            sm:tracking-[0.12em]
+            md:px-7
+            md:py-4
+            md:text-sm
+            md:tracking-[0.2em]
+          "
+        >
+          VER NUESTRAS RECOMENDACIONES
+        </button>
       </div>
     </header>
   );
