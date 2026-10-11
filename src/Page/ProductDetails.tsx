@@ -235,6 +235,16 @@ if (!variantes?.length && data.price != null) {
                 También podría interesarte
               </h2>
 
+              <div className="mb-6 flex justify-center">
+                <Link
+                  to="/"
+                  state={{ scrollTo: "testimonios" }}
+                  className="inline-flex items-center justify-center rounded-[8px] border border-[rgba(212,175,55,0.55)] px-5 py-2.5 text-center font-Newsreader text-[15px] tracking-[0.5px] text-[#f4df9b] transition-all duration-300 hover:border-[#d4af37] hover:bg-[rgba(212,175,55,0.08)] sm:text-[16px]"
+                >
+                  Ver recomendaciones de clientes
+                </Link>
+              </div>
+
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
                 {relatedQuery.data.map((service) => (
                   <Link
