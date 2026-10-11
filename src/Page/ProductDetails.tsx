@@ -275,7 +275,7 @@ if (!variantes?.length && data.price != null) {
           <Link
             to="/"
             state={{ scrollTo: "testimonios" }}
-            className="mx-auto mt-3 inline-flex w-fit items-center justify-center rounded-[8px] border border-[rgba(212,175,55,0.65)] bg-[rgba(20,10,30,0.55)] px-5 py-3 text-center font-Newsreader text-[16px] tracking-[0.5px] text-[#f4df9b] shadow-[0_0_18px_rgba(120,60,180,0.15)] transition-all duration-300 hover:border-[#d4af37] hover:bg-[rgba(212,175,55,0.08)] sm:px-7 sm:text-[17px]"
+            className="mx-auto mt-3 inline-flex w-full max-w-[440px] items-center justify-center rounded-[8px] border border-[#d4af37] bg-[rgba(212,175,55,0.10)] px-5 py-4 text-center font-Newsreader text-[17px] font-semibold tracking-[0.5px] text-[#f4df9b] shadow-[0_0_18px_rgba(212,175,55,0.12)] transition-all duration-300 hover:bg-[rgba(212,175,55,0.18)] sm:px-7 sm:text-[18px]"
           >
             Conoce la experiencia de nuestros clientes
           </Link>
