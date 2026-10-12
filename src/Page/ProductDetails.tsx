@@ -264,22 +264,6 @@ if (!variantes?.length && data.price != null) {
             </section>
           )}
 
-          <Link
-            to="/"
-            state={{ scrollTo: "servicios" }}
-            className="mx-auto mt-8 inline-flex w-fit items-center justify-center rounded-[8px] border border-[rgba(212,175,55,0.5)] px-6 py-3 font-Newsreader text-[17px] tracking-[1px] text-[#d4af37] transition-all duration-300 hover:border-[rgba(212,175,55,0.8)] hover:bg-[rgba(212,175,55,0.08)] sm:mt-10 sm:px-8 sm:text-[18px]"
-          >
-            Explorar nuestros servicios
-          </Link>
-
-          <Link
-            to="/"
-            state={{ scrollTo: "testimonios" }}
-            className="mx-auto mt-3 inline-flex w-full max-w-[440px] items-center justify-center rounded-[8px] border border-[#d4af37] bg-[rgba(212,175,55,0.10)] px-5 py-4 text-center font-Newsreader text-[17px] font-semibold tracking-[0.5px] text-[#f4df9b] shadow-[0_0_18px_rgba(212,175,55,0.12)] transition-all duration-300 hover:bg-[rgba(212,175,55,0.18)] sm:px-7 sm:text-[18px]"
-          >
-            Conoce la experiencia de nuestros clientes
-          </Link>
-
           <section className="mt-10 border-t border-[rgba(212,175,55,0.25)] pt-8 md:mt-12 md:pt-[30px]">
             <h2 className="mb-5 text-center font-Newsreader text-[20px] tracking-[1px] text-[#d8d0df] sm:text-[22px]">
               También puedes explorar
@@ -311,6 +295,24 @@ if (!variantes?.length && data.price != null) {
               </Link>
             </div>
           </section>
+
+          <Link
+            to="/"
+            state={{ scrollTo: "servicios" }}
+            className="mx-auto mt-8 inline-flex w-fit items-center justify-center rounded-[8px] border border-[rgba(212,175,55,0.5)] px-6 py-3 font-Newsreader text-[17px] tracking-[1px] text-[#d4af37] transition-all duration-300 hover:border-[rgba(212,175,55,0.8)] hover:bg-[rgba(212,175,55,0.08)] sm:mt-10 sm:px-8 sm:text-[18px]"
+          >
+            Explorar nuestros servicios
+          </Link>
+
+          <Link
+            to="/"
+            state={{ scrollTo: "testimonios" }}
+            className="mx-auto mt-3 inline-flex w-fit items-center justify-center rounded-[8px] border border-[rgba(212,175,55,0.5)] px-6 py-3 font-Newsreader text-[17px] tracking-[1px] text-[#d4af37] transition-all duration-300 hover:border-[rgba(212,175,55,0.8)] hover:bg-[rgba(212,175,55,0.08)] sm:px-8 sm:text-[18px]"
+          >
+            Conoce las experiencias de nuestros clientes
+          </Link>
+
+
 
 
 
