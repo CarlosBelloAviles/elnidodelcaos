@@ -10,7 +10,15 @@
     "run_worker_first": [
       "/robots.txt",
       "/sitemap.xml",
-      "/servicios/*"
+      "/servicios/*",
+      "/.git",
+      "/.git/*",
+      "/.svn",
+      "/.svn/*",
+      "/.hg",
+      "/.hg/*",
+      "/.env",
+      "/.env.*"
     ]
   }
 }
