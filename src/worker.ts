@@ -32,6 +32,39 @@ export default {
       });
     }
 
+    // Reject repository metadata and environment files before
+    // they can reach the SPA fallback in Cloudflare Assets.
+    let decodedPath = url.pathname.toLowerCase();
+
+    try {
+      decodedPath = decodeURIComponent(url.pathname).toLowerCase();
+    } catch {
+      return withSecurityHeaders(
+        new Response("Not Found", {
+          status: 404,
+          headers: {
+            "Content-Type": "text/plain; charset=UTF-8",
+            "Cache-Control": "no-store",
+          },
+        }),
+      );
+    }
+
+    const sensitivePath =
+      /(?:^|\/)\.(?:git|svn|hg)(?:\/|$)|(?:^|\/)\.env(?:\/|$|\.)/i;
+
+    if (sensitivePath.test(decodedPath)) {
+      return withSecurityHeaders(
+        new Response("Not Found", {
+          status: 404,
+          headers: {
+            "Content-Type": "text/plain; charset=UTF-8",
+            "Cache-Control": "no-store",
+          },
+        }),
+      );
+    }
+
     if (url.pathname === "/robots.txt") {
       return withSecurityHeaders(
         new Response(
