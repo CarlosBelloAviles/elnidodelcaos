@@ -180,6 +180,8 @@ ${urls.join("\n")}
       }
     }
 
+    let serviceLookupFailed = false;
+
     if (url.pathname.startsWith("/servicios/")) {
       const slug = decodeURIComponent(
         url.pathname.slice("/servicios/".length),
@@ -199,6 +201,7 @@ ${urls.join("\n")}
           );
 
           if (!productResponse.ok) {
+            serviceLookupFailed = true;
             const errorBody = await productResponse.text();
 
             console.error("Service SEO: Supabase request failed.", {
@@ -388,6 +391,7 @@ ${imageDimensions}
             }
           }
         } catch (error) {
+          serviceLookupFailed = true;
           console.error("Service SEO: unexpected error.", {
             slug,
             error,
@@ -401,10 +405,30 @@ ${imageDimensions}
 
     // Revalidate HTML documents after deployments; keep asset caching unchanged.
     const responseHeaders = new Headers(assetResponse.headers);
+
     const isHtmlDocument =
       request.method === "GET" &&
       (request.headers.get("accept")?.includes("text/html") ||
         responseHeaders.get("content-type")?.includes("text/html"));
+
+    // Unknown HTML routes must not be indexed as valid pages.
+    // Keep the homepage and preserve service pages if Supabase is unavailable.
+    if (
+      isHtmlDocument &&
+      url.pathname !== "/" &&
+      !serviceLookupFailed
+    ) {
+      responseHeaders.set("Cache-Control", "no-store");
+      responseHeaders.set("X-Robots-Tag", "noindex, nofollow");
+
+      return withSecurityHeaders(
+        new Response(assetResponse.body, {
+          status: 404,
+          statusText: "Not Found",
+          headers: responseHeaders,
+        }),
+      );
+    }
 
     if (isHtmlDocument) {
       responseHeaders.set(
