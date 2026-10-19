@@ -211,7 +211,7 @@ const Header = () => {
             md:tracking-[0.2em]
           "
         >
-          VER NUESTRAS RECOMENDACIONES
+          VER RECOMENDACIONES
         </button>
       </div>
     </header>
