@@ -6,9 +6,10 @@ interface ServiceContactProps {
 
 const ServiceContact = ({ serviceName }: ServiceContactProps) => {
   const phoneNumber = import.meta.env.VITE_WHATSSAP;
+  const serviceUrl = window.location.href;
 
   const message = encodeURIComponent(
-    `Hola, me interesa el servicio "${serviceName}". Me gustaría obtener más información.`
+    `Hola, me interesa el servicio "${serviceName}". Me gustaría obtener más información.\n\nEnlace del servicio: ${serviceUrl}`
   );
 
   return (
