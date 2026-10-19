@@ -114,11 +114,14 @@ const ServiceCard = ({ producto }: ServiceCardProps) => {
         {producto.Currency}
       </p>
 
-      <CircleChevronRight
-        color="#d4af37"
-        size={20}
-        className="shrink-0 sm:h-[23px] sm:w-[23px] md:h-[30px] md:w-[30px]"
-      />
+      <span className="inline-flex shrink-0 items-center gap-1.5 text-[12px] font-semibold text-[#d4af37] sm:text-[13px] md:text-[15px]">
+        Ver más
+        <CircleChevronRight
+          color="#d4af37"
+          size={20}
+          className="shrink-0 sm:h-[23px] sm:w-[23px] md:h-[30px] md:w-[30px]"
+        />
+      </span>
     </div>
   </div>
 </Link>
