@@ -228,7 +228,7 @@ const Navbar = () => {
 
             <button
               type="button"
-              onClick={() => { setMenuOpen(false); navigate("/blog"); }}
+              onClick={() => scrollToSection("el-grimorio")}
               className="cursor-pointer border-b border-[rgba(212,175,55,0.15)] px-4 py-3 text-center text-[16px] text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
             >
               El Grimorio
