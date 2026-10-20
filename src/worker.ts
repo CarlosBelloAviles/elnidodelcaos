@@ -129,12 +129,34 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml
           ),
         ];
 
+        const blogResponse = await fetch(
+          `${supabase.url}/rest/v1/BlogPosts?select=slug&status=eq.published&slug=not.is.null`,
+          { headers: supabase.headers },
+        );
+        if (!blogResponse.ok) {
+          console.error("Sitemap: blog query failed.", { status: blogResponse.status });
+        }
+        const blogPosts = blogResponse.ok
+          ? (await blogResponse.json() as { slug: string | null }[])
+          : [];
+        const blogSlugs = [...new Set(blogPosts.map((post) => post.slug?.trim()).filter((slug): slug is string => Boolean(slug)))];
+
         const urls = [
           `
         <url>
           <loc>https://elnidodelcaos.cl/</loc>
         </url>
       `,
+          `
+        <url>
+          <loc>https://elnidodelcaos.cl/blog</loc>
+        </url>
+      `,
+          ...blogSlugs.map((slug) => `
+        <url>
+          <loc>https://elnidodelcaos.cl/blog/${escapeXml(encodeURIComponent(slug))}</loc>
+        </url>
+      `),
 
           ...serviceSlugs.map((slug) => {
             const encodedSlug =
