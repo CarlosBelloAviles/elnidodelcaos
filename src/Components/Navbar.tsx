@@ -138,7 +138,7 @@ const Navbar = () => {
 
           <button
             type="button"
-            onClick={() => { setMenuOpen(false); navigate("/blog"); }}
+            onClick={() => scrollToSection("el-grimorio") }
             className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
           >
             El Grimorio
