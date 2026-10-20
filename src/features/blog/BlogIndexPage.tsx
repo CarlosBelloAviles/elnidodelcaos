@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import SEO from "../../Components/SEO";
 import {
   getBlogCategories,
+  getFeaturedBlogPosts,
   getPublishedBlogPosts,
   type BlogCategory,
   type BlogPost,
@@ -24,6 +25,7 @@ function excerpt(post: BlogPost) {
 function BlogIndexPage() {
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
   const [categorySlug, setCategorySlug] = useState("");
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -48,14 +50,15 @@ function BlogIndexPage() {
     let active = true;
     setLoading(true);
     setFailed(false);
-    getPublishedBlogPosts(page, 9, categorySlug || undefined)
-      .then((rows) => {
-        if (active) setPosts(rows);
+    Promise.all([getPublishedBlogPosts(page, 9, categorySlug || undefined), getFeaturedBlogPosts(categorySlug || undefined)])
+      .then(([rows, featuredRows]) => {
+        if (active) { setPosts(rows); setFeaturedPosts(featuredRows); }
       })
       .catch((error) => {
         console.error("No se pudieron cargar los artículos de El Grimorio.", error);
         if (active) {
           setPosts([]);
+          setFeaturedPosts([]);
           setFailed(true);
         }
       })
@@ -115,13 +118,37 @@ function BlogIndexPage() {
                 Reintentar
               </button>
             </div>
-          ) : posts.length === 0 ? (
+          ) : posts.length === 0 && featuredPosts.length === 0 ? (
             <div className="rounded-xl border border-[rgba(212,175,55,0.25)] bg-[#100b17]/80 px-5 py-10 text-center">
               <h2 className="font-serif text-xl text-[#f4df9b]">Próximamente, nuevas lecturas</h2>
               <p className="mt-2 text-sm leading-6 text-[#aaa2b3]">Todavía no hay artículos publicados en esta selección.</p>
             </div>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <>
+              {featuredPosts.length > 0 && (
+                <section className="mb-12" aria-labelledby="featured-blog-heading">
+                  <div className="mb-5 flex items-center gap-3"><span className="h-px flex-1 bg-[rgba(212,175,55,0.35)]" /><h2 id="featured-blog-heading" className="font-serif text-xl tracking-wide text-[#f4df9b] sm:text-2xl">Lecturas destacadas</h2><span className="h-px flex-1 bg-[rgba(212,175,55,0.35)]" /></div>
+                  <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    {featuredPosts.map((post, index) => (
+                      <article key={post.id} className="group flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.5)] bg-[linear-gradient(145deg,rgba(48,27,61,0.95),rgba(12,9,17,0.98))]">
+                        <Link to={`/blog/${post.slug}`} className="flex h-full flex-col">
+                          {post.cover_image_url ? <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-52 w-full object-cover" /> : <div className="flex h-44 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17]"><BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" /></div>}
+                          <div className="flex flex-1 flex-col p-5">
+                            <span className="w-fit rounded-full border border-[rgba(212,175,55,0.5)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#f4df9b]">{index === 0 ? "Destacado principal" : "Lectura destacada"}</span>
+                            <p className="mt-3 text-xs uppercase tracking-[0.16em] text-[#b8944a]">{post.category?.name || "El Grimorio"}</p>
+                            <h3 className="mt-2 font-serif text-xl leading-snug text-[#f4df9b] group-hover:text-[#fff0b8]">{post.title}</h3>
+                            <p className="mt-3 flex-1 text-sm leading-6 text-[#d8d0df]">{excerpt(post)}</p>
+                            <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#d4af37]">Leer artículo <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                          </div>
+                        </Link>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )}
+              {posts.length > 0 && <section aria-labelledby="all-blog-heading">
+                <div className="mb-5 flex items-center gap-3"><span className="h-px flex-1 bg-[rgba(212,175,55,0.2)]" /><h2 id="all-blog-heading" className="font-serif text-lg text-[#e8e0ec]">Todas las lecturas</h2><span className="h-px flex-1 bg-[rgba(212,175,55,0.2)]" /></div>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <article key={post.id} className="group flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.25)] bg-[linear-gradient(145deg,rgba(37,20,49,0.88),rgba(12,9,17,0.98))] transition-colors hover:border-[rgba(212,175,55,0.55)]">
                   <Link to={`/blog/${post.slug}`} className="flex h-full flex-col">
@@ -141,7 +168,9 @@ function BlogIndexPage() {
                   </Link>
                 </article>
               ))}
-            </div>
+                </div>
+              </section>}
+            </>
           )}
 
           {!loading && !failed && posts.length > 0 && (
