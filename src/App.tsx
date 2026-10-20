@@ -7,7 +7,7 @@ import BlogIndexPage from "./features/blog/BlogIndexPage";
 import BlogArticlePage from "./features/blog/BlogArticlePage";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import ScrollToTop from "./Components/ScrollToTop";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useParams } from "react-router-dom";
 
 function NotFound() {
   return (
@@ -35,7 +35,7 @@ function NotFound() {
   );
 }
 
-function App() {
+function LegacyBlogArticleRedirect() {\n  const { slug = "" } = useParams();\n  return <Navigate to={`/grimorio/${slug}`} replace />;\n}\n\nfunction App() {
   return (
     <div className="flex min-h-screen flex-col bg-[#08060d]">
       <Navbar />
