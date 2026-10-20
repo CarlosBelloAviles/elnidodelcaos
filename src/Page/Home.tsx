@@ -11,6 +11,7 @@ import Services from "../Components/Services";
 import BlogSection from "../features/blog/BlogSection";
 import HowItWorks from "../Components/HowItWorks";
 import Testimonials from "../Components/Testimonials";
+import CloudflarePreviewTest from "../Components/CloudflarePreviewTest";
 
 const Home = () => {
   const location = useLocation();
@@ -161,6 +162,8 @@ const Home = () => {
           <Services />
 
           <BlogSection />
+
+          <CloudflarePreviewTest />
 
           <HowItWorks />
 
