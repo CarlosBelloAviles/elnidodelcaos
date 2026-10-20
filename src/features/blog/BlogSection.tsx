@@ -82,15 +82,16 @@ function BlogSection() {
                       <BookOpen className="h-12 w-12 text-[#b8944a]/70" aria-hidden="true" />
                     </div>
                   )}
-                  <div className="flex min-w-0 flex-col items-start justify-center p-5 sm:p-7 lg:p-10">
+                  <div className="flex min-w-0 flex-col items-center justify-center p-5 text-center sm:p-7 lg:p-10">
                     <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#b8944a] sm:text-xs">
-                      {categoryLabels(hero).map((category) => category.name).join(" · ") || "El Grimorio"}
-                      <span className="mx-2 text-[#6e5a37]">/</span>
                       Lectura destacada
                     </p>
-                    <h3 className="font-serif text-2xl leading-tight text-[#f4df9b] transition-colors group-hover:text-[#fff0b8] sm:text-3xl lg:text-4xl">
+                    <h3 className="max-w-2xl font-serif text-2xl leading-tight text-[#f4df9b] transition-colors group-hover:text-[#fff0b8] sm:text-3xl lg:text-4xl">
                       {hero.title}
                     </h3>
+                    <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#b8944a] sm:text-xs">
+                      {categoryLabels(hero).map((category) => category.name).join(" · ") || "El Grimorio"}
+                    </p>
                     <p className="mt-4 line-clamp-3 max-w-xl text-sm leading-6 text-[#d8d0df] sm:text-base sm:leading-7">
                       {excerpt(hero)}
                     </p>
@@ -124,12 +125,12 @@ function BlogSection() {
                         </div>
                       )}
                       <div className="flex flex-1 flex-col p-4 sm:p-5">
-                        <p className="mb-2 line-clamp-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#b8944a]">
-                          {categoryLabels(post).map((category) => category.name).join(" · ") || "El Grimorio"}
-                        </p>
                         <h3 className="line-clamp-2 min-h-[3.25rem] font-serif text-lg leading-snug text-[#f0d98a] transition-colors group-hover:text-[#fff0b8]">
                           {post.title}
                         </h3>
+                        <p className="mt-2 line-clamp-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#b8944a]">
+                          {categoryLabels(post).map((category) => category.name).join(" · ") || "El Grimorio"}
+                        </p>
                         <p className="mt-2 line-clamp-3 text-sm leading-6 text-[#d8d0df]">
                           {excerpt(post)}
                         </p>
