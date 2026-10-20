@@ -28,6 +28,7 @@ function BlogIndexPage() {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -64,7 +65,7 @@ function BlogIndexPage() {
     return () => {
       active = false;
     };
-  }, [page, categorySlug]);
+  }, [page, categorySlug, retryCount]);
 
   return (
     <>
@@ -110,7 +111,7 @@ function BlogIndexPage() {
             <div className="rounded-xl border border-[rgba(212,175,55,0.25)] bg-[#100b17]/80 px-5 py-10 text-center">
               <h2 className="font-serif text-xl text-[#f4df9b]">No pudimos cargar las lecturas</h2>
               <p className="mt-2 text-sm text-[#aaa2b3]">Inténtalo de nuevo dentro de un momento.</p>
-              <button type="button" onClick={() => setPage((current) => current)} className="mt-5 rounded-lg border border-[#d4af37] px-5 py-2 text-sm text-[#f4df9b] hover:bg-[#d4af37] hover:text-[#08060d]">
+              <button type="button" onClick={() => setRetryCount((current) => current + 1)} className="mt-5 rounded-lg border border-[#d4af37] px-5 py-2 text-sm text-[#f4df9b] hover:bg-[#d4af37] hover:text-[#08060d]">
                 Reintentar
               </button>
             </div>
