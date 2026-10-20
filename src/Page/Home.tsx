@@ -80,8 +80,11 @@ const Home = () => {
   description="Nido del Caos es un espacio dedicado al tarot, la brujería, las limpiezas energéticas, la protección y los rituales. Descubre servicios personalizados de orientación, interpretación, trabajo energético y prácticas esotéricas diseñadas para acompañarte en diferentes procesos y necesidades."
   canonical="https://elnidodelcaos.cl/"
   image="https://elnidodelcaos.cl/seo_nido.png"
-/>
+ />
 
+      <div className="border-b border-[#d4af37]/50 bg-[#1b0d2b] px-4 py-2 text-center text-xs font-semibold tracking-[0.12em] text-[#f4df9b] sm:text-sm">
+        PRUEBA TEMPORAL DE DESPLIEGUE · RAMA TEST
+      </div>
       <div className="pt-[60px]">
           <Header />
 
