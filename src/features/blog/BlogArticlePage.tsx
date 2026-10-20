@@ -4,7 +4,6 @@ import {ArrowLeft,ArrowRight} from "lucide-react";
 import SEO from "../../Components/SEO";
 import {getPublishedBlogPost,getRelatedPosts,getRelatedServices,type BlogPost,type RelatedService} from "./blogService";
 function excerpt(post:BlogPost){const out:string[]=[];const visit=(v:unknown)=>{if(!v||typeof v!=="object")return;const n=v as Record<string,unknown>;if(typeof n.text==="string")out.push(n.text);if(Array.isArray(n.content))n.content.forEach(visit);};visit(post.content);return out.join(" ").slice(0,155)||"Artículos y lecturas de El Nido del Caos.";}
-function textOf(v:unknown):string{if(!v||typeof v!=="object")return"";const n=v as Record<string,unknown>;if(typeof n.text==="string")return n.text;if(Array.isArray(n.content))return(n.content as unknown[]).map(textOf).join("");return"";}
 function renderInline(node:Record<string,unknown>,key:number):ReactNode{
  if(typeof node.text!=="string")return null;
  let value:ReactNode=node.text;
