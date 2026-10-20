@@ -208,8 +208,8 @@ ${urls.join("\n")}
         const isBlogIndex = url.pathname === "/blog";
         const slug = isBlogIndex ? "" : decodeURIComponent(url.pathname.slice("/blog/".length));
 
-        let title = "El Grimorio | Magia del Caos, símbolos y rituales";
-        let description = "Explora artículos sobre Magia del Caos, tarot, símbolos, prácticas rituales y orientación para comprender los servicios de El Nido del Caos.";
+        let title = "El Grimorio | Conocimiento y guía sobre Magia del Caos";
+        let description = "Artículos de conocimiento y guía sobre Magia del Caos, tarot, rituales y los servicios de El Nido del Caos.";
         let canonical = "https://elnidodelcaos.cl/blog";
         let image = "https://elnidodelcaos.cl/seo_nido.png";
         let imageAlt = "El Grimorio de El Nido del Caos";
