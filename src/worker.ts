@@ -205,78 +205,96 @@ ${urls.join("\n")}
     if (url.pathname === "/blog" || url.pathname.startsWith("/blog/")) {
       try {
         const supabase = getSupabaseConfig(env);
-        const slug = url.pathname.startsWith("/blog/") ? decodeURIComponent(url.pathname.slice("/blog/".length)) : "";
-        if (!slug) {
-          const assetResponse = await env.ASSETS.fetch(new Request(new URL("/", request.url), request));
-          const html = await assetResponse.text();
-          const tags = `<title>El Grimorio | Magia del Caos, símbolos y rituales</title>
-<meta name="description" content="Explora artículos sobre Magia del Caos, tarot, símbolos, prácticas rituales y orientación para comprender los servicios de El Nido del Caos.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://elnidodelcaos.cl/blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="El Grimorio | El Nido del Caos">
-<meta property="og:description" content="Conocimiento, símbolos y práctica: explora El Grimorio de El Nido del Caos.">
-<meta property="og:url" content="https://elnidodelcaos.cl/blog">
-<meta property="og:image" content="https://elnidodelcaos.cl/seo_nido.png">
-<meta property="og:locale" content="es_CL">
-<meta name="twitter:card" content="summary_large_image">`;
-          const cleaned = html.replace(/<title>[\s\S]*?<\/title>/i, "").replace(/<meta\s+name=["']description["'][^>]*>/i, "").replace(/<link\s+rel=["']canonical["'][^>]*>/i, "");
-          const headers = new Headers(assetResponse.headers);
-          headers.set("Content-Type", "text/html; charset=UTF-8");
-          headers.set("Cache-Control", "no-cache, must-revalidate");
-          return withSecurityHeaders(new Response(cleaned.replace(/<\/head>/i, `${tags}\\n</head>`), { status: assetResponse.status, headers }));
-        }
-        const endpoint = `${supabase.url}/rest/v1/BlogPosts?select=title,slug,meta_title,meta_description,cover_image_url,cover_image_alt&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`;
-        const articleResponse = await fetch(endpoint, { headers: supabase.headers });
-        if (articleResponse && !articleResponse.ok) {
-          console.error("Blog SEO: Supabase request failed.", { status: articleResponse.status });
-        } else {
+        const isBlogIndex = url.pathname === "/blog";
+        const slug = isBlogIndex ? "" : decodeURIComponent(url.pathname.slice("/blog/".length));
+
+        let title = "El Grimorio | Magia del Caos, símbolos y rituales";
+        let description = "Explora artículos sobre Magia del Caos, tarot, símbolos, prácticas rituales y orientación para comprender los servicios de El Nido del Caos.";
+        let canonical = "https://elnidodelcaos.cl/blog";
+        let image = "https://elnidodelcaos.cl/seo_nido.png";
+        let imageAlt = "El Grimorio de El Nido del Caos";
+        let ogType = "website";
+
+        if (!isBlogIndex) {
+          const endpoint = new URL(supabase.url + "/rest/v1/BlogPosts");
+          endpoint.searchParams.set("select", "title,slug,meta_title,meta_description,cover_image_url,cover_image_alt");
+          endpoint.searchParams.set("slug", "eq." + slug);
+          endpoint.searchParams.set("status", "eq.published");
+          endpoint.searchParams.set("limit", "1");
+
+          const articleResponse = await fetch(endpoint.toString(), { headers: supabase.headers });
+          if (!articleResponse.ok) {
+            console.error("Blog SEO: Supabase request failed.", { status: articleResponse.status });
+            throw new Error("No se pudieron consultar los metadatos del artículo.");
+          }
+
           const articles = await articleResponse.json() as {
-            title: string; slug: string; meta_title: string | null; meta_description: string | null;
-            cover_image_url: string | null; cover_image_alt: string | null;
+            title: string;
+            slug: string;
+            meta_title: string | null;
+            meta_description: string | null;
+            cover_image_url: string | null;
+            cover_image_alt: string | null;
           }[];
           const article = articles[0];
+
           if (!article) {
             return withSecurityHeaders(new Response("Not Found", {
               status: 404,
-              headers: { "Content-Type": "text/plain; charset=UTF-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow" },
+              headers: {
+                "Content-Type": "text/plain; charset=UTF-8",
+                "Cache-Control": "no-store",
+                "X-Robots-Tag": "noindex, nofollow",
+              },
             }));
           }
-          const assetResponse = await env.ASSETS.fetch(new Request(new URL("/", request.url), request));
-          const html = await assetResponse.text();
-          const title = `${article.meta_title?.trim() || article.title} | El Grimorio`;
-          const description = article.meta_description?.trim() || "Explora esta lectura de El Grimorio de El Nido del Caos.";
-          const canonical = `https://elnidodelcaos.cl/blog/${encodeURIComponent(article.slug)}`;
-          const image = article.cover_image_url || "https://elnidodelcaos.cl/seo_nido.png";
-          const cleanedHtml = html
-            .replace(/<title>[\s\S]*?<\/title>/i, "")
-            .replace(/<meta\s+name=["']description["'][^>]*>/i, "")
-            .replace(/<meta\s+name=["']robots["'][^>]*>/i, "")
-            .replace(/<link\s+rel=["']canonical["'][^>]*>/i, "")
-            .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, "")
-            .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, "");
-          const tags = `<title>${escapeHtml(title)}</title>
-<meta name="description" content="${escapeHtml(description)}">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="${escapeHtml(canonical)}">
-<meta property="og:type" content="article">
-<meta property="og:title" content="${escapeHtml(title)}">
-<meta property="og:description" content="${escapeHtml(description)}">
-<meta property="og:url" content="${escapeHtml(canonical)}">
-<meta property="og:image" content="${escapeHtml(image)}">
-<meta property="og:image:alt" content="${escapeHtml(article.cover_image_alt || article.title)}">
-<meta property="og:site_name" content="Nido del Caos">
-<meta property="og:locale" content="es_CL">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${escapeHtml(title)}">
-<meta name="twitter:description" content="${escapeHtml(description)}">
-<meta name="twitter:image" content="${escapeHtml(image)}">`;
-          const modifiedHtml = cleanedHtml.replace(/<\/head>/i, `${tags}\\n</head>`);
-          const headers = new Headers(assetResponse.headers);
-          headers.set("Content-Type", "text/html; charset=UTF-8");
-          headers.set("Cache-Control", "no-cache, must-revalidate");
-          return withSecurityHeaders(new Response(modifiedHtml, { status: assetResponse.status, headers }));
+
+          title = (article.meta_title?.trim() || article.title) + " | El Grimorio";
+          description = article.meta_description?.trim() || "Explora esta lectura de El Grimorio de El Nido del Caos.";
+          canonical = "https://elnidodelcaos.cl/blog/" + encodeURIComponent(article.slug);
+          image = article.cover_image_url || image;
+          imageAlt = article.cover_image_alt || article.title;
+          ogType = "article";
         }
+
+        const assetResponse = await env.ASSETS.fetch(new Request(new URL("/", request.url), request));
+        const html = await assetResponse.text();
+        const cleanedHtml = html
+          .replace(/<title>[\s\S]*?<\/title>/i, "")
+          .replace(/<meta\s+name=["']description["'][^>]*>/i, "")
+          .replace(/<meta\s+name=["']robots["'][^>]*>/i, "")
+          .replace(/<link\s+rel=["']canonical["'][^>]*>/i, "")
+          .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, "")
+          .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, "");
+
+        const tags = [
+          "<title>" + escapeHtml(title) + "</title>",
+          '<meta name="description" content="' + escapeHtml(description) + '">',
+          '<meta name="robots" content="index, follow">',
+          '<link rel="canonical" href="' + escapeHtml(canonical) + '">',
+          '<meta property="og:type" content="' + ogType + '">',
+          '<meta property="og:title" content="' + escapeHtml(title) + '">',
+          '<meta property="og:description" content="' + escapeHtml(description) + '">',
+          '<meta property="og:url" content="' + escapeHtml(canonical) + '">',
+          '<meta property="og:image" content="' + escapeHtml(image) + '">',
+          '<meta property="og:image:alt" content="' + escapeHtml(imageAlt) + '">',
+          '<meta property="og:site_name" content="El Nido del Caos">',
+          '<meta property="og:locale" content="es_CL">',
+          '<meta name="twitter:card" content="summary_large_image">',
+          '<meta name="twitter:title" content="' + escapeHtml(title) + '">',
+          '<meta name="twitter:description" content="' + escapeHtml(description) + '">',
+          '<meta name="twitter:image" content="' + escapeHtml(image) + '">',
+        ].join("\n");
+
+        const modifiedHtml = cleanedHtml.replace(/<\/head>/i, tags + "\n</head>");
+        const headers = new Headers(assetResponse.headers);
+        headers.set("Content-Type", "text/html; charset=UTF-8");
+        headers.set("Cache-Control", "no-cache, must-revalidate");
+
+        return withSecurityHeaders(new Response(modifiedHtml, {
+          status: assetResponse.status,
+          headers,
+        }));
       } catch (error) {
         console.error("Blog SEO: unexpected error.", error);
       }
