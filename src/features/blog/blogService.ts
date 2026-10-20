@@ -11,7 +11,10 @@ async function attachPrimaryCategories(posts: BlogPost[]): Promise<BlogPost[]> {
     .from("BlogCategories")
     .select("id,name,slug,description,display_order")
     .in("id", categoryIds);
-  if (error) throw error;
+  if (error) {
+    console.error("No se pudieron cargar los nombres de las categorías del blog.", error);
+    return posts;
+  }
   const categories = new Map((data ?? []).map((category) => [category.id, category as BlogCategory]));
   return posts.map((post) => ({ ...post, category: categories.get(post.category_id) }));
 }
