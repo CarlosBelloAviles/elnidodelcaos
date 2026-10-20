@@ -184,13 +184,31 @@ ${urls.join("\n")}
       try {
         const supabase = getSupabaseConfig(env);
         const slug = url.pathname.startsWith("/blog/") ? decodeURIComponent(url.pathname.slice("/blog/".length)) : "";
-        const endpoint = slug
-          ? `${supabase.url}/rest/v1/BlogPosts?select=title,slug,meta_title,meta_description,cover_image_url,cover_image_alt&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`
-          : null;
-        const articleResponse = endpoint ? await fetch(endpoint, { headers: supabase.headers }) : null;
+        if (!slug) {
+          const assetResponse = await env.ASSETS.fetch(new Request(new URL("/", request.url), request));
+          const html = await assetResponse.text();
+          const tags = `<title>El Grimorio | Magia del Caos, símbolos y rituales</title>
+<meta name="description" content="Explora artículos sobre Magia del Caos, tarot, símbolos, prácticas rituales y orientación para comprender los servicios de El Nido del Caos.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://elnidodelcaos.cl/blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="El Grimorio | El Nido del Caos">
+<meta property="og:description" content="Conocimiento, símbolos y práctica: explora El Grimorio de El Nido del Caos.">
+<meta property="og:url" content="https://elnidodelcaos.cl/blog">
+<meta property="og:image" content="https://elnidodelcaos.cl/seo_nido.png">
+<meta property="og:locale" content="es_CL">
+<meta name="twitter:card" content="summary_large_image">`;
+          const cleaned = html.replace(/<title>[\\s\\S]*?<\\/title>/i, "").replace(/<meta\\s+name=["']description["'][^>]*>/i, "").replace(/<link\\s+rel=["']canonical["'][^>]*>/i, "");
+          const headers = new Headers(assetResponse.headers);
+          headers.set("Content-Type", "text/html; charset=UTF-8");
+          headers.set("Cache-Control", "no-cache, must-revalidate");
+          return withSecurityHeaders(new Response(cleaned.replace(/<\\/head>/i, `${tags}\\n</head>`), { status: assetResponse.status, headers }));
+        }
+        const endpoint = `${supabase.url}/rest/v1/BlogPosts?select=title,slug,meta_title,meta_description,cover_image_url,cover_image_alt&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`;
+        const articleResponse = await fetch(endpoint, { headers: supabase.headers });
         if (articleResponse && !articleResponse.ok) {
           console.error("Blog SEO: Supabase request failed.", { status: articleResponse.status });
-        } else if (articleResponse) {
+        } else {
           const articles = await articleResponse.json() as {
             title: string; slug: string; meta_title: string | null; meta_description: string | null;
             cover_image_url: string | null; cover_image_alt: string | null;
