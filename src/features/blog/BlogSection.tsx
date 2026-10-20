@@ -74,16 +74,16 @@ function BlogSection() {
                     <img
                       src={hero.cover_image_url}
                       alt={hero.cover_image_alt || hero.title}
-                      className="h-56 w-full object-cover sm:h-full sm:min-h-[340px] lg:min-h-[380px]"
+                      className="h-56 w-full object-cover sm:h-[320px] lg:h-[340px]"
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex min-h-48 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17] sm:min-h-[340px] lg:min-h-[380px]">
+                    <div className="flex h-56 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17] sm:h-[320px] lg:h-[340px]">
                       <BookOpen className="h-12 w-12 text-[#b8944a]/70" aria-hidden="true" />
                     </div>
                   )}
-                  <div className="flex min-w-0 flex-col items-center justify-center p-5 text-center sm:p-7 lg:p-10">
-                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#b8944a] sm:text-xs">
+                  <div className="flex min-w-0 flex-col items-center justify-center p-5 text-center sm:p-6 lg:p-7">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#b8944a] sm:text-xs">
                       Lectura destacada
                     </p>
                     <h3 className="max-w-2xl font-serif text-2xl leading-tight text-[#f4df9b] transition-colors group-hover:text-[#fff0b8] sm:text-3xl lg:text-4xl">
@@ -92,10 +92,10 @@ function BlogSection() {
                     <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#b8944a] sm:text-xs">
                       {categoryLabels(hero).map((category) => category.name).join(" · ") || "El Grimorio"}
                     </p>
-                    <p className="mt-4 line-clamp-3 max-w-xl text-sm leading-6 text-[#d8d0df] sm:text-base sm:leading-7">
+                    <p className="mt-3 line-clamp-3 max-w-xl text-sm leading-6 text-[#d8d0df] sm:text-base sm:leading-6">
                       {excerpt(hero)}
                     </p>
-                    <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#d4af37]">
+                    <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#d4af37]">
                       Leer artículo
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
@@ -131,7 +131,7 @@ function BlogSection() {
                         <p className="mt-2 line-clamp-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#b8944a]">
                           {categoryLabels(post).map((category) => category.name).join(" · ") || "El Grimorio"}
                         </p>
-                        <p className="mt-2 line-clamp-3 text-sm leading-6 text-[#d8d0df]">
+                        <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#d8d0df]">
                           {excerpt(post)}
                         </p>
                         <span className="mt-auto inline-flex items-center gap-1 pt-4 text-xs font-semibold text-[#d4af37]">
