@@ -112,7 +112,12 @@ export async function getRelatedPosts(postId:string):Promise<BlogPost[]>{const {
 
 export interface RelatedService { id:string; name:string; slug:string; description:string|null; img_url:string|null; }
 export async function getRelatedServices(postId:string):Promise<RelatedService[]>{
- const {data,error}=await supabase.from("BlogPostServices").select("service:Products!BlogPostServices_service_id_fkey(id,name,slug,description,img_url)").eq("post_id",postId).order("display_order");
- if(error)throw error;
- return (data??[]).map(row=>(row as unknown as {service:RelatedService|null}).service).filter((item):item is RelatedService=>Boolean(item?.slug));
+ const {data:relations,error:relationsError}=await supabase.from("BlogPostServices").select("service_id,display_order").eq("post_id",postId).order("display_order");
+ if(relationsError)throw relationsError;
+ const ids=(relations??[]).map(row=>row.service_id as string).filter(Boolean);
+ if(ids.length===0)return [];
+ const {data:services,error:servicesError}=await supabase.from("Products").select("id,name,slug,description,img_url").in("id",ids);
+ if(servicesError)throw servicesError;
+ const byId=new Map((services??[]).map(item=>[item.id,item as RelatedService]));
+ return ids.map(id=>byId.get(id)).filter((item):item is RelatedService=>Boolean(item?.slug));
 }
