@@ -83,6 +83,18 @@ export async function getPublishedBlogPosts(page = 0, pageSize = 9, categorySlug
   return attachPrimaryCategories((data ?? []) as unknown as BlogPost[]);
 }
 
+export async function getRecentBlogPosts(excludePostId: string, limit = 3): Promise<BlogPost[]> {
+  const { data, error } = await supabase
+    .from("BlogPosts")
+    .select(fields)
+    .eq("status", "published")
+    .neq("id", excludePostId)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .limit(limit);
+  if (error) throw error;
+  return attachPrimaryCategories((data ?? []) as unknown as BlogPost[]);
+}
+
 export async function getPublishedBlogPost(slug: string): Promise<BlogPost | null> {
   const { data, error } = await supabase
     .from("BlogPosts")
