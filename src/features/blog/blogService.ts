@@ -1,22 +1,36 @@
 import supabase from "../../utils/supabase";
 export interface BlogCategory { id:string; name:string; slug:string; description:string|null; display_order:number; }
-export interface BlogPost { id:string; category_id:string; title:string; slug:string; content:{type?:string;content?:Array<Record<string,unknown>>}; status:"draft"|"published"|"archived"; service_recommendation_mode:"none"|"specific"|"all"; published_at:string|null; cover_image_url:string|null; cover_image_alt:string|null; home_order:number|null; featured_order:number|null; meta_title:string|null; meta_description:string|null; created_at:string; category?:BlogCategory; }
+export interface BlogPost { id:string; category_id:string; title:string; slug:string; content:{type?:string;content?:Array<Record<string,unknown>>}; status:"draft"|"published"|"archived"; service_recommendation_mode:"none"|"specific"|"all"; published_at:string|null; cover_image_url:string|null; cover_image_alt:string|null; home_order:number|null; featured_order:number|null; meta_title:string|null; meta_description:string|null; created_at:string; category?:BlogCategory; categories?:BlogCategory[]; }
 const fields="id,category_id,title,slug,content,status,service_recommendation_mode,published_at,cover_image_url,cover_image_alt,home_order,featured_order,meta_title,meta_description,created_at";
 export async function getBlogCategories():Promise<BlogCategory[]>{const {data,error}=await supabase.from("BlogPostCategories").select("category:BlogCategories!inner(id,name,slug,description,display_order),post:BlogPosts!inner(status)").eq("category.is_active",true).eq("post.status","published");if(error)throw error;const unique=new Map<string,BlogCategory>();for(const row of (data??[]) as unknown as Array<{category:BlogCategory|null}>){if(row.category)unique.set(row.category.id,row.category);}return [...unique.values()].sort((a,b)=>a.display_order-b.display_order||a.name.localeCompare(b.name,"es"));}
 async function attachPrimaryCategories(posts: BlogPost[]): Promise<BlogPost[]> {
   if (posts.length === 0) return posts;
-  const categoryIds = [...new Set(posts.map((post) => post.category_id).filter(Boolean))];
-  if (categoryIds.length === 0) return posts;
-  const { data, error } = await supabase
-    .from("BlogCategories")
-    .select("id,name,slug,description,display_order")
-    .in("id", categoryIds);
-  if (error) {
-    console.error("No se pudieron cargar los nombres de las categorías del blog.", error);
-    return posts;
+  const postIds = posts.map((post) => post.id);
+  const primaryIds = [...new Set(posts.map((post) => post.category_id).filter(Boolean))];
+  const [primaryResult, relationResult] = await Promise.all([
+    primaryIds.length
+      ? supabase.from("BlogCategories").select("id,name,slug,description,display_order").in("id", primaryIds)
+      : Promise.resolve({ data: [], error: null }),
+    supabase.from("BlogPostCategories")
+      .select("post_id,category:BlogCategories!inner(id,name,slug,description,display_order)")
+      .in("post_id", postIds)
+      .eq("category.is_active", true),
+  ]);
+  if (primaryResult.error) console.error("No se pudieron cargar las categorías principales.", primaryResult.error);
+  if (relationResult.error) console.error("No se pudieron cargar todas las categorías del artículo.", relationResult.error);
+  const primaryById = new Map((primaryResult.data ?? []).map((category) => [category.id, category as BlogCategory]));
+  const byPost = new Map<string, BlogCategory[]>();
+  for (const row of (relationResult.data ?? []) as unknown as Array<{post_id:string;category:BlogCategory|null}>) {
+    if (!row.category) continue;
+    const list = byPost.get(row.post_id) ?? [];
+    if (!list.some((category) => category.id === row.category!.id)) list.push(row.category);
+    byPost.set(row.post_id, list);
   }
-  const categories = new Map((data ?? []).map((category) => [category.id, category as BlogCategory]));
-  return posts.map((post) => ({ ...post, category: categories.get(post.category_id) }));
+  return posts.map((post) => {
+    const categories = (byPost.get(post.id) ?? []).sort((a,b) => a.display_order-b.display_order || a.name.localeCompare(b.name,"es"));
+    const primary = primaryById.get(post.category_id) ?? categories.find((category) => category.id === post.category_id) ?? categories[0];
+    return { ...post, category: primary, categories: categories.length ? categories : primary ? [primary] : [] };
+  });
 }
 
 export async function getHomeBlogPosts(): Promise<BlogPost[]> {
