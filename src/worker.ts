@@ -149,12 +149,12 @@ Sitemap: https://elnidodelcaos.cl/sitemap.xml
       `,
           `
         <url>
-          <loc>https://elnidodelcaos.cl/blog</loc>
+          <loc>https://elnidodelcaos.cl/grimorio</loc>
         </url>
       `,
           ...blogSlugs.map((slug) => `
         <url>
-          <loc>https://elnidodelcaos.cl/blog/${escapeXml(encodeURIComponent(slug))}</loc>
+          <loc>https://elnidodelcaos.cl/grimorio/${escapeXml(encodeURIComponent(slug))}</loc>
         </url>
       `),
 
@@ -203,14 +203,25 @@ ${urls.join("\n")}
     }
 
     if (url.pathname === "/blog" || url.pathname.startsWith("/blog/")) {
+      const suffix = url.pathname.slice("/blog".length);
+      return withSecurityHeaders(new Response(null, {
+        status: 301,
+        headers: {
+          Location: "https://elnidodelcaos.cl/grimorio" + suffix + url.search,
+          "Cache-Control": "public, max-age=86400",
+        },
+      }));
+    }
+
+    if (url.pathname === "/grimorio" || url.pathname.startsWith("/grimorio/")) {
       try {
         const supabase = getSupabaseConfig(env);
-        const isBlogIndex = url.pathname === "/blog";
-        const slug = isBlogIndex ? "" : decodeURIComponent(url.pathname.slice("/blog/".length));
+        const isBlogIndex = url.pathname === "/grimorio";
+        const slug = isBlogIndex ? "" : decodeURIComponent(url.pathname.slice("/grimorio/".length));
 
         let title = "El Grimorio | Conocimiento y guía sobre Magia del Caos";
         let description = "Artículos de conocimiento y guía sobre Magia del Caos, tarot, rituales y los servicios de El Nido del Caos.";
-        let canonical = "https://elnidodelcaos.cl/blog";
+        let canonical = "https://elnidodelcaos.cl/grimorio";
         let image = "https://elnidodelcaos.cl/seo_nido.png";
         let imageAlt = "El Grimorio de El Nido del Caos";
         let ogType = "website";
@@ -251,7 +262,7 @@ ${urls.join("\n")}
 
           title = (article.meta_title?.trim() || article.title) + " | El Grimorio";
           description = article.meta_description?.trim() || "Explora esta lectura de El Grimorio de El Nido del Caos.";
-          canonical = "https://elnidodelcaos.cl/blog/" + encodeURIComponent(article.slug);
+          canonical = "https://elnidodelcaos.cl/grimorio/" + encodeURIComponent(article.slug);
           image = article.cover_image_url || image;
           imageAlt = article.cover_image_alt || article.title;
           ogType = "article";
