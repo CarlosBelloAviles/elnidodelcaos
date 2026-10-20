@@ -134,7 +134,7 @@ function BlogIndexPage() {
                         <Link to={`/blog/${post.slug}`} className="flex h-full flex-col">
                           {post.cover_image_url ? <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-52 w-full object-cover" /> : <div className="flex h-44 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17]"><BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" /></div>}
                           <div className="flex flex-1 flex-col p-5">
-                            <span className="w-fit rounded-full border border-[rgba(212,175,55,0.5)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#f4df9b]">{index === 0 ? "Destacado principal" : "Lectura destacada"}</span>
+                            <span className="w-fit rounded-full border border-[rgba(212,175,55,0.5)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#f4df9b]">{post.featured_order === 1 ? "Destacado principal" : "Lectura destacada"}</span>
                             <p className="mt-3 text-xs uppercase tracking-[0.16em] text-[#b8944a]">{post.category?.name || "El Grimorio"}</p>
                             <h3 className="mt-2 font-serif text-xl leading-snug text-[#f4df9b] group-hover:text-[#fff0b8]">{post.title}</h3>
                             <p className="mt-3 flex-1 text-sm leading-6 text-[#d8d0df]">{excerpt(post)}</p>
