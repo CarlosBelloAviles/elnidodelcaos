@@ -129,7 +129,7 @@ function BlogIndexPage() {
                 <section className="mb-12" aria-labelledby="featured-blog-heading">
                   <div className="mb-5 flex items-center gap-3"><span className="h-px flex-1 bg-[rgba(212,175,55,0.35)]" /><h2 id="featured-blog-heading" className="font-serif text-xl tracking-wide text-[#f4df9b] sm:text-2xl">Lecturas destacadas</h2><span className="h-px flex-1 bg-[rgba(212,175,55,0.35)]" /></div>
                   <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                    {featuredPosts.map((post, index) => (
+                    {featuredPosts.map((post) => (
                       <article key={post.id} className="group flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.5)] bg-[linear-gradient(145deg,rgba(48,27,61,0.95),rgba(12,9,17,0.98))]">
                         <Link to={`/blog/${post.slug}`} className="flex h-full flex-col">
                           {post.cover_image_url ? <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-52 w-full object-cover" /> : <div className="flex h-44 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17]"><BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" /></div>}
