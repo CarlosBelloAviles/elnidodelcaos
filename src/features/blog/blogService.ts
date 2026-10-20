@@ -7,3 +7,10 @@ export async function getHomeBlogPosts():Promise<BlogPost[]>{const {data,error}=
 export async function getPublishedBlogPosts(page=0,pageSize=9,categorySlug?:string):Promise<BlogPost[]>{let q=supabase.from("BlogPosts").select(`${fields},category:BlogCategories!inner(id,name,slug,description,display_order)`).eq("status","published").order("published_at",{ascending:false,nullsFirst:false}).range(page*pageSize,page*pageSize+pageSize-1);if(categorySlug)q=q.eq("category.slug",categorySlug);const {data,error}=await q;if(error)throw error;return(data??[]) as unknown as BlogPost[];}
 export async function getPublishedBlogPost(slug:string):Promise<BlogPost|null>{const {data,error}=await supabase.from("BlogPosts").select(`${fields},category:BlogCategories(id,name,slug,description,display_order)`).eq("slug",slug).eq("status","published").maybeSingle();if(error)throw error;return data as unknown as BlogPost|null;}
 export async function getRelatedPosts(postId:string):Promise<BlogPost[]>{const {data,error}=await supabase.from("BlogPostRelations").select(`related:BlogPosts!BlogPostRelations_related_post_id_fkey(${fields},category:BlogCategories(id,name,slug,description,display_order))`).eq("post_id",postId).order("display_order").limit(3);if(error)throw error;return(data??[]).map(row=>(row as unknown as {related:BlogPost}).related).filter(post=>post?.status==="published");}
+
+export interface RelatedService { id:string; name:string; slug:string; description:string|null; img_url:string|null; }
+export async function getRelatedServices(postId:string):Promise<RelatedService[]>{
+ const {data,error}=await supabase.from("BlogPostServices").select("service:Products!BlogPostServices_service_id_fkey(id,name,slug,description,img_url)").eq("post_id",postId).order("display_order");
+ if(error)throw error;
+ return (data??[]).map(row=>(row as unknown as {service:RelatedService|null}).service).filter((item):item is RelatedService=>Boolean(item?.slug));
+}
