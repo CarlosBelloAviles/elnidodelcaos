@@ -1,10 +1,19 @@
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const SHOW_BEFORE_TESTIMONIALS_PX = 300;
 
 function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Los enlaces que apuntan a una sección concreta del Home gestionan su propio desplazamiento.
+    if (location.state?.scrollTo) return;
+
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
