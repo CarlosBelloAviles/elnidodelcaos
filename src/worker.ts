@@ -220,11 +220,11 @@ ${urls.join("\n")}
 <meta property="og:image" content="https://elnidodelcaos.cl/seo_nido.png">
 <meta property="og:locale" content="es_CL">
 <meta name="twitter:card" content="summary_large_image">`;
-          const cleaned = html.replace(/<title>[\\s\\S]*?<\\/title>/i, "").replace(/<meta\\s+name=["']description["'][^>]*>/i, "").replace(/<link\\s+rel=["']canonical["'][^>]*>/i, "");
+          const cleaned = html.replace(/<title>[\s\S]*?<\/title>/i, "").replace(/<meta\s+name=["']description["'][^>]*>/i, "").replace(/<link\s+rel=["']canonical["'][^>]*>/i, "");
           const headers = new Headers(assetResponse.headers);
           headers.set("Content-Type", "text/html; charset=UTF-8");
           headers.set("Cache-Control", "no-cache, must-revalidate");
-          return withSecurityHeaders(new Response(cleaned.replace(/<\\/head>/i, `${tags}\\n</head>`), { status: assetResponse.status, headers }));
+          return withSecurityHeaders(new Response(cleaned.replace(/<\/head>/i, `${tags}\\n</head>`), { status: assetResponse.status, headers }));
         }
         const endpoint = `${supabase.url}/rest/v1/BlogPosts?select=title,slug,meta_title,meta_description,cover_image_url,cover_image_alt&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`;
         const articleResponse = await fetch(endpoint, { headers: supabase.headers });
@@ -249,12 +249,12 @@ ${urls.join("\n")}
           const canonical = `https://elnidodelcaos.cl/blog/${encodeURIComponent(article.slug)}`;
           const image = article.cover_image_url || "https://elnidodelcaos.cl/seo_nido.png";
           const cleanedHtml = html
-            .replace(/<title>[\\s\\S]*?<\\/title>/i, "")
-            .replace(/<meta\\s+name=["']description["'][^>]*>/i, "")
-            .replace(/<meta\\s+name=["']robots["'][^>]*>/i, "")
-            .replace(/<link\\s+rel=["']canonical["'][^>]*>/i, "")
-            .replace(/<meta\\s+property=["']og:[^"']+["'][^>]*>/gi, "")
-            .replace(/<meta\\s+name=["']twitter:[^"']+["'][^>]*>/gi, "");
+            .replace(/<title>[\s\S]*?<\/title>/i, "")
+            .replace(/<meta\s+name=["']description["'][^>]*>/i, "")
+            .replace(/<meta\s+name=["']robots["'][^>]*>/i, "")
+            .replace(/<link\s+rel=["']canonical["'][^>]*>/i, "")
+            .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, "")
+            .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, "");
           const tags = `<title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(description)}">
 <meta name="robots" content="index, follow">
@@ -271,7 +271,7 @@ ${urls.join("\n")}
 <meta name="twitter:title" content="${escapeHtml(title)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
 <meta name="twitter:image" content="${escapeHtml(image)}">`;
-          const modifiedHtml = cleanedHtml.replace(/<\\/head>/i, `${tags}\\n</head>`);
+          const modifiedHtml = cleanedHtml.replace(/<\/head>/i, `${tags}\\n</head>`);
           const headers = new Headers(assetResponse.headers);
           headers.set("Content-Type", "text/html; charset=UTF-8");
           headers.set("Cache-Control", "no-cache, must-revalidate");
