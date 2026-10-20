@@ -75,7 +75,7 @@ function BlogIndexPage() {
       <SEO
         title="El Grimorio | El Nido del Caos"
         description="Explora artículos, conocimientos y orientación para comprender la Magia del Caos, sus prácticas y los servicios de El Nido del Caos."
-        canonical="https://elnidodelcaos.cl/blog"
+        canonical="https://elnidodelcaos.cl/grimorio"
         image="https://elnidodelcaos.cl/seo_nido.png"
       />
       <section className="min-h-[65vh] bg-[radial-gradient(ellipse_at_50%_0%,rgba(92,43,116,0.18),transparent_45%),#08060d] px-5 pb-16 pt-24 text-[#e8e0ec] sm:px-8 sm:pt-28">
@@ -131,7 +131,7 @@ function BlogIndexPage() {
                   <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                     {featuredPosts.map((post) => (
                       <article key={post.id} className="group flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.5)] bg-[linear-gradient(145deg,rgba(48,27,61,0.95),rgba(12,9,17,0.98))]">
-                        <Link to={`/blog/${post.slug}`} className="flex h-full flex-col">
+                        <Link to={`/grimorio/${post.slug}`} className="flex h-full flex-col">
                           {post.cover_image_url ? <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-52 w-full object-cover" /> : <div className="flex h-44 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17]"><BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" /></div>}
                           <div className="flex flex-1 flex-col p-5">
                             <span className="w-fit rounded-full border border-[rgba(212,175,55,0.5)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#f4df9b]">{post.featured_order === 1 ? "Destacado principal" : "Lectura destacada"}</span>
@@ -151,7 +151,7 @@ function BlogIndexPage() {
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <article key={post.id} className="group flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.25)] bg-[linear-gradient(145deg,rgba(37,20,49,0.88),rgba(12,9,17,0.98))] transition-colors hover:border-[rgba(212,175,55,0.55)]">
-                  <Link to={`/blog/${post.slug}`} className="flex h-full flex-col">
+                  <Link to={`/grimorio/${post.slug}`} className="flex h-full flex-col">
                     {post.cover_image_url ? (
                       <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-52 w-full object-cover" />
                     ) : (
