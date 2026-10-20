@@ -35,7 +35,12 @@ function NotFound() {
   );
 }
 
-function LegacyBlogArticleRedirect() {\n  const { slug = "" } = useParams();\n  return <Navigate to={`/grimorio/${slug}`} replace />;\n}\n\nfunction App() {
+function LegacyBlogArticleRedirect() {
+  const { slug = "" } = useParams();
+  return <Navigate to={`/grimorio/${slug}`} replace />;
+}
+
+function App() {
   return (
     <div className="flex min-h-screen flex-col bg-[#08060d]">
       <Navbar />
@@ -50,8 +55,11 @@ function LegacyBlogArticleRedirect() {\n  const { slug = "" } = useParams();\n  
               </ErrorBoundary>
             }
           />
-          <Route path="/blog" element={<ErrorBoundary><BlogIndexPage /></ErrorBoundary>} />
-          <Route path="/blog/:slug" element={<ErrorBoundary><BlogArticlePage /></ErrorBoundary>} />
+          <Route path="/grimorio" element={<ErrorBoundary><BlogIndexPage /></ErrorBoundary>} />
+          <Route path="/grimorio/:slug" element={<ErrorBoundary><BlogArticlePage /></ErrorBoundary>} />
+          {/* Compatibilidad con enlaces antiguos */}
+          <Route path="/blog" element={<Navigate to="/grimorio" replace />} />
+          <Route path="/blog/:slug" element={<LegacyBlogArticleRedirect />} />
           <Route
             path="/servicios/:slug"
             element={
