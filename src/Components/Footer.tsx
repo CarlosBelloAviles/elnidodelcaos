@@ -92,6 +92,8 @@ const Footer = () => {
                 </button>
               </li>
 
+              <li><button type="button" onClick={() => navigate("/blog")} className="transition-colors cursor-pointer hover:text-[#d4af37]">El Grimorio</button></li>
+
               {/* CÓMO FUNCIONA */}
               <li>
                 <button

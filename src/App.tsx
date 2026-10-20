@@ -3,6 +3,8 @@ import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
 import Home from "./Page/Home";
 import ProductDetail from "./Page/ProductDetails";
+import BlogIndexPage from "./features/blog/BlogIndexPage";
+import BlogArticlePage from "./features/blog/BlogArticlePage";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import ScrollToTop from "./Components/ScrollToTop";
 import { Link, Route, Routes } from "react-router-dom";
@@ -48,6 +50,8 @@ function App() {
               </ErrorBoundary>
             }
           />
+          <Route path="/blog" element={<ErrorBoundary><BlogIndexPage /></ErrorBoundary>} />
+          <Route path="/blog/:slug" element={<ErrorBoundary><BlogArticlePage /></ErrorBoundary>} />
           <Route
             path="/servicios/:slug"
             element={

@@ -8,6 +8,7 @@ import About from "../Components/About";
 import Features from "../Components/Features";
 import Destacados from "../Components/Destacados";
 import Services from "../Components/Services";
+import BlogSection from "../features/blog/BlogSection";
 import HowItWorks from "../Components/HowItWorks";
 import Testimonials from "../Components/Testimonials";
 
@@ -155,6 +156,8 @@ const Home = () => {
           <Destacados />
 
           <Services />
+
+          <BlogSection />
 
           <HowItWorks />
 
