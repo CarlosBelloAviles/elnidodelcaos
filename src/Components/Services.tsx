@@ -59,7 +59,7 @@ const Services = () => {
       </div>
 
       {/* CATEGORÍAS */}
-      <div id="servicios-listado" className="scroll-mt-24">\n      {data?.map((categoria) => (
+      {data?.map((categoria) => (
         <CategorySection
           key={categoria.id}
           categoria={categoria}
