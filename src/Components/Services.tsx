@@ -58,18 +58,6 @@ const Services = () => {
         />
       </div>
 
-      <div className="mx-auto mb-10 max-w-3xl px-5 text-center">
-        <p className="font-serif text-lg leading-relaxed text-[#f4df9b] sm:text-xl">
-          Encuentra orientación para aquello que estás viviendo
-        </p>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#d8d0df] sm:text-base">
-          Conoce nuestros servicios de tarot, limpieza energética, protección y rituales. Explora cada alternativa, comprende en qué consiste y descubre cuál puede ajustarse mejor a tu situación.
-        </p>
-        <a href="#servicios-listado" className="mt-5 inline-flex min-h-11 items-center justify-center rounded-lg border border-[#d4af37] bg-[#d4af37] px-6 py-3 text-sm font-semibold text-[#08060d] transition-colors hover:bg-transparent hover:text-[#d4af37]">
-          Explorar nuestros servicios
-        </a>
-      </div>
-
       {/* CATEGORÍAS */}
       <div id="servicios-listado" className="scroll-mt-24">\n      {data?.map((categoria) => (
         <CategorySection
