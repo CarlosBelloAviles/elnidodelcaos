@@ -58,6 +58,16 @@ const Services = () => {
         />
       </div>
 
+      <div className="mx-auto mb-8 max-w-3xl px-5 text-center">
+        <p className="font-serif text-lg leading-relaxed text-[#f4df9b] sm:text-xl">
+          Encuentra orientación para aquello que estás viviendo
+        </p>
+        <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#d8d0df] sm:text-base">
+          Conoce nuestros servicios de tarot, limpieza energética, protección y rituales.
+          Explora cada alternativa, comprende en qué consiste y descubre cuál puede ajustarse mejor a tu situación.
+        </p>
+      </div>
+
       {/* CATEGORÍAS */}
       {data?.map((categoria) => (
         <CategorySection
