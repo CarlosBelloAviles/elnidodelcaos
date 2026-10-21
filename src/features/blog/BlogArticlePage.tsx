@@ -74,6 +74,7 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
  const indexRef=useRef(0);
  const speedRef=useRef(1);
  const activeRef=useRef(false);
+ const currentUtteranceRef=useRef<SpeechSynthesisUtterance|null>(null);
  const runChunkRef=useRef<()=>void>(()=>{});
  const storageKey=`nido-blog-audio:${postSlug}`;
  const speechText=useMemo(()=>[title,description||"",...(content?.content||[]).map(speechTextFromNode)].join(". ").replace(/\s+/g," ").trim(),[title,description,content]);
@@ -93,6 +94,7 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
     // Algunos navegadores móviles suspenden SpeechSynthesis al cambiar de aplicación.
     // Al volver, reintenta el fragmento actual en vez de abandonar la lectura.
     if(activeRef.current&&!window.speechSynthesis.speaking&&!window.speechSynthesis.paused){
+     currentUtteranceRef.current=null;
      window.speechSynthesis.cancel();
      runChunkRef.current();
     }
@@ -108,10 +110,10 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
     activeRef.current=true;setStatus("playing");setMediaState("playing");
    });
    mediaSession?.setActionHandler("pause",()=>{window.speechSynthesis.pause();setStatus("paused");setMediaState("paused");});
-   mediaSession?.setActionHandler("stop",()=>{activeRef.current=false;window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];setStatus("idle");setMediaState("none");});
+   mediaSession?.setActionHandler("stop",()=>{activeRef.current=false;currentUtteranceRef.current=null;window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];setStatus("idle");setMediaState("none");});
   }catch{/* Los controles multimedia no están disponibles en todos los navegadores. */}
   document.addEventListener("visibilitychange",handleVisibility);
-  return()=>{document.removeEventListener("visibilitychange",handleVisibility);window.speechSynthesis.removeEventListener?.("voiceschanged",updateVoice);try{mediaSession?.setActionHandler("play",null);mediaSession?.setActionHandler("pause",null);mediaSession?.setActionHandler("stop",null);setMediaState("none");}catch{/* API multimedia no compatible. */}window.speechSynthesis.cancel();activeRef.current=false;};
+  return()=>{document.removeEventListener("visibilitychange",handleVisibility);window.speechSynthesis.removeEventListener?.("voiceschanged",updateVoice);try{mediaSession?.setActionHandler("play",null);mediaSession?.setActionHandler("pause",null);mediaSession?.setActionHandler("stop",null);setMediaState("none");}catch{/* API multimedia no compatible. */}currentUtteranceRef.current=null;window.speechSynthesis.cancel();activeRef.current=false;};
  },[]);
  useEffect(()=>{speedRef.current=speed;},[speed]);
  runChunkRef.current=()=>{
@@ -120,13 +122,15 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
   if(!chunk){activeRef.current=false;try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("done");if("mediaSession" in navigator)navigator.mediaSession.playbackState="none";return;}
   try{sessionStorage.setItem(storageKey,JSON.stringify({index:indexRef.current,total:chunksRef.current.length,textLength:speechText.length}));}catch{/* El almacenamiento puede estar deshabilitado. */}
   const utterance=new SpeechSynthesisUtterance(chunk);
+  currentUtteranceRef.current=utterance;
   const voices=window.speechSynthesis.getVoices();
   utterance.voice=voices.find(item=>/^es-CL$/i.test(item.lang))||voices.find(item=>/^es(-|$)/i.test(item.lang))||null;
   utterance.lang=utterance.voice?.lang||"es-CL";
   utterance.rate=speedRef.current;utterance.pitch=1;utterance.volume=1;
-  utterance.onend=()=>{if(!activeRef.current)return;indexRef.current+=1;runChunkRef.current();};
+  utterance.onend=()=>{if(currentUtteranceRef.current!==utterance||!activeRef.current)return;currentUtteranceRef.current=null;indexRef.current+=1;runChunkRef.current();};
   utterance.onerror=(event)=>{
-   if(!activeRef.current)return;
+   if(currentUtteranceRef.current!==utterance||!activeRef.current)return;
+   currentUtteranceRef.current=null;
    activeRef.current=false;
    if(event.error==="canceled"||event.error==="interrupted"){setStatus("paused");return;}
    setStatus("error");
@@ -134,15 +138,15 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
   window.speechSynthesis.speak(utterance);
   if("mediaSession" in navigator)navigator.mediaSession.playbackState="playing";
  };
- const stop=()=>{activeRef.current=false;if("speechSynthesis" in window)window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("idle");if("mediaSession" in navigator)navigator.mediaSession.playbackState="none";};
+ const stop=()=>{activeRef.current=false;currentUtteranceRef.current=null;if("speechSynthesis" in window)window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("idle");if("mediaSession" in navigator)navigator.mediaSession.playbackState="none";};
  const play=()=>{
   if(!supported)return;
   if(status==="paused"){
    if(window.speechSynthesis.paused){window.speechSynthesis.resume();activeRef.current=true;setStatus("playing");return;}
-   activeRef.current=false;window.speechSynthesis.cancel();activeRef.current=true;setStatus("playing");runChunkRef.current();return;
+   activeRef.current=false;currentUtteranceRef.current=null;window.speechSynthesis.cancel();activeRef.current=true;setStatus("playing");if("mediaSession" in navigator)navigator.mediaSession.playbackState="playing";runChunkRef.current();return;
   }
   const canResume=status==="error"&&chunksRef.current.length>0;
-  activeRef.current=false;window.speechSynthesis.cancel();
+  activeRef.current=false;currentUtteranceRef.current=null;window.speechSynthesis.cancel();
   if(!canResume){
    chunksRef.current=splitSpeechText(speechText);indexRef.current=0;
    if(!chunksRef.current.length){setStatus("error");return;}
