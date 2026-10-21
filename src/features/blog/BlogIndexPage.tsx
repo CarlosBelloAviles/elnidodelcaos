@@ -11,15 +11,7 @@ import {
 } from "./blogService";
 
 function excerpt(post: BlogPost) {
-  const parts: string[] = [];
-  const visit = (value: unknown) => {
-    if (!value || typeof value !== "object") return;
-    const node = value as Record<string, unknown>;
-    if (typeof node.text === "string") parts.push(node.text);
-    if (Array.isArray(node.content)) node.content.forEach(visit);
-  };
-  visit(post.content);
-  return parts.join(" ").slice(0, 190) || "Una lectura para comprender mejor la Magia del Caos y sus prácticas.";
+  return post.meta_description?.trim() || "Una lectura para comprender mejor la Magia del Caos y sus prácticas.";
 }
 
 function BlogIndexPage() {
