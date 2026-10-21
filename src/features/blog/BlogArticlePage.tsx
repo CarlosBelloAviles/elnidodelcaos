@@ -100,7 +100,7 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
  runChunkRef.current=()=>{
   if(!activeRef.current)return;
   const chunk=chunksRef.current[indexRef.current];
-  if(!chunk){activeRef.current=false;setStatus("done");return;}
+  if(!chunk){activeRef.current=false;try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("done");return;}
   try{sessionStorage.setItem(storageKey,JSON.stringify({index:indexRef.current,total:chunksRef.current.length,textLength:speechText.length}));}catch{/* El almacenamiento puede estar deshabilitado. */}
   const utterance=new SpeechSynthesisUtterance(chunk);
   const voices=window.speechSynthesis.getVoices();
