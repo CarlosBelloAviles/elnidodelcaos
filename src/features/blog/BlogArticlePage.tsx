@@ -40,7 +40,7 @@ function speechTextFromNode(node:Record<string,unknown>):string{
  return text;
 }
 function splitSpeechText(text:string,maxLength=220):string[]{
- const normalized=text.replace(/\\s+/g," ").trim();
+ const normalized=text.replace(/\s+/g," ").trim();
  if(!normalized)return [];
  const sentences=normalized.match(/[^.!?。！？]+[.!?。！？]+|[^.!?。！？]+$/g)||[normalized];
  const chunks:string[]=[];let current="";
