@@ -1,4 +1,4 @@
-import {useEffect,useState,type ReactNode} from "react";
+import {useEffect,useMemo,useRef,useState,type ReactNode} from "react";
 import {Link,useParams} from "react-router-dom";
 import {ArrowLeft,ArrowRight,Pause,Play,RotateCcw,Volume2} from "lucide-react";
 import SEO from "../../Components/SEO";
@@ -77,7 +77,7 @@ function BlogAudioReader({title,description,content}:{title:string;description:s
   updateVoice();window.speechSynthesis.addEventListener?.("voiceschanged",updateVoice);
   return()=>{window.speechSynthesis.removeEventListener?.("voiceschanged",updateVoice);window.speechSynthesis.cancel();activeRef.current=false;};
  },[]);
- useEffect(()=>{speedRef.current=speed;if(typeof window!=="undefined"&&"speechSynthesis" in window&&status==="playing")window.speechSynthesis.cancel();},[speed]);
+ useEffect(()=>{speedRef.current=speed;},[speed]);
  runChunkRef.current=()=>{
   if(!activeRef.current)return;
   const chunk=chunksRef.current[indexRef.current];
