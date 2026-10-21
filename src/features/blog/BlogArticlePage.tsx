@@ -69,7 +69,7 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
  const [supported,setSupported]=useState(false);
  const [status,setStatus]=useState<"idle"|"playing"|"paused"|"done"|"error">("idle");
  const [speed,setSpeed]=useState(1);
- const [voiceLabel,setVoiceLabel]=useState("Voz en español disponible en tu dispositivo");
+ const [progress,setProgress]=useState({current:0,total:0});
  const chunksRef=useRef<string[]>([]);
  const indexRef=useRef(0);
  const speedRef=useRef(1);
@@ -82,12 +82,7 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
   const available=typeof window!=="undefined"&&"speechSynthesis" in window&&"SpeechSynthesisUtterance" in window;
   setSupported(available);
   if(!available)return;
-  const updateVoice=()=>{
-   const voices=window.speechSynthesis.getVoices();
-   const voice=voices.find(item=>/^es-CL$/i.test(item.lang))||voices.find(item=>/^es(-|$)/i.test(item.lang));
-   if(voice)setVoiceLabel(voice.name+" · "+voice.lang);
-  };
-  updateVoice();window.speechSynthesis.addEventListener?.("voiceschanged",updateVoice);
+
   const handleVisibility=()=>{
    if(document.visibilityState!=="visible")return;
    window.setTimeout(()=>{
@@ -113,13 +108,14 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
    mediaSession?.setActionHandler("stop",()=>{activeRef.current=false;currentUtteranceRef.current=null;window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];setStatus("idle");setMediaState("none");});
   }catch{/* Los controles multimedia no están disponibles en todos los navegadores. */}
   document.addEventListener("visibilitychange",handleVisibility);
-  return()=>{document.removeEventListener("visibilitychange",handleVisibility);window.speechSynthesis.removeEventListener?.("voiceschanged",updateVoice);try{mediaSession?.setActionHandler("play",null);mediaSession?.setActionHandler("pause",null);mediaSession?.setActionHandler("stop",null);setMediaState("none");}catch{/* API multimedia no compatible. */}currentUtteranceRef.current=null;window.speechSynthesis.cancel();activeRef.current=false;};
+  return()=>{document.removeEventListener("visibilitychange",handleVisibility);try{mediaSession?.setActionHandler("play",null);mediaSession?.setActionHandler("pause",null);mediaSession?.setActionHandler("stop",null);setMediaState("none");}catch{/* API multimedia no compatible. */}currentUtteranceRef.current=null;window.speechSynthesis.cancel();activeRef.current=false;};
  },[]);
  useEffect(()=>{speedRef.current=speed;},[speed]);
  runChunkRef.current=()=>{
   if(!activeRef.current)return;
   const chunk=chunksRef.current[indexRef.current];
-  if(!chunk){activeRef.current=false;try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("done");if("mediaSession" in navigator)navigator.mediaSession.playbackState="none";return;}
+  if(!chunk){activeRef.current=false;setProgress({current:chunksRef.current.length,total:chunksRef.current.length});try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("done");if("mediaSession" in navigator)navigator.mediaSession.playbackState="none";return;}
+  setProgress({current:indexRef.current,total:chunksRef.current.length});
   try{sessionStorage.setItem(storageKey,JSON.stringify({index:indexRef.current,total:chunksRef.current.length,textLength:speechText.length}));}catch{/* El almacenamiento puede estar deshabilitado. */}
   const utterance=new SpeechSynthesisUtterance(chunk);
   currentUtteranceRef.current=utterance;
@@ -148,7 +144,7 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
   const canResume=status==="error"&&chunksRef.current.length>0;
   activeRef.current=false;currentUtteranceRef.current=null;window.speechSynthesis.cancel();
   if(!canResume){
-   chunksRef.current=splitSpeechText(speechText);indexRef.current=0;
+   chunksRef.current=splitSpeechText(speechText);indexRef.current=0;setProgress({current:0,total:chunksRef.current.length});
    if(!chunksRef.current.length){setStatus("error");return;}
    try{
     const saved=sessionStorage.getItem(storageKey);
@@ -161,10 +157,20 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
   activeRef.current=true;setStatus("playing");if("mediaSession" in navigator)navigator.mediaSession.playbackState="playing";runChunkRef.current();
  };
  const pause=()=>{if(window.speechSynthesis.speaking){window.speechSynthesis.pause();setStatus("paused");if("mediaSession" in navigator)navigator.mediaSession.playbackState="paused";}};
+ const seek=(value:number)=>{
+  if(!supported||!chunksRef.current.length)return;
+  const target=Math.max(0,Math.min(chunksRef.current.length-1,value));
+  const shouldResume=status==="playing";
+  activeRef.current=false;currentUtteranceRef.current=null;window.speechSynthesis.cancel();
+  indexRef.current=target;setProgress({current:target,total:chunksRef.current.length});
+  if(shouldResume){activeRef.current=true;setStatus("playing");runChunkRef.current();}
+  else if(status==="paused"||status==="done"||status==="error")setStatus("paused");
+ };
  return <section aria-label="Escuchar artículo" className="mx-auto mb-8 max-w-3xl rounded-xl border border-[rgba(212,175,55,0.35)] bg-[linear-gradient(135deg,rgba(55,25,70,0.55),rgba(16,11,23,0.92))] p-4 sm:p-5">
-  <div className="flex items-start gap-3"><span className="mt-0.5 rounded-full border border-[rgba(212,175,55,0.35)] bg-[#21172b] p-2 text-[#f0d98a]"><Volume2 className="h-5 w-5"/></span><div className="min-w-0 flex-1"><h2 className="font-serif text-lg text-[#f4df9b]">Escuchar este artículo</h2><p className="mt-1 text-xs leading-5 text-[#bdb2c9]">{supported?voiceLabel:"Tu navegador no ofrece lectura en voz alta."}</p></div></div>
+  <div className="flex items-start gap-3"><span className="mt-0.5 rounded-full border border-[rgba(212,175,55,0.35)] bg-[#21172b] p-2 text-[#f0d98a]"><Volume2 className="h-5 w-5"/></span><div className="min-w-0 flex-1"><h2 className="font-serif text-lg text-[#f4df9b]">Escuchar este artículo</h2><p className="mt-1 text-xs leading-5 text-[#bdb2c9]">{supported?"Escucha el artículo a tu ritmo.":"Tu navegador no ofrece lectura en voz alta."}</p></div></div>
+  {progress.total>0&&<div className="mt-4"><div className="mb-2 flex items-center justify-between text-xs text-[#bdb2c9]"><span>Progreso de lectura</span><span>{Math.round((progress.current/progress.total)*100)}%</span></div><input aria-label="Progreso de lectura; desliza para avanzar o retroceder" type="range" min={0} max={Math.max(0,progress.total-1)} value={Math.min(progress.current,Math.max(0,progress.total-1))} onChange={event=>seek(Number(event.target.value))} disabled={!supported} className="w-full cursor-pointer accent-[#d4af37] disabled:cursor-not-allowed" /><div className="mt-1 flex justify-between text-[10px] text-[#aaa2b3]"><span>Inicio</span><span>Final</span></div></div>}
   <div className="mt-4 flex flex-wrap items-center gap-2">
-   {status==="playing"?<button type="button" onClick={pause} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-sm font-semibold text-[#08060d] hover:bg-transparent hover:text-[#f4df9b]"><Pause className="h-4 w-4"/>Pausar</button>:<button type="button" disabled={!supported} onClick={play} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-sm font-semibold text-[#08060d] hover:bg-transparent hover:text-[#f4df9b] disabled:cursor-not-allowed disabled:opacity-50"><Play className="h-4 w-4"/>{status==="paused"?"Continuar":status==="done"?"Escuchar de nuevo":"Reproducir"}</button>}
+   {status==="playing"?<button type="button" onClick={pause} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-sm font-semibold text-[#08060d] hover:bg-transparent hover:text-[#f4df9b]"><Pause className="h-4 w-4"/>Pausar</button>:<button type="button" disabled={!supported||status==="done"} onClick={play} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-sm font-semibold text-[#08060d] hover:bg-transparent hover:text-[#f4df9b] disabled:cursor-not-allowed disabled:opacity-50">{status==="done"?"Lectura finalizada":<><Play className="h-4 w-4"/>{status==="paused"?"Continuar":"Reproducir"}</>}</button>}
    <button type="button" disabled={!supported||status==="idle"} onClick={stop} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-[rgba(212,175,55,0.35)] px-3 py-2 text-sm text-[#e8e0ec] hover:border-[#d4af37] disabled:cursor-not-allowed disabled:opacity-40"><RotateCcw className="h-4 w-4"/>Detener</button>
    <label className="ml-auto flex items-center gap-2 text-sm text-[#d8d0df]"><span>Velocidad</span><select aria-label="Velocidad de lectura" value={speed} onChange={event=>setSpeed(Number(event.target.value))} className="rounded-md border border-[rgba(212,175,55,0.35)] bg-[#100b17] px-2 py-2 text-[#f4df9b]"><option value={0.8}>Lenta</option><option value={1}>Normal</option><option value={1.2}>Rápida</option></select></label>
   </div>
