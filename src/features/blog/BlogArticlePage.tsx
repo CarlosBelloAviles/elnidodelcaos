@@ -90,17 +90,34 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
   const handleVisibility=()=>{
    if(document.visibilityState!=="visible")return;
    window.setTimeout(()=>{
-    if(activeRef.current&&!window.speechSynthesis.speaking&&!window.speechSynthesis.paused){activeRef.current=false;setStatus("error");}
-   },400);
+    // Algunos navegadores móviles suspenden SpeechSynthesis al cambiar de aplicación.
+    // Al volver, reintenta el fragmento actual en vez de abandonar la lectura.
+    if(activeRef.current&&!window.speechSynthesis.speaking&&!window.speechSynthesis.paused){
+     window.speechSynthesis.cancel();
+     runChunkRef.current();
+    }
+   },500);
   };
+  const mediaSession="mediaSession" in navigator?navigator.mediaSession:null;
+  const setMediaState=(state:"playing"|"paused"|"none")=>{if(mediaSession)mediaSession.playbackState=state;};
+  try{
+   if(mediaSession&&"MediaMetadata" in window)mediaSession.metadata=new MediaMetadata({title,artist:"El Nido del Caos",album:"El Grimorio"});
+   mediaSession?.setActionHandler("play",()=>{
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    else if(!window.speechSynthesis.speaking){activeRef.current=true;runChunkRef.current();}
+    activeRef.current=true;setStatus("playing");setMediaState("playing");
+   });
+   mediaSession?.setActionHandler("pause",()=>{window.speechSynthesis.pause();setStatus("paused");setMediaState("paused");});
+   mediaSession?.setActionHandler("stop",()=>{activeRef.current=false;window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];setStatus("idle");setMediaState("none");});
+  }catch{/* Los controles multimedia no están disponibles en todos los navegadores. */}
   document.addEventListener("visibilitychange",handleVisibility);
-  return()=>{document.removeEventListener("visibilitychange",handleVisibility);window.speechSynthesis.removeEventListener?.("voiceschanged",updateVoice);window.speechSynthesis.cancel();activeRef.current=false;};
+  return()=>{document.removeEventListener("visibilitychange",handleVisibility);window.speechSynthesis.removeEventListener?.("voiceschanged",updateVoice);try{mediaSession?.setActionHandler("play",null);mediaSession?.setActionHandler("pause",null);mediaSession?.setActionHandler("stop",null);setMediaState("none");}catch{/* API multimedia no compatible. */}window.speechSynthesis.cancel();activeRef.current=false;};
  },[]);
  useEffect(()=>{speedRef.current=speed;},[speed]);
  runChunkRef.current=()=>{
   if(!activeRef.current)return;
   const chunk=chunksRef.current[indexRef.current];
-  if(!chunk){activeRef.current=false;try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("done");return;}
+  if(!chunk){activeRef.current=false;try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("done");if("mediaSession" in navigator)navigator.mediaSession.playbackState="none";return;}
   try{sessionStorage.setItem(storageKey,JSON.stringify({index:indexRef.current,total:chunksRef.current.length,textLength:speechText.length}));}catch{/* El almacenamiento puede estar deshabilitado. */}
   const utterance=new SpeechSynthesisUtterance(chunk);
   const voices=window.speechSynthesis.getVoices();
@@ -115,8 +132,9 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
    setStatus("error");
   };
   window.speechSynthesis.speak(utterance);
+  if("mediaSession" in navigator)navigator.mediaSession.playbackState="playing";
  };
- const stop=()=>{activeRef.current=false;if("speechSynthesis" in window)window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("idle");};
+ const stop=()=>{activeRef.current=false;if("speechSynthesis" in window)window.speechSynthesis.cancel();indexRef.current=0;chunksRef.current=[];try{sessionStorage.removeItem(storageKey);}catch{/* El almacenamiento puede estar deshabilitado. */}setStatus("idle");if("mediaSession" in navigator)navigator.mediaSession.playbackState="none";};
  const play=()=>{
   if(!supported)return;
   if(status==="paused"){
@@ -136,9 +154,9 @@ function BlogAudioReader({title,description,content,postSlug}:{title:string;desc
     }
    }catch{/* El almacenamiento puede estar deshabilitado o contener datos inválidos. */}
   }
-  activeRef.current=true;setStatus("playing");runChunkRef.current();
+  activeRef.current=true;setStatus("playing");if("mediaSession" in navigator)navigator.mediaSession.playbackState="playing";runChunkRef.current();
  };
- const pause=()=>{if(window.speechSynthesis.speaking){window.speechSynthesis.pause();setStatus("paused");}};
+ const pause=()=>{if(window.speechSynthesis.speaking){window.speechSynthesis.pause();setStatus("paused");if("mediaSession" in navigator)navigator.mediaSession.playbackState="paused";}};
  return <section aria-label="Escuchar artículo" className="mx-auto mb-8 max-w-3xl rounded-xl border border-[rgba(212,175,55,0.35)] bg-[linear-gradient(135deg,rgba(55,25,70,0.55),rgba(16,11,23,0.92))] p-4 sm:p-5">
   <div className="flex items-start gap-3"><span className="mt-0.5 rounded-full border border-[rgba(212,175,55,0.35)] bg-[#21172b] p-2 text-[#f0d98a]"><Volume2 className="h-5 w-5"/></span><div className="min-w-0 flex-1"><h2 className="font-serif text-lg text-[#f4df9b]">Escuchar este artículo</h2><p className="mt-1 text-xs leading-5 text-[#bdb2c9]">{supported?voiceLabel:"Tu navegador no ofrece lectura en voz alta."}</p></div></div>
   <div className="mt-4 flex flex-wrap items-center gap-2">
