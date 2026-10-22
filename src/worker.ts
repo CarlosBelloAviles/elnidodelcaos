@@ -278,6 +278,7 @@ ${urls.join("\n")}
           .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, "")
           .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, "");
 
+        const socialImage = normalizeSocialImage(image);
         const tags = [
           "<title>" + escapeHtml(title) + "</title>",
           '<meta name="description" content="' + escapeHtml(description) + '">',
@@ -287,8 +288,8 @@ ${urls.join("\n")}
           '<meta property="og:title" content="' + escapeHtml(title) + '">',
           '<meta property="og:description" content="' + escapeHtml(description) + '">',
           '<meta property="og:url" content="' + escapeHtml(canonical) + '">',
-          '<meta property="og:image" content="' + escapeHtml(image) + '">',
-          '<meta property="og:image:secure_url" content="' + escapeHtml(image) + '">',
+          '<meta property="og:image" content="' + escapeHtml(socialImage) + '">',
+          '<meta property="og:image:secure_url" content="' + escapeHtml(socialImage) + '">',
           '<meta property="og:image:type" content="' + (new URL(image).pathname.toLowerCase().endsWith(".png") ? "image/png" : "image/jpeg") + '">',
           '<meta property="og:image:alt" content="' + escapeHtml(imageAlt) + '">',
           '<meta property="og:site_name" content="El Nido del Caos">',
@@ -296,7 +297,7 @@ ${urls.join("\n")}
           '<meta name="twitter:card" content="summary_large_image">',
           '<meta name="twitter:title" content="' + escapeHtml(title) + '">',
           '<meta name="twitter:description" content="' + escapeHtml(description) + '">',
-          '<meta name="twitter:image" content="' + escapeHtml(image) + '">',
+          '<meta name="twitter:image" content="' + escapeHtml(socialImage) + '">',
         ].join("\n");
 
         const modifiedHtml = cleanedHtml.replace(/<\/head>/i, tags + "\n</head>");
