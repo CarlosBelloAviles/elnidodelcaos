@@ -263,7 +263,7 @@ ${urls.join("\n")}
           title = (article.meta_title?.trim() || article.title) + " | El Grimorio";
           description = article.meta_description?.trim() || "Explora esta lectura de El Grimorio de El Nido del Caos.";
           canonical = "https://elnidodelcaos.cl/grimorio/" + encodeURIComponent(article.slug);
-          image = article.cover_image_url || image;
+          image = normalizeSocialImage(article.cover_image_url || image);
           imageAlt = article.cover_image_alt || article.title;
           ogType = "article";
         }
@@ -288,6 +288,8 @@ ${urls.join("\n")}
           '<meta property="og:description" content="' + escapeHtml(description) + '">',
           '<meta property="og:url" content="' + escapeHtml(canonical) + '">',
           '<meta property="og:image" content="' + escapeHtml(image) + '">',
+          '<meta property="og:image:secure_url" content="' + escapeHtml(image) + '">',
+          '<meta property="og:image:type" content="' + (new URL(image).pathname.toLowerCase().endsWith(".png") ? "image/png" : "image/jpeg") + '">',
           '<meta property="og:image:alt" content="' + escapeHtml(imageAlt) + '">',
           '<meta property="og:site_name" content="El Nido del Caos">',
           '<meta property="og:locale" content="es_CL">',
@@ -579,6 +581,22 @@ ${imageDimensions}
     );
   },
 };
+
+function normalizeSocialImage(value: string): string {
+  try {
+    const imageUrl = new URL(value);
+    // WhatsApp link previews are more reliable with JPEG/PNG than WebP.
+    // Preserve Cloudinary asset identity while requesting JPEG delivery.
+    if (imageUrl.hostname === "res.cloudinary.com") {
+      imageUrl.pathname = imageUrl.pathname.replace(/\/upload\/(?:[^/]+\/)*v\d+\//, "/upload/f_jpg,q_auto/v" + (imageUrl.pathname.match(/\/v(\d+)\//)?.[1] ?? "") + "/");
+      imageUrl.pathname = imageUrl.pathname.replace(/\/upload\/(?:f_webp|f_auto)(?:,[^/]*)?\//, "/upload/f_jpg,q_auto/");
+      imageUrl.pathname = imageUrl.pathname.replace(/\/upload\/f_jpg,q_auto\/f_jpg,q_auto\//, "/upload/f_jpg,q_auto/");
+    }
+    return imageUrl.toString();
+  } catch {
+    return value;
+  }
+}
 
 function getSupabaseConfig(env: Env): {
   url: string;
