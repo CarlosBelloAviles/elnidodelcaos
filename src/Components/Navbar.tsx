@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
 
@@ -56,6 +57,7 @@ const Navbar = () => {
         !navRef.current.contains(event.target as Node)
       ) {
         setMenuOpen(false);
+        setMoreOpen(false);
       }
     };
 
@@ -64,7 +66,7 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuOpen]);
+  }, [menuOpen, moreOpen]);
 
   const goHome = () => {
     setMenuOpen(false);
@@ -144,29 +146,48 @@ const Navbar = () => {
             El Grimorio
           </button>
 
-          <button
-            type="button"
-            onClick={() => scrollToSection("como-funciona")}
-            className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
-          >
-            Cómo funciona
-          </button>
+          {/* Enlaces secundarios solo en escritorio */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setMoreOpen((open) => !open)}
+              aria-haspopup="true"
+              aria-expanded={moreOpen}
+              className="flex cursor-pointer items-center gap-1.5 p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
+            >
+              Ver más
+              <ChevronDown
+                size={16}
+                className={`transition-transform ${moreOpen ? "rotate-180" : ""}`}
+              />
+            </button>
 
-          <button
-            type="button"
-            onClick={() => scrollToSection("testimonios")}
-            className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
-          >
-            Testimonios
-          </button>
-
-          <button
-            type="button"
-            onClick={() => scrollToSection("contacto")}
-            className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"
-          >
-            Contacto
-          </button>
+            {moreOpen && (
+              <div className="absolute right-0 top-full z-[60] mt-2 min-w-48 overflow-hidden rounded-md border border-[rgba(212,175,55,0.3)] bg-black py-1 shadow-xl">
+                <button
+                  type="button"
+                  onClick={() => { setMoreOpen(false); scrollToSection("como-funciona"); }}
+                  className="block w-full cursor-pointer px-4 py-3 text-left text-base text-[rgb(228,227,189)] transition-colors hover:bg-[rgba(212,175,55,0.08)] hover:text-[#d4af37]"
+                >
+                  Cómo funciona
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setMoreOpen(false); scrollToSection("testimonios"); }}
+                  className="block w-full cursor-pointer px-4 py-3 text-left text-base text-[rgb(228,227,189)] transition-colors hover:bg-[rgba(212,175,55,0.08)] hover:text-[#d4af37]"
+                >
+                  Testimonios
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setMoreOpen(false); scrollToSection("contacto"); }}
+                  className="block w-full cursor-pointer px-4 py-3 text-left text-base text-[rgb(228,227,189)] transition-colors hover:bg-[rgba(212,175,55,0.08)] hover:text-[#d4af37]"
+                >
+                  Contacto
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Redes sociales escritorio */}
           <div className="ml-3 flex items-center gap-4 border-l border-[rgba(212,175,55,0.25)] pl-4">
