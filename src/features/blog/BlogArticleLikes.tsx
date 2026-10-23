@@ -23,33 +23,32 @@ export default function BlogArticleLikes({ postId }: { postId: string }) {
 
   useEffect(() => {
     let active = true;
-    try {
-      const visitorId = getVisitorId();
-      supabase
-        .rpc("get_or_toggle_blog_post_like", {
-          p_post_id: postId,
-          p_visitor_id: visitorId,
-          p_toggle: false,
-        })
-        .then(({ data, error: requestError }) => {
-          if (!active) return;
-          if (requestError) throw requestError;
-          const state = (Array.isArray(data) ? data[0] : data) as LikeState | null;
-          setCount(Number(state?.like_count ?? 0));
-          setLiked(Boolean(state?.liked));
-        })
-        .catch((requestError: unknown) => {
-          console.error("No se pudieron cargar los me gusta del artículo.", requestError);
-          if (active) setError(true);
-        })
-        .finally(() => {
-          if (active) setLoading(false);
-        });
-    } catch (requestError) {
-      console.error("No se pudo identificar a este visitante.", requestError);
-      setError(true);
-      setLoading(false);
+
+    async function loadLikeState() {
+      try {
+        const visitorId = getVisitorId();
+        const { data, error: requestError } = await supabase.rpc(
+          "get_or_toggle_blog_post_like",
+          {
+            p_post_id: postId,
+            p_visitor_id: visitorId,
+            p_toggle: false,
+          },
+        );
+        if (requestError) throw requestError;
+        if (!active) return;
+        const state = (Array.isArray(data) ? data[0] : data) as LikeState | null;
+        setCount(Number(state?.like_count ?? 0));
+        setLiked(Boolean(state?.liked));
+      } catch (requestError) {
+        console.error("No se pudieron cargar los me gusta del artículo.", requestError);
+        if (active) setError(true);
+      } finally {
+        if (active) setLoading(false);
+      }
     }
+
+    void loadLikeState();
     return () => {
       active = false;
     };
