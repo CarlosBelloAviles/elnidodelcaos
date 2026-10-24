@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BellRing, CheckCircle2, ShieldCheck } from "lucide-react";
 import supabase from "../../utils/supabase";
 
@@ -13,6 +13,35 @@ function base64UrlToBytes(value: string): Uint8Array<ArrayBuffer> {
 export default function BlogPushSignup() {
   const [state, setState] = useState<NoticeState>("idle");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    async function restoreSubscription() {
+      try {
+        if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) return;
+        const registration = await navigator.serviceWorker.register("/sw.js");
+        await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        if (!subscription || Notification.permission !== "granted") return;
+        const { error } = await supabase.functions.invoke("blog-push", {
+          body: { action: "subscribe", subscription: subscription.toJSON() },
+        });
+        if (error) throw error;
+        if (!cancelled) {
+          setState("success");
+          setMessage("Las notificaciones están activadas en este dispositivo.");
+        }
+      } catch {
+        if (!cancelled) {
+          setState("idle");
+          setMessage("");
+        }
+      }
+    }
+    void restoreSubscription();
+    return () => { cancelled = true; };
+  }, []);
+
   async function subscribe() {
     setState("working"); setMessage("");
     try {
