@@ -3,10 +3,10 @@ import { BellRing, CheckCircle2, ShieldCheck } from "lucide-react";
 import supabase from "../../utils/supabase";
 
 type NoticeState = "idle" | "working" | "success" | "error";
-function base64UrlToBytes(value: string): Uint8Array {
+function base64UrlToBytes(value: string): Uint8Array<ArrayBuffer> {
   const padded = (value + "=".repeat((4 - (value.length % 4)) % 4)).replace(/-/g, "+").replace(/_/g, "/");
   const raw = window.atob(padded);
-  const bytes = new Uint8Array(raw.length);
+  const bytes = new Uint8Array(new ArrayBuffer(raw.length));
   for (let i = 0; i < raw.length; i += 1) bytes[i] = raw.charCodeAt(i);
   return bytes;
 }
