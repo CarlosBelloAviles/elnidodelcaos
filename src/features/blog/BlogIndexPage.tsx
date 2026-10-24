@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../../Components/SEO";
+import BlogPushSignup from "./BlogPushSignup";
 import {
   getBlogCategories,
   getFeaturedBlogPosts,
@@ -86,6 +87,8 @@ function BlogIndexPage() {
               Un espacio de conocimiento y guía para comprender la Magia del Caos, conocer sus prácticas y entender mejor los servicios de El Nido del Caos.
             </p>
           </header>
+
+          <BlogPushSignup />
 
           {categories.length > 0 && (
             <div className="mb-8 flex flex-wrap justify-center gap-2" aria-label="Filtrar artículos por categoría">
