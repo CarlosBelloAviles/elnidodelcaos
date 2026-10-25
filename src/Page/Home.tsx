@@ -76,8 +76,8 @@ const Home = () => {
   return (
     <>
       <SEO
-  title="Nido del Caos | Tarot, Brujería, Limpiezas y Rituales"
-  description="Nido del Caos es un espacio dedicado al tarot, la brujería, las limpiezas energéticas, la protección y los rituales. Descubre servicios personalizados de orientación, interpretación, trabajo energético y prácticas esotéricas diseñadas para acompañarte en diferentes procesos y necesidades."
+  title="El Nido del Caos | Tarot y Limpieza Energética en Chile"
+  description="El Nido del Caos ofrece tarot, limpiezas energéticas, protección y rituales personalizados en Chile. Explora servicios de orientación, trabajo energético y prácticas esotéricas para acompañar tus procesos y propósitos."
   canonical="https://elnidodelcaos.cl/"
   image="https://elnidodelcaos.cl/seo_nido.png"
 />
