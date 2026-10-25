@@ -79,7 +79,7 @@ if (error) {
     );
   }
 
-  const title = `${data.name} | Nido del Caos`;
+  const title = `${data.name} | El Nido del Caos`;
 
   const description = `${data.name}: ${
     data.description?.trim() ||
@@ -97,7 +97,7 @@ if (error) {
     url: canonicalUrl,
     provider: {
       "@type": "Organization",
-      name: "Nido del Caos",
+      name: "El Nido del Caos",
       url: "https://elnidodelcaos.cl/",
     },
   };
