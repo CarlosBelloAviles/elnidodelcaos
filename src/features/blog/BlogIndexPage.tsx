@@ -88,8 +88,6 @@ function BlogIndexPage() {
             </p>
           </header>
 
-          <BlogPushSignup />
-
           {categories.length > 0 && (
             <div className="mb-8 grid grid-cols-3 gap-2 sm:gap-3" aria-label="Filtrar artículos por categoría">
               <button type="button" onClick={() => { setPage(0); setCategorySlug(""); }} className={`flex min-h-[64px] items-center justify-center rounded-full border px-2 py-3 text-center text-[10px] leading-snug transition-colors sm:px-3 sm:text-sm ${categorySlug === "" ? "border-[#d4af37] bg-[#d4af37] text-[#08060d]" : "border-[rgba(212,175,55,0.3)] text-[#e8e0ec] hover:border-[#d4af37]"}`}>
@@ -179,6 +177,10 @@ function BlogIndexPage() {
               </button>
             </nav>
           )}
+
+          <div className="mt-12">
+            <BlogPushSignup />
+          </div>
         </div>
       </section>
     </>
