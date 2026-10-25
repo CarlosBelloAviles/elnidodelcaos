@@ -363,7 +363,7 @@ ${urls.join("\n")}
                 await assetResponse.text();
 
               const title =
-                `${product.name} | Nido del Caos`;
+                `${product.name} | El Nido del Caos`;
 
               const description =
                 product.description?.trim() ||
