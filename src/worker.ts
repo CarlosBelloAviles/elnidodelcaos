@@ -265,7 +265,7 @@ ${urls.join("\n")}
             }));
           }
 
-          title = (article.meta_title?.trim() || article.title) + " | El Grimorio";
+          title = (article.meta_title?.trim() || article.title).replace(/\s+/g, " ").trim() + " | El Grimorio";
           description = article.meta_description?.trim() || "Explora esta lectura de El Grimorio de El Nido del Caos.";
           canonical = "https://elnidodelcaos.cl/grimorio/" + encodeURIComponent(article.slug);
           image = normalizeSocialImage(article.cover_image_url || image);
@@ -368,7 +368,7 @@ ${urls.join("\n")}
                 await assetResponse.text();
 
               const title =
-                `${product.name} | El Nido del Caos`;
+                `${product.name.replace(/\s+/g, " ").trim()} | El Nido del Caos`;
 
               const description =
                 product.description?.trim() ||
