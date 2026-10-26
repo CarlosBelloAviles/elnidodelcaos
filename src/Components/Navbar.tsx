@@ -59,7 +59,7 @@ const Navbar = () => {
           className="flex shrink-0 cursor-pointer flex-col items-center justify-center py-1 text-[#d4af37]"
         >
           <img
-            src="/logo-caos.webp"
+            src="https://res.cloudinary.com/pnvel4tk/image/upload/v1792984286/nido-brand/nido-logo-simbolo-caos.webp"
             alt=""
             aria-hidden="true"
             className="h-9 w-9 object-contain sm:h-10 sm:w-10"
