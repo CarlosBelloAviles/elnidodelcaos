@@ -14,8 +14,6 @@ import Testimonials from "../Components/Testimonials";
 
 const Home = () => {
   const location = useLocation();
-  const [headerTopOffset, setHeaderTopOffset] = useState(60);
-
   useEffect(() => {
     const nav = document.querySelector("nav");
     if (!nav) return;
@@ -104,7 +102,7 @@ const Home = () => {
   image="https://elnidodelcaos.cl/seo_nido.png"
 />
 
-      <div style={{ paddingTop: `${headerTopOffset}px` }}>
+      <div className="pt-[60px] lg:pt-[88px]">
           <Header />
 
           {/* TRANSICIÓN ATMOSFÉRICA */}
