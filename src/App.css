@@ -570,3 +570,62 @@
   background: #f2eaf4 !important;
   border-color: #c0aecb !important;
 }
+
+
+/* Paleta alternativa del modo claro: azul noche en los dos bloques de cierre y cobre en el audio */
+.blog-article-light section[class*="rounded-xl"][class*="text-center"],
+.blog-article-light .blog-article-cta {
+  background: #263d56 !important;
+  border-color: #49627b !important;
+  box-shadow: 0 8px 24px rgba(25, 42, 61, .14);
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] h2,
+.blog-article-light .blog-article-cta h2 {
+  color: #f5eee2 !important;
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] p,
+.blog-article-light .blog-article-cta p {
+  color: #e3eaf0 !important;
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] button,
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] a,
+.blog-article-light .blog-article-cta a {
+  background: #b96532 !important;
+  border-color: #d18a5c !important;
+  color: #fffaf2 !important;
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] button:hover,
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] a:hover,
+.blog-article-light .blog-article-cta a:hover {
+  background: #984b27 !important;
+  border-color: #e0a174 !important;
+  color: #fffaf2 !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] {
+  background: #b96532 !important;
+  border-color: #984b27 !important;
+  box-shadow: 0 5px 18px rgba(112, 57, 29, .16);
+}
+.blog-article-light [aria-label="Escuchar artículo"] h2 {
+  color: #fffaf2 !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] p,
+.blog-article-light [aria-label="Escuchar artículo"] label,
+.blog-article-light [aria-label="Escuchar artículo"] span {
+  color: #fff1e4 !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] button {
+  background: #302536 !important;
+  border-color: #302536 !important;
+  color: #fffaf2 !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] button:disabled {
+  background: #d9a17e !important;
+  border-color: #d9a17e !important;
+  color: #59331f !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] select {
+  background: #f5dfd0 !important;
+  border-color: #984b27 !important;
+  color: #302536 !important;
+}
