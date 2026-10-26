@@ -62,9 +62,9 @@ const Navbar = () => {
             src="https://res.cloudinary.com/pnvel4tk/image/upload/v1792984286/nido-brand/nido-logo-simbolo-caos.webp"
             alt=""
             aria-hidden="true"
-            className="h-9 w-9 object-contain sm:h-10 sm:w-10"
+            className="h-12 w-12 object-contain sm:h-14 sm:w-14"
           />
-          <span className="mt-0.5 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.12em] sm:text-xs">
+          <span className="mt-0.5 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.1em] sm:text-[10px]">
             EL NIDO DEL CAOS
           </span>
         </button>
