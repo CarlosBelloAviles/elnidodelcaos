@@ -50,8 +50,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav ref={navRef} className="fixed top-0 left-0 z-50 min-h-[60px] w-full bg-black px-4 sm:px-6">
-      <div className="mx-auto flex min-h-[60px] max-w-[1200px] items-center justify-between">
+    <nav ref={navRef} className="fixed top-0 left-0 z-50 min-h-[80px] w-full bg-black px-4 sm:px-6 lg:min-h-[88px]">
+      <div className="mx-auto flex min-h-[80px] max-w-[1200px] items-center justify-between lg:min-h-[88px]">
         <button
           type="button"
           onClick={goHome}
