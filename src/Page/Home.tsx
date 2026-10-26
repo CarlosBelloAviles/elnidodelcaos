@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import SEO from "../Components/SEO";
@@ -14,27 +14,6 @@ import Testimonials from "../Components/Testimonials";
 
 const Home = () => {
   const location = useLocation();
-  useEffect(() => {
-    const nav = document.querySelector("nav");
-    if (!nav) return;
-
-    const updateHeaderOffset = () => {
-      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-      setHeaderTopOffset(isDesktop ? nav.getBoundingClientRect().height : 60);
-    };
-
-    updateHeaderOffset();
-
-    const observer = new ResizeObserver(updateHeaderOffset);
-    observer.observe(nav);
-    window.addEventListener("resize", updateHeaderOffset);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", updateHeaderOffset);
-    };
-  }, []);
-
   useEffect(() => {
     const sectionId = location.state?.scrollTo;
 
