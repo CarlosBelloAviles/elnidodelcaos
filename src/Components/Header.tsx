@@ -4,17 +4,23 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+
+    const nav = document.querySelector("nav");
+    const navHeight = nav?.getBoundingClientRect().height ?? 0;
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+
+    window.scrollTo({
+      top: Math.max(0, sectionTop - navHeight),
+      behavior: "smooth",
+    });
+  };
+
   const scrollToServices = () => {
     if (location.pathname === "/") {
-      const section = document.getElementById("servicios");
-
-      if (section) {
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-
+      scrollToSection("servicios");
       return;
     }
 
@@ -164,10 +170,7 @@ const Header = () => {
           type="button"
           onClick={() => {
             if (location.pathname === "/") {
-              document.getElementById("testimonios")?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
+              scrollToSection("testimonios");
               return;
             }
 
