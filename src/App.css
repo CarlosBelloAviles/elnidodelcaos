@@ -705,3 +705,15 @@
 .blog-article-light [aria-label="Escuchar artículo"] input[type="range"] {
   accent-color: #f0d5a1 !important;
 }
+
+
+/* Jerarquía tipográfica del encabezado en modo claro; el tema oscuro queda intacto */
+.blog-article-light > div > header h1 {
+  color: #684785 !important;
+}
+.blog-article-light > div > header > p {
+  color: #81513e !important;
+}
+.blog-article-light > div > header span[class*="uppercase"] {
+  color: #98752f !important;
+}
