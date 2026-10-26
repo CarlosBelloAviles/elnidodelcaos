@@ -629,3 +629,79 @@
   border-color: #984b27 !important;
   color: #302536 !important;
 }
+
+
+/* Ajuste final de paleta en modo claro: terracota equilibrado y cierres ciruela */
+.blog-article-light section[class*="rounded-xl"][class*="text-center"],
+.blog-article-light .blog-article-cta {
+  background: #38233f !important;
+  border-color: #62486a !important;
+  box-shadow: 0 8px 24px rgba(56, 35, 63, .16);
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] h2,
+.blog-article-light .blog-article-cta h2 {
+  color: #fff4e7 !important;
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] p,
+.blog-article-light .blog-article-cta p {
+  color: #e9dce9 !important;
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] button,
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] a,
+.blog-article-light .blog-article-cta a {
+  background: #a85f40 !important;
+  border-color: #c07b59 !important;
+  color: #fff6ec !important;
+}
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] button:hover,
+.blog-article-light section[class*="rounded-xl"][class*="text-center"] a:hover,
+.blog-article-light .blog-article-cta a:hover {
+  background: #8e4b32 !important;
+  border-color: #d49a78 !important;
+  color: #fff6ec !important;
+}
+
+/* El terracota se mantiene en el reproductor, con controles y textos armonizados */
+.blog-article-light [aria-label="Escuchar artículo"] {
+  background: #b87555 !important;
+  border-color: #a76243 !important;
+  box-shadow: 0 5px 18px rgba(112, 57, 29, .12);
+}
+.blog-article-light [aria-label="Escuchar artículo"] h2 {
+  color: #fff6ec !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] p,
+.blog-article-light [aria-label="Escuchar artículo"] label,
+.blog-article-light [aria-label="Escuchar artículo"] span {
+  color: #fff0e3 !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] > div:first-child > span {
+  background: #f1dfcf !important;
+  border-color: #d8b59c !important;
+  color: #8e4b32 !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] > div:first-child > span svg {
+  color: #8e4b32 !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] button {
+  background: #8e4b32 !important;
+  border-color: #8e4b32 !important;
+  color: #fff6ec !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] button:hover {
+  background: #773d2b !important;
+  border-color: #773d2b !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] button:disabled {
+  background: #d7a58a !important;
+  border-color: #d7a58a !important;
+  color: #59382d !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] select {
+  background: #f1dfcf !important;
+  border-color: #d8b59c !important;
+  color: #59382d !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] input[type="range"] {
+  accent-color: #f0d5a1 !important;
+}
