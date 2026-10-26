@@ -144,3 +144,50 @@
 .blog-article-light input[type="range"] { accent-color: #684785; }
 .blog-article-light [aria-label*="visualizaciones"] { color: #625568 !important; }
 .blog-article-light [aria-label*="visualizaciones"] svg { color: #98752f !important; }
+
+/* Refuerzo directo de legibilidad en el tema claro */
+.blog-article-light [class*="text-[#aaa2b3"],
+.blog-article-light [class*="text-[#bdb2c9"],
+.blog-article-light [class*="text-[#b8944a"],
+.blog-article-light [class*="text-[#d8d0df"] {
+  color: #625568 !important;
+}
+.blog-article-light [class*="text-[#e8e0ec"],
+.blog-article-light [class*="text-[#f4df9b"],
+.blog-article-light [class*="text-[#f0d98a"],
+.blog-article-light [class*="text-[#e7d8b0"] {
+  color: #302536 !important;
+}
+.blog-article-light [class*="text-[#d4af37"] {
+  color: #684785 !important;
+}
+.blog-article-light header [class*="text-[#b8944a"] {
+  color: #98752f !important;
+}
+.blog-article-light [aria-label*="visualizaciones"] {
+  color: #625568 !important;
+}
+.blog-article-light [aria-label*="visualizaciones"] svg {
+  color: #98752f !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] {
+  background: #f3ecdf !important;
+  border-color: rgba(104, 71, 133, .35) !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] button:disabled {
+  color: #817487 !important;
+  opacity: .5;
+}
+.blog-article-light [aria-label="Escuchar artículo"] select {
+  color: #684785 !important;
+  background: #f3ecdf !important;
+  border-color: rgba(104, 71, 133, .4) !important;
+}
+.blog-article-light .blog-prose [class*="bg-[#100b17"],
+.blog-article-light .blog-prose [class*="bg-[#21172b"] {
+  background: #e1d7e5 !important;
+}
+.blog-article-light .blog-prose blockquote {
+  background: #e1d7e5 !important;
+  color: #46334f !important;
+}
