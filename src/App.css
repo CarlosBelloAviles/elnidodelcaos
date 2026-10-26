@@ -191,3 +191,76 @@
   background: #e1d7e5 !important;
   color: #46334f !important;
 }
+
+/* Paleta independiente: modo claro editorial */
+.blog-article-light {
+  --article-bg: #e9e0cf;
+  --article-surface: #f3ecdf;
+  --article-surface-raised: #e2d7c5;
+  --article-ink: #302536;
+  --article-body: #39333d;
+  --article-muted: #625568;
+  --article-accent: #684785;
+  --article-accent-hover: #4f3268;
+  --article-gold: #98752f;
+  --article-border: #c7b9a6;
+  background: radial-gradient(ellipse at 50% 0%, rgba(118,85,140,.08), transparent 42%), var(--article-bg) !important;
+  color: var(--article-body) !important;
+}
+.blog-article-light header,
+.blog-article-light header * { color: var(--article-ink); }
+.blog-article-light header h1 { color: var(--article-ink) !important; }
+.blog-article-light header p { color: var(--article-body) !important; }
+.blog-article-light header span { color: var(--article-muted); }
+.blog-article-light header span[class*="uppercase"] { color: var(--article-gold) !important; border-color: var(--article-border) !important; }
+.blog-article-light header [aria-label*="visualizaciones"] { color: var(--article-muted) !important; }
+.blog-article-light header [aria-label*="visualizaciones"] svg { color: var(--article-gold) !important; }
+.blog-article-light .blog-prose { color: var(--article-body) !important; }
+.blog-article-light .blog-prose p,
+.blog-article-light .blog-prose li,
+.blog-article-light .blog-prose td { color: var(--article-body) !important; }
+.blog-article-light .blog-prose h2,
+.blog-article-light .blog-prose h3,
+.blog-article-light .blog-prose strong { color: var(--article-ink) !important; }
+.blog-article-light .blog-prose a { color: var(--article-accent) !important; }
+.blog-article-light .blog-prose blockquote { background: var(--article-surface-raised) !important; color: #46334f !important; border-color: var(--article-accent) !important; }
+.blog-article-light .blog-prose code { background: #ded2e4 !important; color: #46334f !important; }
+.blog-article-light [aria-label="Escuchar artículo"] {
+  background: var(--article-surface) !important;
+  border-color: var(--article-border) !important;
+  color: var(--article-body) !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] h2,
+.blog-article-light [aria-label="Escuchar artículo"] p,
+.blog-article-light [aria-label="Escuchar artículo"] label,
+.blog-article-light [aria-label="Escuchar artículo"] span { color: var(--article-body) !important; }
+.blog-article-light [aria-label="Escuchar artículo"] button {
+  color: var(--article-accent) !important;
+  background: var(--article-surface) !important;
+  border-color: var(--article-border) !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] button:disabled { color: #817487 !important; opacity: .55; }
+.blog-article-light [aria-label="Escuchar artículo"] select {
+  color: var(--article-accent) !important;
+  background: var(--article-surface) !important;
+  border-color: var(--article-border) !important;
+}
+.blog-article-light [aria-label="Escuchar artículo"] svg { color: var(--article-accent) !important; }
+.blog-article-light a { color: var(--article-accent) !important; }
+.blog-article-light button { color: var(--article-accent) !important; }
+.blog-article-light [class*="bg-[#100b17"],
+.blog-article-light [class*="bg-[#21172b"],
+.blog-article-light [class*="bg-[linear-gradient"],
+.blog-article-light [class*="bg-[radial-gradient"] { background: var(--article-surface) !important; }
+.blog-article-light [class*="text-[#f4df9b"],
+.blog-article-light [class*="text-[#f0d98a"],
+.blog-article-light [class*="text-[#e8e0ec"],
+.blog-article-light [class*="text-[#e7d8b0"] { color: var(--article-ink) !important; }
+.blog-article-light [class*="text-[#aaa2b3"],
+.blog-article-light [class*="text-[#bdb2c9"],
+.blog-article-light [class*="text-[#d8d0df"],
+.blog-article-light [class*="text-[#b8944a"] { color: var(--article-muted) !important; }
+.blog-article-light [class*="text-[#d4af37"] { color: var(--article-accent) !important; }
+.blog-article-light [class*="border-[rgba(212,175,55"] { border-color: var(--article-border) !important; }
+.blog-article-light section[class*="border-t"] { border-color: var(--article-border) !important; }
+.blog-article-light img { border-color: var(--article-border) !important; }
