@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
-import supabase from "../../utils/supabase";
 
 type LikeState = { like_count: number; liked: boolean };
 
@@ -27,17 +26,14 @@ export default function BlogArticleLikes({ postId }: { postId: string }) {
     async function loadLikeState() {
       try {
         const visitorId = getVisitorId();
-        const { data, error: requestError } = await supabase.rpc(
-          "get_or_toggle_blog_post_like",
-          {
-            p_post_id: postId,
-            p_visitor_id: visitorId,
-            p_toggle: false,
-          },
-        );
-        if (requestError) throw requestError;
+        const response = await fetch("/api/blog/likes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ postId, visitorId, toggle: false }),
+        });
+        if (!response.ok) throw new Error(`No se pudo consultar el me gusta (HTTP ${response.status}).`);
+        const state = await response.json() as LikeState;
         if (!active) return;
-        const state = (Array.isArray(data) ? data[0] : data) as LikeState | null;
         setCount(Number(state?.like_count ?? 0));
         setLiked(Boolean(state?.liked));
       } catch (requestError) {
@@ -60,12 +56,13 @@ export default function BlogArticleLikes({ postId }: { postId: string }) {
     setError(false);
     try {
       const visitorId = getVisitorId();
-      const { data, error: requestError } = await supabase.rpc(
-        "get_or_toggle_blog_post_like",
-        { p_post_id: postId, p_visitor_id: visitorId, p_toggle: true },
-      );
-      if (requestError) throw requestError;
-      const state = (Array.isArray(data) ? data[0] : data) as LikeState | null;
+      const response = await fetch("/api/blog/likes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId, visitorId, toggle: true }),
+      });
+      if (!response.ok) throw new Error(`No se pudo actualizar el me gusta (HTTP ${response.status}).`);
+      const state = await response.json() as LikeState;
       if (!state) throw new Error("La base de datos no devolvió el estado del corazón.");
       setCount(Number(state.like_count ?? 0));
       setLiked(Boolean(state.liked));

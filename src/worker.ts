@@ -4,6 +4,7 @@ interface Env {
   ASSETS: Fetcher;
   SUPABASE_URL: string;
   SUPABASE_KEY: string;
+  SUPABASE_SERVICE_ROLE_KEY?: string;
 }
 
 interface ProductSEO {
@@ -63,6 +64,10 @@ export default {
           },
         }),
       );
+    }
+
+    if (url.pathname === "/api/blog/views" || url.pathname === "/api/blog/likes") {
+      return withSecurityHeaders(await handleBlogInteraction(request, env, url.pathname));
     }
 
     if (url.pathname === "/robots.txt") {
@@ -582,6 +587,79 @@ ${imageDimensions}
     );
   },
 };
+
+async function handleBlogInteraction(request: Request, env: Env, pathname: string): Promise<Response> {
+  const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
+    status, headers: { "Content-Type": "application/json; charset=UTF-8", "Cache-Control": "no-store" },
+  });
+  if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
+  const origin = request.headers.get("Origin");
+  if (!origin || origin !== new URL(request.url).origin) return json({ error: "Origin not allowed" }, 403);
+  if (!request.headers.get("Content-Type")?.toLowerCase().startsWith("application/json")) {
+    return json({ error: "Content-Type must be application/json" }, 415);
+  }
+  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  const supabaseUrl = env.SUPABASE_URL?.trim().replace(/\/$/, "");
+  if (!serviceRoleKey || !supabaseUrl) {
+    console.error("Blog interaction API is missing server configuration.");
+    return json({ error: "Service temporarily unavailable" }, 503);
+  }
+  let payload: Record<string, unknown>;
+  try {
+    const rawBody = await request.text();
+    if (rawBody.length > 2048) return json({ error: "Request too large" }, 413);
+    payload = JSON.parse(rawBody) as Record<string, unknown>;
+  } catch {
+    return json({ error: "Invalid JSON" }, 400);
+  }
+  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const postId = payload.postId;
+  const visitorId = payload.visitorId;
+  if (typeof postId !== "string" || !uuidPattern.test(postId) ||
+      typeof visitorId !== "string" || !uuidPattern.test(visitorId)) {
+    return json({ error: "Invalid article or visitor identifier" }, 400);
+  }
+  const action = pathname === "/api/blog/views" ? "view" : "like";
+  if (action === "like" && typeof payload.toggle !== "boolean") return json({ error: "Invalid like action" }, 400);
+  try {
+    const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+    const hmacKey = await crypto.subtle.importKey(
+      "raw", new TextEncoder().encode(serviceRoleKey),
+      { name: "HMAC", hash: "SHA-256" }, false, ["sign"],
+    );
+    const digest = await crypto.subtle.sign("HMAC", hmacKey, new TextEncoder().encode("blog-rate-v1:" + clientIp));
+    const rateKey = Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, "0")).join("");
+    const rpcName = action === "view" ? "blog_register_post_view_limited" : "blog_toggle_post_like_limited";
+    const rpcBody = action === "view"
+      ? { p_post_id: postId, p_visitor_id: visitorId, p_rate_key: rateKey }
+      : { p_post_id: postId, p_visitor_id: visitorId, p_toggle: payload.toggle, p_rate_key: rateKey };
+    const rpcResponse = await fetch(supabaseUrl + "/rest/v1/rpc/" + rpcName, {
+      method: "POST",
+      headers: { apikey: serviceRoleKey, Authorization: "Bearer " + serviceRoleKey, "Content-Type": "application/json" },
+      body: JSON.stringify(rpcBody),
+    });
+    const responseText = await rpcResponse.text();
+    if (!rpcResponse.ok) {
+      if (responseText.includes("Rate limit exceeded")) return json({ error: "Too many requests. Try again shortly." }, 429);
+      console.error("Blog interaction RPC failed.", { action, status: rpcResponse.status });
+      return json({ error: "Unable to save this interaction" }, 502);
+    }
+    const result = responseText ? JSON.parse(responseText) as unknown : null;
+    if (action === "view") {
+      const views = Number(result);
+      if (!Number.isFinite(views) || views < 0) return json({ error: "Invalid response from service" }, 502);
+      return json({ views });
+    }
+    const state = (Array.isArray(result) ? result[0] : result) as { like_count?: number; liked?: boolean } | null;
+    if (!state || !Number.isFinite(Number(state.like_count)) || typeof state.liked !== "boolean") {
+      return json({ error: "Invalid response from service" }, 502);
+    }
+    return json({ like_count: Number(state.like_count), liked: state.liked });
+  } catch (error) {
+    console.error("Blog interaction request failed.", error);
+    return json({ error: "Service temporarily unavailable" }, 503);
+  }
+}
 
 function normalizeSocialImage(value: string): string {
   try {

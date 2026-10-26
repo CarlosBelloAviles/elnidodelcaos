@@ -13,6 +13,7 @@
       "/servicios/*",
       "/grimorio",
       "/grimorio/*",
+      "/api/blog/*",
       "/blog",
       "/blog/*",
       "/.git",

@@ -163,10 +163,13 @@ export async function getRelatedServices(postId:string):Promise<RelatedService[]
 
 /** Registra una visualización única por artículo y navegador. La unicidad se garantiza en Supabase. */
 export async function registerBlogPostView(postId: string, visitorId: string): Promise<number> {
-  const { data, error } = await supabase.rpc("register_blog_post_view", {
-    p_post_id: postId,
-    p_visitor_id: visitorId,
+  const response = await fetch("/api/blog/views", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ postId, visitorId }),
   });
-  if (error) throw error;
-  return Number(data ?? 0);
+  if (!response.ok) throw new Error(`No se pudo registrar la visualización (HTTP ${response.status}).`);
+  const result = await response.json() as { views?: number };
+  if (!Number.isFinite(Number(result.views))) throw new Error("Respuesta inválida al registrar la visualización.");
+  return Number(result.views);
 }
