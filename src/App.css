@@ -717,3 +717,16 @@
 .blog-article-light > div > header span[class*="uppercase"] {
   color: #98752f !important;
 }
+
+
+/* Identidad autónoma del modo claro: se activa por data-theme, no por los colores heredados del tema oscuro */
+.blog-article[data-theme="light"] > div > header h1 {
+  color: #684785 !important;
+}
+.blog-article[data-theme="light"] > div > header > p {
+  color: #81513e !important;
+}
+.blog-article[data-theme="light"] > div > header span[class*="uppercase"] {
+  color: #98752f !important;
+}
+/* El modo oscuro conserva deliberadamente la paleta original del artículo. */
