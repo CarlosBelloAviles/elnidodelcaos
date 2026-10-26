@@ -546,3 +546,27 @@
     transform: none;
   }
 }
+
+
+/* Ajuste sutil de superficies: tarjetas un tono más profundas y audio diferenciado */
+.blog-article-light .blog-service-card,
+.blog-article-light .blog-related-article-card {
+  background: #e1d6c8 !important;
+  border-color: #c2b19d !important;
+  box-shadow: 0 3px 12px rgba(48, 37, 54, .055);
+}
+.blog-article-light .blog-service-card:hover,
+.blog-article-light .blog-related-article-card:hover {
+  background: #eee3d6 !important;
+  border-color: #98752f !important;
+  box-shadow: 0 8px 22px rgba(48, 37, 54, .11);
+}
+.blog-article-light [aria-label="Escuchar artículo"] {
+  background: #ded3e4 !important;
+  border-color: #c0aecb !important;
+  box-shadow: 0 5px 18px rgba(72, 48, 83, .09);
+}
+.blog-article-light [aria-label="Escuchar artículo"] select {
+  background: #f2eaf4 !important;
+  border-color: #c0aecb !important;
+}
