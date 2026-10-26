@@ -413,3 +413,136 @@
   background: #684785 !important;
   color: #fffaf2 !important;
 }
+
+
+/* Pulido final de recomendaciones: estilos aislados, sin cambiar la estructura del artículo */
+.blog-article .blog-related-services,
+.blog-article .blog-related-articles {
+  padding-top: 2rem;
+  border-color: rgba(212, 175, 55, .28);
+}
+.blog-article .blog-related-services > h2,
+.blog-article .blog-related-articles > h2 {
+  margin-bottom: .35rem;
+  letter-spacing: -.015em;
+}
+.blog-article .blog-related-services > p {
+  max-width: 42rem;
+  line-height: 1.8;
+}
+.blog-article .blog-service-card,
+.blog-article .blog-related-article-card {
+  min-width: 0;
+  border-radius: .85rem;
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.blog-article .blog-service-card:hover,
+.blog-article .blog-related-article-card:hover {
+  transform: translateY(-2px);
+}
+.blog-article .blog-service-card:focus-visible,
+.blog-article .blog-related-article-card:focus-visible,
+.blog-article .blog-article-cta a:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 3px;
+}
+.blog-article .blog-service-card img {
+  width: 5.25rem;
+  height: 5.25rem;
+  object-fit: cover;
+  border-radius: .6rem;
+}
+.blog-article .blog-service-card h3 {
+  line-height: 1.35;
+}
+.blog-article .blog-service-card p {
+  line-height: 1.55;
+}
+.blog-article .blog-related-article-card {
+  display: block;
+  line-height: 1.5;
+}
+.blog-article .blog-related-article-card span {
+  align-items: center;
+  gap: .4rem;
+}
+.blog-article .blog-article-cta {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+}
+.blog-article .blog-article-cta p {
+  line-height: 1.8;
+}
+.blog-article .blog-article-cta a {
+  transition: background-color .2s ease, color .2s ease, transform .2s ease;
+}
+.blog-article .blog-article-cta a:hover {
+  transform: translateY(-1px);
+}
+
+/* Contraste y acabado de los bloques relacionados en modo claro */
+.blog-article-light .blog-related-services,
+.blog-article-light .blog-related-articles {
+  border-color: #cbbba7 !important;
+}
+.blog-article-light .blog-related-services > h2,
+.blog-article-light .blog-related-articles > h2 {
+  color: #302536 !important;
+}
+.blog-article-light .blog-related-services > p {
+  color: #514657 !important;
+}
+.blog-article-light .blog-service-card,
+.blog-article-light .blog-related-article-card {
+  background: #f5eee2 !important;
+  border-color: #cbbba7 !important;
+  box-shadow: 0 3px 12px rgba(48, 37, 54, .035);
+}
+.blog-article-light .blog-service-card:hover,
+.blog-article-light .blog-related-article-card:hover {
+  background: #fffaf2 !important;
+  border-color: #98752f !important;
+  box-shadow: 0 8px 22px rgba(48, 37, 54, .09);
+}
+.blog-article-light .blog-service-card h3,
+.blog-article-light .blog-related-article-card {
+  color: #46334f !important;
+}
+.blog-article-light .blog-service-card p {
+  color: #625568 !important;
+}
+.blog-article-light .blog-service-card span,
+.blog-article-light .blog-related-article-card span {
+  color: #684785 !important;
+}
+.blog-article-light .blog-article-cta {
+  background: #e0d5e4 !important;
+  border-color: #c2afca !important;
+  box-shadow: 0 8px 24px rgba(48, 37, 54, .07);
+}
+.blog-article-light .blog-article-cta h2 {
+  color: #302536 !important;
+}
+.blog-article-light .blog-article-cta p {
+  color: #514657 !important;
+}
+.blog-article-light .blog-article-cta a {
+  background: #684785 !important;
+  border-color: #684785 !important;
+  color: #fffaf2 !important;
+}
+.blog-article-light .blog-article-cta a:hover {
+  background: #4f3268 !important;
+  border-color: #4f3268 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .blog-article .blog-service-card,
+  .blog-article .blog-related-article-card,
+  .blog-article .blog-article-cta a {
+    transition: none;
+  }
+  .blog-article .blog-service-card:hover,
+  .blog-article .blog-related-article-card:hover,
+  .blog-article .blog-article-cta a:hover {
+    transform: none;
+  }
+}
