@@ -197,6 +197,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setOpen(false);
         setQuery("");
+        setLoading(false);
       }
     };
 
@@ -242,7 +243,6 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
 
     return () => {
       active = false;
-      setLoading(false);
     };
   }, [open, index, retryCount]);
 
@@ -260,6 +260,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
   const close = () => {
     setOpen(false);
     setQuery("");
+    setLoading(false);
   };
 
   const openResult = (href: string) => {
@@ -282,7 +283,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
     <div ref={containerRef} className="relative inline-flex items-center">
       <button
         type="button"
-        onClick={() => setOpen((current) => !current)}
+        onClick={() => {\n          if (open) {\n            setOpen(false);\n            setQuery("");\n            setLoading(false);\n          } else {\n            setOpen(true);\n          }\n        }}
         aria-label={open ? "Cerrar buscador" : "Buscar en El Nido del Caos"}
         aria-expanded={open}
         aria-controls={`global-search-panel-${placement}`}
