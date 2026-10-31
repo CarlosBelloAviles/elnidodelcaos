@@ -149,7 +149,8 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<SearchIndex | null>(null);
   const [loading, setLoading] = useState(false);
-  const [loadError, setLoadError] = useState(false);\n  const [retryCount, setRetryCount] = useState(0);
+  const [loadError, setLoadError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -229,6 +230,10 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
 
   const openResult = (href: string) => {
     close();
+    if (href.startsWith("/#")) {
+      navigate("/", { state: { scrollTo: href.slice(2) } });
+      return;
+    }
     navigate(href);
   };
 
@@ -236,6 +241,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
     setIndex(null);
     setLoadError(false);
     setLoading(false);
+    setRetryCount((current) => current + 1);
   };
 
   return (
