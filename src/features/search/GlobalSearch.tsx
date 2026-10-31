@@ -36,6 +36,18 @@ function normalize(value: string) {
     .toLocaleLowerCase("es");
 }
 
+function extractSearchText(value: unknown): string {
+  if (typeof value === "string") return value;
+  if (Array.isArray(value)) return value.map(extractSearchText).filter(Boolean).join(" ");
+  if (value && typeof value === "object") {
+    return Object.values(value as Record<string, unknown>)
+      .map(extractSearchText)
+      .filter(Boolean)
+      .join(" ");
+  }
+  return "";
+}
+
 function buildIndex(
   categories: Category[],
   featuredPosts: BlogPost[],
@@ -71,7 +83,7 @@ function buildIndex(
     results.push({
       id: `post-${post.id}`,
       title: post.title,
-      description: post.meta_description?.trim() || post.category?.name || "Artículo de El Grimorio",
+      description: [post.meta_description?.trim(), post.category?.name, extractSearchText(post.content)].filter(Boolean).join(" "),
       href: `/grimorio/${post.slug}`,
       group: "Artículos",
     });
