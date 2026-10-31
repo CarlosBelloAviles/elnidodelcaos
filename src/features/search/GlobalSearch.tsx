@@ -137,6 +137,27 @@ function buildIndex(
       href: "/#sobre-mi",
       group: "Contenido",
     },
+    {
+      id: "content-conscious",
+      title: "Trabajo consciente",
+      description: "Magia del Caos aplicada a procesos de transformación y propósitos personales.",
+      href: "/#sobre-mi",
+      group: "Contenido",
+    },
+    {
+      id: "content-trust",
+      title: "Experiencia y confianza",
+      description: "Acompañamiento respetuoso, personalizado y confidencial.",
+      href: "/#sobre-mi",
+      group: "Contenido",
+    },
+    {
+      id: "content-rituals",
+      title: "Rituales y trabajos mágicos",
+      description: "Rituales personalizados, trabajos mágicos, aperturas de caminos, abundancia y amor.",
+      href: "/#sobre-mi",
+      group: "Contenido",
+    },
   ];
 
   results.push(...staticContent);
@@ -209,6 +230,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
 
     return () => {
       active = false;
+      setLoading(false);
     };
   }, [open, index, retryCount]);
 
