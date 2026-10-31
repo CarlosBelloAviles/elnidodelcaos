@@ -15,6 +15,7 @@ const Destacados = () => {
 
   return (
     <section
+      id="destacados"
       className="
         mx-auto box-border w-full max-w-[1400px]
         px-[15px] py-[45px]
