@@ -16,6 +16,7 @@ function excerpt(post: BlogPost) {
 }
 
 function BlogIndexPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
