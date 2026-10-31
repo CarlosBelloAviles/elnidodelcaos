@@ -186,6 +186,8 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
   const [retryCount, setRetryCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [mobilePanelTop, setMobilePanelTop] = useState(0);
   const navigate = useNavigate();
 
   const isMobile = placement === "mobile";
@@ -208,6 +210,9 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
   useEffect(() => {
     if (!open) return;
     inputRef.current?.focus();
+    if (isMobile && triggerRef.current) {
+      setMobilePanelTop(triggerRef.current.getBoundingClientRect().bottom + 12);
+    }
 
     if (index || loading) return;
 
@@ -282,6 +287,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
   return (
     <div ref={containerRef} className="relative inline-flex items-center">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => {
           if (open) {
@@ -303,7 +309,8 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
       {open && (
         <div
           id={`global-search-panel-${placement}`}
-          className={`absolute right-0 top-full z-[80] mt-3 overflow-hidden rounded-xl border border-[rgba(212,175,55,0.38)] bg-[#0c0812] shadow-[0_16px_45px_rgba(0,0,0,0.55)] ${isMobile ? "w-[min(28rem,calc(100vw-2rem))]" : "w-[min(30rem,calc(100vw-2rem))]"}`}
+          className={`z-[80] overflow-hidden rounded-xl border border-[rgba(212,175,55,0.38)] bg-[#0c0812] shadow-[0_16px_45px_rgba(0,0,0,0.55)] ${isMobile ? "fixed left-1/2 w-[calc(100vw-2rem)] max-w-md -translate-x-1/2" : "absolute right-0 top-full mt-3 w-[min(30rem,calc(100vw-2rem))]"}`}
+          style={isMobile ? { top: `${mobilePanelTop}px` } : undefined}
         >
           <div className="border-b border-[rgba(212,175,55,0.2)] p-3">
             <label htmlFor={`global-search-input-${placement}`} className="sr-only">
