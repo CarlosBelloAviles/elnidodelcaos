@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import GlobalSearch from "../features/search/GlobalSearch";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,14 +70,17 @@ const Navbar = () => {
           </span>
         </button>
 
-        <button
-          type="button"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-          className="flex cursor-pointer items-center justify-center p-2 text-[#d4af37] lg:hidden"
-        >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        <div className="flex items-center gap-1 lg:hidden">
+          <GlobalSearch placement="mobile" />
+          <button
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            className="flex cursor-pointer items-center justify-center p-2 text-[#d4af37]"
+          >
+            {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
 
         <div className="hidden items-center gap-2.5 lg:flex">
           <button type="button" onClick={goHome} className="cursor-pointer p-1.5 text-center text-lg text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]">Inicio</button>
@@ -101,6 +105,7 @@ const Navbar = () => {
             <a href={`https://wa.me/${import.meta.env.VITE_WHATSSAP}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp" className="text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"><FaWhatsapp size={21} /></a>
             <a href={`https://instagram.com/${import.meta.env.VITE_INSTAGRAM}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" className="text-[rgb(228,227,189)] transition-colors hover:text-[#d4af37]"><FaInstagram size={21} /></a>
           </div>
+          <GlobalSearch placement="desktop" />
         </div>
       </div>
 
