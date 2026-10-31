@@ -11,24 +11,30 @@
 
 
 .header {
+  position: relative;
   width: 100%;
-  min-height: clamp(390px, 35.6vw, 570px);
-  aspect-ratio: 1600 / 569;
+  min-height: 0;
+  aspect-ratio: auto;
+  background-color: #08060b;
   background-image: url("./assets/images/header-nido-circular.webp");
-  background-size: 100% 100%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: clamp(1.5rem, 3vw, 3rem) 1rem 1.25rem;
-  gap: clamp(.75rem, 1.7vw, 1.5rem);
+  justify-content: flex-start;
+  padding: 35.56vw 1rem 1.5rem;
+  gap: 1rem;
 }
 
 .header-circle-content {
-  width: min(39%, 560px);
-  min-height: clamp(210px, 25vw, 390px);
+  position: absolute;
+  top: 0;
+  left: 21%;
+  width: 58%;
+  height: 35.56vw;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,6 +74,8 @@
 }
 
 .header-actions {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -79,7 +87,7 @@
 .header-actions button {
   cursor: pointer;
   border: 1px solid rgba(201,164,92,.85);
-  background: rgba(18,13,24,.92);
+  background: rgba(18,13,24,.96);
   padding: .65rem 1rem;
   color: #f0d28a;
   font-family: "Newsreader", serif;
@@ -96,32 +104,35 @@
 
 @media (max-width: 640px) {
   .header {
-    min-height: 470px;
-    aspect-ratio: auto;
-    background-size: auto 100%;
-    background-position: center;
-    padding: 2.2rem .85rem 1.25rem;
-    gap: 1rem;
+    padding: 35.56vw .85rem 1.25rem;
+    gap: .65rem;
+    background-size: 100% auto;
+    background-position: top center;
   }
 
   .header-circle-content {
-    width: min(88%, 390px);
-    min-height: 290px;
-    padding: 1rem .75rem;
+    left: 16%;
+    width: 68%;
+    height: 35.56vw;
+    padding: .4rem;
   }
 
   .header-eyebrow {
-    font-size: .58rem;
-    letter-spacing: .1em;
+    font-size: clamp(.42rem, 1.7vw, .58rem);
+    letter-spacing: .08em;
+    margin-bottom: .35rem;
   }
 
   .header-title {
-    font-size: clamp(1.35rem, 6vw, 1.9rem);
+    font-size: clamp(1.15rem, 5.5vw, 1.8rem);
+    line-height: .95;
   }
 
   .header-description {
     max-width: 17rem;
-    font-size: .9rem;
+    margin-top: .45rem;
+    font-size: clamp(.68rem, 2.5vw, .9rem);
+    line-height: 1.25;
   }
 
   .header-actions {
