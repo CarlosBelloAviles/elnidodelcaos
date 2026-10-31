@@ -94,7 +94,7 @@ function buildIndex(
       id: `blog-category-${category.id}`,
       title: category.name,
       description: "Categoría de El Grimorio",
-      href: "/grimorio",
+      href: `/grimorio?categoria=${encodeURIComponent(category.slug)}`,
       group: "Categorías",
     });
   });
