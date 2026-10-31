@@ -11,7 +11,7 @@ import {
 } from "../blog/blogService";
 import type { Category, Product } from "../../types";
 
-type ResultGroup = "Servicios" | "Productos" | "Artículos" | "Categorías";
+type ResultGroup = "Servicios" | "Artículos" | "Categorías" | "Contenido";
 
 interface SearchResult {
   id: string;
@@ -82,10 +82,64 @@ function buildIndex(
       id: `blog-category-${category.id}`,
       title: category.name,
       description: "Categoría de El Grimorio",
-      href: `/grimorio?categoria=${encodeURIComponent(category.slug)}`,
+      href: "/grimorio",
       group: "Categorías",
     });
   });
+
+  const staticContent: SearchResult[] = [
+    {
+      id: "content-about",
+      title: "El Nido del Caos",
+      description: "Sobre el Nido, magia, brujería, rituales, limpiezas energéticas, protección, volteos, aperturas de caminos, abundancia, amor y trabajos personalizados.",
+      href: "/#sobre-mi",
+      group: "Contenido",
+    },
+    {
+      id: "content-featured",
+      title: "Servicios destacados",
+      description: "Descubre trabajos y servicios destacados del Nido y consulta por WhatsApp.",
+      href: "/#destacados",
+      group: "Contenido",
+    },
+    {
+      id: "content-how",
+      title: "Cómo funciona",
+      description: "Cuéntanos tu situación, elegimos el trabajo adecuado y realizamos el servicio coordinado.",
+      href: "/#como-funciona",
+      group: "Contenido",
+    },
+    {
+      id: "content-testimonials",
+      title: "Testimonios",
+      description: "Experiencias de clientes y opiniones sobre los trabajos realizados.",
+      href: "/#testimonios",
+      group: "Contenido",
+    },
+    {
+      id: "content-contact",
+      title: "Contacto",
+      description: "Contactar por WhatsApp, consultar y coordinar un servicio.",
+      href: "/#contacto",
+      group: "Contenido",
+    },
+    {
+      id: "content-personalized",
+      title: "Enfoque personalizado",
+      description: "Cada servicio se adapta a la necesidad, intención y situación de cada persona.",
+      href: "/#sobre-mi",
+      group: "Contenido",
+    },
+    {
+      id: "content-protection",
+      title: "Protección energética",
+      description: "Rituales, limpiezas y protección para trabajar la energía y los espacios.",
+      href: "/#sobre-mi",
+      group: "Contenido",
+    },
+  ];
+
+  results.push(...staticContent);
 
   return { results };
 }
@@ -95,7 +149,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<SearchIndex | null>(null);
   const [loading, setLoading] = useState(false);
-  const [loadError, setLoadError] = useState(false);
+  const [loadError, setLoadError] = useState(false);\n  const [retryCount, setRetryCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -155,7 +209,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
     return () => {
       active = false;
     };
-  }, [open, index]);
+  }, [open, index, retryCount]);
 
   const filteredResults = useMemo(() => {
     const term = normalize(query.trim());
@@ -165,7 +219,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
     );
   }, [index, query]);
 
-  const groups: ResultGroup[] = ["Servicios", "Productos", "Artículos", "Categorías"];
+  const groups: ResultGroup[] = ["Servicios", "Artículos", "Categorías", "Contenido"];
   const hasQuery = query.trim().length > 0;
 
   const close = () => {
