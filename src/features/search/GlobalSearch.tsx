@@ -129,7 +129,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
     Promise.allSettled([
       servicesData(),
       getFeaturedBlogPosts(),
-      getPublishedBlogPosts(0, 100),
+      getPublishedBlogPosts(0, 1000),
       getBlogCategories(),
     ]).then(([servicesResult, featuredResult, postsResult, categoriesResult]) => {
       if (!active) return;
@@ -155,7 +155,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
     return () => {
       active = false;
     };
-  }, [open, index, loading]);
+  }, [open, index]);
 
   const filteredResults = useMemo(() => {
     const term = normalize(query.trim());
@@ -200,7 +200,7 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
       {open && (
         <div
           id={`global-search-panel-${placement}`}
-          className={`absolute right-0 top-full z-[80] mt-3 overflow-hidden rounded-xl border border-[rgba(212,175,55,0.38)] bg-[#0c0812] shadow-[0_16px_45px_rgba(0,0,0,0.55)] ${isMobile ? "w-[min( calc(100vw-2rem),28rem)]" : "w-[min( calc(100vw-2rem),30rem)]"}`}
+          className={`absolute right-0 top-full z-[80] mt-3 overflow-hidden rounded-xl border border-[rgba(212,175,55,0.38)] bg-[#0c0812] shadow-[0_16px_45px_rgba(0,0,0,0.55)] ${isMobile ? "w-[min(28rem,calc(100vw-2rem))]" : "w-[min(30rem,calc(100vw-2rem))]"}`}
         >
           <div className="border-b border-[rgba(212,175,55,0.2)] p-3">
             <label htmlFor={`global-search-input-${placement}`} className="sr-only">
