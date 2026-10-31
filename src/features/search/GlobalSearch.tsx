@@ -283,7 +283,15 @@ export default function GlobalSearch({ placement = "desktop" }: GlobalSearchProp
     <div ref={containerRef} className="relative inline-flex items-center">
       <button
         type="button"
-        onClick={() => {\n          if (open) {\n            setOpen(false);\n            setQuery("");\n            setLoading(false);\n          } else {\n            setOpen(true);\n          }\n        }}
+        onClick={() => {
+          if (open) {
+            setOpen(false);
+            setQuery("");
+            setLoading(false);
+          } else {
+            setOpen(true);
+          }
+        }}
         aria-label={open ? "Cerrar buscador" : "Buscar en El Nido del Caos"}
         aria-expanded={open}
         aria-controls={`global-search-panel-${placement}`}
