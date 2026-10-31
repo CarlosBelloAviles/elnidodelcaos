@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import SEO from "../../Components/SEO";
 import BlogPushSignup from "./BlogPushSignup";
 import {
@@ -19,11 +19,17 @@ function BlogIndexPage() {
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
-  const [categorySlug, setCategorySlug] = useState("");
+  const [categorySlug, setCategorySlug] = useState(() => searchParams.get("categoria") ?? "");
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+
+  useEffect(() => {
+    const requestedCategory = searchParams.get("categoria") ?? "";
+    setCategorySlug(requestedCategory);
+    setPage(0);
+  }, [searchParams]);
 
   useEffect(() => {
     let active = true;
@@ -90,11 +96,11 @@ function BlogIndexPage() {
 
           {categories.length > 0 && (
             <div className="mb-8 grid grid-cols-3 gap-2 sm:gap-3" aria-label="Filtrar artículos por categoría">
-              <button type="button" onClick={() => { setPage(0); setCategorySlug(""); }} className={`flex min-h-[64px] items-center justify-center rounded-full border px-2 py-3 text-center text-[10px] leading-snug transition-colors sm:px-3 sm:text-sm ${categorySlug === "" ? "border-[#d4af37] bg-[#d4af37] text-[#08060d]" : "border-[rgba(212,175,55,0.3)] text-[#e8e0ec] hover:border-[#d4af37]"}`}>
+              <button type="button" onClick={() => { setPage(0); setCategorySlug(""); setSearchParams({}, { replace: true }); }} className={`flex min-h-[64px] items-center justify-center rounded-full border px-2 py-3 text-center text-[10px] leading-snug transition-colors sm:px-3 sm:text-sm ${categorySlug === "" ? "border-[#d4af37] bg-[#d4af37] text-[#08060d]" : "border-[rgba(212,175,55,0.3)] text-[#e8e0ec] hover:border-[#d4af37]"}`}>
                 Todas las lecturas
               </button>
               {categories.map((category) => (
-                <button key={category.id} type="button" onClick={() => { setPage(0); setCategorySlug(category.slug); }} className={`flex min-h-[64px] items-center justify-center rounded-full border px-2 py-3 text-center text-[10px] leading-snug transition-colors sm:px-3 sm:text-sm ${categorySlug === category.slug ? "border-[#d4af37] bg-[#d4af37] text-[#08060d]" : "border-[rgba(212,175,55,0.3)] text-[#e8e0ec] hover:border-[#d4af37]"}`}>
+                <button key={category.id} type="button" onClick={() => { setPage(0); setCategorySlug(category.slug); setSearchParams({ categoria: category.slug }, { replace: true }); }} className={`flex min-h-[64px] items-center justify-center rounded-full border px-2 py-3 text-center text-[10px] leading-snug transition-colors sm:px-3 sm:text-sm ${categorySlug === category.slug ? "border-[#d4af37] bg-[#d4af37] text-[#08060d]" : "border-[rgba(212,175,55,0.3)] text-[#e8e0ec] hover:border-[#d4af37]"}`}>
                   {category.name}
                 </button>
               ))}
