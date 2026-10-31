@@ -12,21 +12,127 @@
 
 .header {
   width: 100%;
-  aspect-ratio: 1600 / 680;
-  background-image: url("./assets/Images/headernidolcaos.webp");
+  min-height: clamp(390px, 35.6vw, 570px);
+  aspect-ratio: 1600 / 569;
+  background-image: url("./assets/images/header-nido-circular.webp");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 3vw, 3rem) 1rem 1.25rem;
+  gap: clamp(.75rem, 1.7vw, 1.5rem);
+}
+
+.header-circle-content {
+  width: min(39%, 560px);
+  min-height: clamp(210px, 25vw, 390px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.25rem;
+  color: #f3dfb1;
+}
+
+.header-eyebrow {
+  margin: 0 0 .75rem;
+  color: #d7a94f;
+  font-family: "Newsreader", serif;
+  font-size: clamp(.55rem, .85vw, .85rem);
+  letter-spacing: .16em;
+  line-height: 1.5;
+}
+
+.header-title {
+  margin: 0;
+  color: #f0d28a;
+  font-family: "Vollkorn SC", serif;
+  font-size: clamp(1.25rem, 2.7vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.05;
+  text-shadow: 0 2px 16px rgba(0,0,0,.9);
+}
+
+.header-description {
+  max-width: 31rem;
+  margin: .85rem 0 0;
+  color: #eee2cc;
+  font-family: "Newsreader", serif;
+  font-size: clamp(.75rem, 1.1vw, 1.05rem);
+  line-height: 1.45;
+  text-shadow: 0 2px 12px rgba(0,0,0,.95);
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: .65rem;
+  width: 100%;
+}
+
+.header-actions button {
+  cursor: pointer;
+  border: 1px solid rgba(201,164,92,.85);
+  background: rgba(18,13,24,.92);
+  padding: .65rem 1rem;
+  color: #f0d28a;
+  font-family: "Newsreader", serif;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.header-actions button:hover {
+  border-color: #f0d28a;
+  background: rgba(48,31,48,.96);
+  color: #ffe7a3;
 }
 
 @media (max-width: 640px) {
   .header {
-    height:auto ;
-    aspect-ratio: 1080 / 800;
-    background-image: url("./assets/Images/headernidomobile.webp");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    min-height: 470px;
+    aspect-ratio: auto;
+    background-size: auto 100%;
     background-position: center;
+    padding: 2.2rem .85rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .header-circle-content {
+    width: min(88%, 390px);
+    min-height: 290px;
+    padding: 1rem .75rem;
+  }
+
+  .header-eyebrow {
+    font-size: .58rem;
+    letter-spacing: .1em;
+  }
+
+  .header-title {
+    font-size: clamp(1.35rem, 6vw, 1.9rem);
+  }
+
+  .header-description {
+    max-width: 17rem;
+    font-size: .9rem;
+  }
+
+  .header-actions {
+    max-width: 360px;
+    gap: .5rem;
+  }
+
+  .header-actions button {
+    width: 100%;
+    padding: .7rem .8rem;
+    font-size: .72rem;
   }
 }
 
