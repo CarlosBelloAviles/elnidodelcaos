@@ -51,8 +51,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav ref={navRef} className="fixed top-0 left-0 z-50 min-h-[80px] w-full bg-black px-4 sm:px-6 lg:min-h-[88px]">
-      <div className="mx-auto flex min-h-[80px] max-w-[1200px] items-center justify-between lg:min-h-[88px]">
+    <nav ref={navRef} className="fixed top-0 left-0 z-50 min-h-[80px] w-full bg-black px-4 sm:px-6 lg:min-h-[112px]">
+      <div className="mx-auto flex min-h-[80px] max-w-[1200px] items-center justify-between lg:min-h-[112px]">
         <button
           type="button"
           onClick={goHome}
@@ -63,9 +63,9 @@ const Navbar = () => {
             src="https://res.cloudinary.com/pnvel4tk/image/upload/v1792984286/nido-brand/nido-logo-simbolo-caos.webp"
             alt=""
             aria-hidden="true"
-            className="h-12 w-12 object-contain sm:h-14 sm:w-14"
+            className="h-12 w-12 object-contain sm:h-14 sm:w-14 lg:h-[72px] lg:w-[72px]"
           />
-          <span className="mt-0.5 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.1em] sm:text-[10px]">
+          <span className="mt-0.5 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.1em] sm:text-[10px] lg:text-[13px]">
             EL NIDO DEL CAOS
           </span>
         </button>
