@@ -161,7 +161,7 @@ function BlogIndexPage() {
                     )}
                     <div className="flex flex-1 flex-col p-3 sm:p-5">
                       <p className="line-clamp-1 text-[9px] uppercase tracking-[0.12em] text-[#b8944a] sm:text-xs sm:tracking-[0.16em]">{post.category?.name || "El Grimorio"}</p>
-                      <h2 className="mt-2 line-clamp-2 font-serif text-sm leading-snug text-[#f4df9b] group-hover:text-[#fff0b8] sm:mt-3 sm:text-xl">{post.title}</h2>
+                      <h2 className="mt-2 font-serif text-sm leading-snug text-[#f4df9b] group-hover:text-[#fff0b8] sm:mt-3 sm:text-xl">{post.title}</h2>
                       <p className="mt-2 line-clamp-2 flex-1 text-[11px] leading-4 text-[#d8d0df] sm:mt-3 sm:text-sm sm:leading-6">{excerpt(post)}</p>
                       <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#d4af37] sm:mt-5 sm:gap-2 sm:text-sm">Leer artículo <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
                     </div>
