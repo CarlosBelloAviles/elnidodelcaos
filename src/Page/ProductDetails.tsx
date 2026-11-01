@@ -183,7 +183,7 @@ if (!variantes?.length && data.price != null) {
         structuredData={structuredData}
       />
 
-      <div className="flex flex-1 flex-col bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)] px-3 pb-8 pt-[90px] font-sans text-[#eee] sm:px-5 sm:pb-10 sm:pt-[88px] md:pb-[60px] md:pt-[100px]">
+      <div className="flex flex-1 flex-col bg-[linear-gradient(135deg,#10091c,#1b0d2b,#0d0815)] px-3 pb-8 pt-[90px] font-sans text-[#eee] sm:px-5 sm:pb-10 sm:pt-[88px] md:pb-[60px] md:pt-[100px] lg:pt-[132px]">
 
         <div className="mx-auto flex w-full max-w-[900px] flex-1 flex-col rounded-[14px] border border-[rgba(212,175,55,0.45)] bg-[rgba(30,15,45,0.9)] p-4 shadow-[0_0_35px_rgba(120,60,180,0.25)] sm:rounded-[18px] sm:p-6 md:p-10">
 
