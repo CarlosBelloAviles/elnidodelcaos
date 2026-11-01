@@ -128,16 +128,16 @@ function BlogIndexPage() {
               {featuredPosts.length > 0 && (
                 <section className="mb-12" aria-labelledby="featured-blog-heading">
                   <div className="mb-5 flex items-center gap-3"><span className="h-px flex-1 bg-[rgba(212,175,55,0.35)]" /><h2 id="featured-blog-heading" className="font-serif text-xl tracking-wide text-[#f4df9b] sm:text-2xl">Lecturas destacadas</h2><span className="h-px flex-1 bg-[rgba(212,175,55,0.35)]" /></div>
-                  <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
                     {featuredPosts.map((post) => (
-                      <article key={post.id} className="group flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.5)] bg-[linear-gradient(145deg,rgba(48,27,61,0.95),rgba(12,9,17,0.98))]">
+                      <article key={post.id} className="group col-span-2 flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.5)] bg-[linear-gradient(145deg,rgba(48,27,61,0.95),rgba(12,9,17,0.98))] md:col-span-1">
                         <Link to={`/grimorio/${post.slug}`} className="flex h-full flex-col">
-                          {post.cover_image_url ? <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-52 w-full object-cover" /> : <div className="flex h-44 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17]"><BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" /></div>}
-                          <div className="flex flex-1 flex-col p-5">
+                          {post.cover_image_url ? <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-40 w-full object-cover sm:h-52" /> : <div className="flex h-40 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17] sm:h-44"><BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" /></div>}
+                          <div className="flex flex-1 flex-col p-3 sm:p-5">
                             <span className="w-fit rounded-full border border-[rgba(212,175,55,0.5)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#f4df9b]">{post.featured_order === 1 ? "Destacado principal" : "Lectura destacada"}</span>
                             <div className="mt-3 flex flex-wrap gap-1.5">{(post.categories?.length?post.categories:post.category?[post.category]:[]).map(category=><span key={category.id} className="rounded-full border border-[rgba(212,175,55,0.35)] px-2.5 py-1 text-[10px] uppercase tracking-[0.1em] text-[#b8944a]">{category.name}</span>)}{!(post.categories?.length||post.category)&&<span className="text-xs uppercase tracking-[0.16em] text-[#b8944a]">El Grimorio</span>}</div>
-                            <h3 className="mt-2 font-serif text-xl leading-snug text-[#f4df9b] group-hover:text-[#fff0b8]">{post.title}</h3>
-                            <p className="mt-3 flex-1 text-sm leading-6 text-[#d8d0df]">{excerpt(post)}</p>
+                            <h3 className="mt-2 font-serif text-base leading-snug text-[#f4df9b] group-hover:text-[#fff0b8] sm:text-xl">{post.title}</h3>
+                            <p className="mt-3 flex-1 text-xs leading-5 text-[#d8d0df] sm:text-sm sm:leading-6">{excerpt(post)}</p>
                             <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#d4af37]">Leer artículo <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
                           </div>
                         </Link>
@@ -148,21 +148,21 @@ function BlogIndexPage() {
               )}
               {posts.length > 0 && <section aria-labelledby="all-blog-heading">
                 <div className="mb-5 flex items-center gap-3"><span className="h-px flex-1 bg-[rgba(212,175,55,0.2)]" /><h2 id="all-blog-heading" className="font-serif text-lg text-[#e8e0ec]">Todas las lecturas</h2><span className="h-px flex-1 bg-[rgba(212,175,55,0.2)]" /></div>
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-2 gap-3 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <article key={post.id} className="group flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(212,175,55,0.25)] bg-[linear-gradient(145deg,rgba(37,20,49,0.88),rgba(12,9,17,0.98))] transition-colors hover:border-[rgba(212,175,55,0.55)]">
                   <Link to={`/grimorio/${post.slug}`} className="flex h-full flex-col">
                     {post.cover_image_url ? (
-                      <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-52 w-full object-cover" />
+                      <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className="h-32 w-full object-cover sm:h-52" />
                     ) : (
-                      <div className="flex h-44 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17]">
+                      <div className="flex h-32 items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17] sm:h-44">
                         <BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" />
                       </div>
                     )}
-                    <div className="flex flex-1 flex-col p-5">
+                    <div className="flex flex-1 flex-col p-3 sm:p-5">
                       <p className="text-xs uppercase tracking-[0.16em] text-[#b8944a]">{post.category?.name || "El Grimorio"}</p>
-                      <h2 className="mt-3 font-serif text-xl leading-snug text-[#f4df9b] group-hover:text-[#fff0b8]">{post.title}</h2>
-                      <p className="mt-3 flex-1 text-sm leading-6 text-[#d8d0df]">{excerpt(post)}</p>
+                      <h2 className="mt-3 font-serif text-base leading-snug text-[#f4df9b] group-hover:text-[#fff0b8] sm:text-xl">{post.title}</h2>
+                      <p className="mt-3 flex-1 text-xs leading-5 text-[#d8d0df] sm:text-sm sm:leading-6">{excerpt(post)}</p>
                       <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#d4af37]">Leer artículo <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
                     </div>
                   </Link>
