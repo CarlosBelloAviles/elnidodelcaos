@@ -730,3 +730,10 @@
   color: #98752f !important;
 }
 /* El modo oscuro conserva deliberadamente la paleta original del artículo. */
+
+/* Fondo único del modo claro para todos los artículos, en móvil y escritorio */
+.blog-article.blog-article-light[data-theme="light"] {
+  --article-bg: #e8dfd0;
+  background: #e8dfd0 !important;
+  background-image: none !important;
+}
