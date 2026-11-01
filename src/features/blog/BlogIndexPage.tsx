@@ -135,7 +135,6 @@ function BlogIndexPage() {
                           {post.cover_image_url ? <img src={post.cover_image_url} alt={post.cover_image_alt || post.title} loading="lazy" className={`${index === 0 ? "h-40 sm:h-52" : "h-28 sm:h-52"} w-full object-cover`} /> : <div className={`flex items-center justify-center bg-[radial-gradient(circle,rgba(168,117,201,0.24),transparent_65%),#100b17] ${index === 0 ? "h-40 sm:h-44" : "h-28 sm:h-44"}`}><BookOpen aria-hidden="true" className="h-10 w-10 text-[#b8944a]/70" /></div>}
                           <div className={`flex flex-1 flex-col ${index === 0 ? "p-4 sm:p-5" : "p-2.5 sm:p-5"}`}>
                             <span className="w-fit rounded-full border border-[rgba(212,175,55,0.5)] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#f4df9b] sm:px-3 sm:text-[10px]">{post.featured_order === 1 ? "Destacado principal" : "Lectura destacada"}</span>
-                            <div className="mt-2 flex flex-wrap gap-1 sm:mt-3 sm:gap-1.5">{(post.categories?.length?post.categories:post.category?[post.category]:[]).map(category=><span key={category.id} className="rounded-full border border-[rgba(212,175,55,0.35)] px-2.5 py-1 text-[10px] uppercase tracking-[0.1em] text-[#b8944a]">{category.name}</span>)}{!(post.categories?.length||post.category)&&<span className="text-xs uppercase tracking-[0.16em] text-[#b8944a]">El Grimorio</span>}</div>
                             <h3 className={`mt-2 font-serif leading-snug text-[#f4df9b] group-hover:text-[#fff0b8] ${index === 0 ? "text-xl sm:text-xl" : "text-sm sm:text-xl"}`}>{post.title}</h3>
                             <p className={`mt-2 flex-1 text-xs leading-5 text-[#d8d0df] sm:mt-3 sm:text-sm sm:leading-6 ${index === 0 ? "line-clamp-3" : "line-clamp-2"}`}>{excerpt(post)}</p>
                             <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#d4af37] sm:mt-5 sm:gap-2 sm:text-sm">Leer artículo <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
@@ -160,7 +159,6 @@ function BlogIndexPage() {
                       </div>
                     )}
                     <div className="flex flex-1 flex-col p-3 sm:p-5">
-                      <p className="line-clamp-1 text-[9px] uppercase tracking-[0.12em] text-[#b8944a] sm:text-xs sm:tracking-[0.16em]">{post.category?.name || "El Grimorio"}</p>
                       <h2 className="mt-2 font-serif text-sm leading-snug text-[#f4df9b] group-hover:text-[#fff0b8] sm:mt-3 sm:text-xl">{post.title}</h2>
                       <p className="mt-2 line-clamp-3 flex-1 text-[11px] leading-4 text-[#d8d0df] sm:mt-3 sm:text-sm sm:leading-6">{excerpt(post)}</p>
                       <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#d4af37] sm:mt-5 sm:gap-2 sm:text-sm">Leer artículo <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
