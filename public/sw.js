@@ -6,7 +6,7 @@ self.addEventListener("push", (event) => {
     body: data.body || "Hay un nuevo artículo en El Nido del Caos.",
     icon: "/favicon.ico",
     badge: "/favicon.ico",
-    data: { url: data.url || "/grimorio" },
+    data: { url: data.data?.url || data.url || "/grimorio" },
     tag: data.tag || "grimorio-nueva-lectura",
     renotify: false,
   };
