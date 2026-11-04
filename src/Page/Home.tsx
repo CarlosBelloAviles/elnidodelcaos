@@ -81,7 +81,7 @@ const Home = () => {
   image="https://elnidodelcaos.cl/seo_nido.png"
 />
 
-      <div className="pt-[80px] lg:pt-[88px]">
+      <div className="home-visual-polish pt-[80px] lg:pt-[112px]">
           <Header />
 
           {/* TRANSICIÓN ATMOSFÉRICA */}
