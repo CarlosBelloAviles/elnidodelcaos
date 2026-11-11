@@ -1,4 +1,4 @@
-import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AdvancedImage } from "@cloudinary/react";
 import { cld } from "../utils/cloudinary";
@@ -13,16 +13,23 @@ const Testimonials = () => {
     queryFn: getTestimonials,
   });
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!selectedImage) return;
+    if (selectedIndex === null) return;
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelectedImage(null);
+      if (event.key === "Escape") setSelectedIndex(null);
+      if (event.key === "ArrowRight") {
+        setSelectedIndex((current) => current === null ? null : (current + 1) % testimonials.length);
+      }
+      if (event.key === "ArrowLeft") {
+        setSelectedIndex((current) => current === null ? null : (current - 1 + testimonials.length) % testimonials.length);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -31,7 +38,7 @@ const Testimonials = () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedImage]);
+  }, [selectedIndex, testimonials.length]);
 
   const {
     currentSlide,
@@ -66,6 +73,26 @@ const Testimonials = () => {
   };
 
   const visibleTestimonials = getVisibleTestimonials();
+  const selectedImage = selectedIndex === null
+    ? null
+    : cld.image(testimonials[selectedIndex].imagen).format("webp").quality(qualityAuto()).toURL();
+
+  const changeSelectedImage = (direction: -1 | 1) => {
+    setSelectedIndex((current) => current === null
+      ? null
+      : (current + direction + testimonials.length) % testimonials.length);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.changedTouches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null) return;
+    const distance = (event.changedTouches[0]?.clientX ?? touchStartX.current) - touchStartX.current;
+    if (Math.abs(distance) > 45) changeSelectedImage(distance < 0 ? 1 : -1);
+    touchStartX.current = null;
+  };
 
   return (
     <section
@@ -280,7 +307,7 @@ const Testimonials = () => {
                       isActive
                         ? () => {
                             togglePause();
-                            setSelectedImage(imagen.toURL());
+                            setSelectedIndex(testimonials.findIndex((item) => item.id === testimonio.id));
                           }
                         : undefined
                     }
@@ -292,7 +319,7 @@ const Testimonials = () => {
                             if (event.key === "Enter" || event.key === " ") {
                               event.preventDefault();
                               togglePause();
-                              setSelectedImage(imagen.toURL());
+                              setSelectedIndex(testimonials.findIndex((item) => item.id === testimonio.id));
                             }
                           }
                         : undefined
@@ -372,25 +399,53 @@ const Testimonials = () => {
           role="dialog"
           aria-modal="true"
           aria-label="Imagen ampliada del testimonio"
-          onClick={() => setSelectedImage(null)}
+          onClick={() => setSelectedIndex(null)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           <button
             type="button"
-            className="fixed right-4 top-4 z-[110] flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 border-[#d8b85a] bg-[#100c16] text-4xl leading-none text-[#f4df9b] shadow-[0_0_22px_rgba(216,184,90,0.55)] transition-all hover:scale-105 hover:bg-[#2a1c30] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6c76a] sm:right-6 sm:top-6"
-            onClick={() => setSelectedImage(null)}
+            className="fixed right-4 top-4 z-[200] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border-2 border-[#d8b85a] bg-[#d8b85a] text-4xl font-bold leading-none text-black shadow-[0_0_25px_rgba(216,184,90,0.8)] transition-transform hover:scale-105 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-white sm:right-6 sm:top-6"
+            onClick={(event) => { event.stopPropagation(); setSelectedIndex(null); }}
             aria-label="Cerrar imagen ampliada"
           >
             <span aria-hidden="true">×</span>
           </button>
 
+          {testimonials.length > 1 && (
+            <>
+              <button
+                type="button"
+                className="absolute left-3 top-1/2 z-[150] hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#d8b85a] bg-[#d8b85a] text-black shadow-[0_0_18px_rgba(216,184,90,0.55)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-white sm:flex"
+                onClick={(event) => { event.stopPropagation(); changeSelectedImage(-1); }}
+                aria-label="Testimonio anterior"
+              >
+                <ChevronLeft size={30} />
+              </button>
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 z-[150] hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#d8b85a] bg-[#d8b85a] text-black shadow-[0_0_18px_rgba(216,184,90,0.55)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-white sm:flex"
+                onClick={(event) => { event.stopPropagation(); changeSelectedImage(1); }}
+                aria-label="Siguiente testimonio"
+              >
+                <ChevronRight size={30} />
+              </button>
+            </>
+          )}
+
           <img
             src={selectedImage}
             alt="Testimonio de cliente ampliado"
-            className="max-h-[calc(100dvh-24px)] max-w-full select-none object-contain sm:max-h-[calc(100dvh-48px)]"
+            className="max-h-[calc(100dvh-100px)] max-w-full select-none object-contain sm:max-h-[calc(100dvh-48px)]"
             draggable={false}
             onClick={(event) => event.stopPropagation()}
-            style={{ touchAction: "pan-x pan-y pinch-zoom" }}
+            style={{ touchAction: "pan-y pinch-zoom" }}
           />
+          {testimonials.length > 1 && (
+            <span className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full border border-[#d8b85a]/70 bg-black/80 px-4 py-1.5 text-sm tracking-wider text-[#f4df9b]">
+              {selectedIndex! + 1} / {testimonials.length}
+            </span>
+          )}
         </div>
       )}
 
