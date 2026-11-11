@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type TouchEvent as ReactTouchEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { createPortal } from "react-dom";
 import { AdvancedImage } from "@cloudinary/react";
 import { cld } from "../utils/cloudinary";
 import { auto as qualityAuto } from "@cloudinary/url-gen/qualifiers/quality";
@@ -393,7 +394,7 @@ const Testimonials = () => {
       </div>
 
       {/* VISOR AMPLIADO DE TESTIMONIOS */}
-      {selectedImage && (
+      {selectedImage && createPortal(
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-3 backdrop-blur-sm sm:p-6"
           role="dialog"
@@ -447,7 +448,9 @@ const Testimonials = () => {
             </span>
           )}
         </div>
-      )}
+      , document.body)}
+
+
 
       {/* INDICADOR */}
 
