@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AdvancedImage } from "@cloudinary/react";
 import { cld } from "../utils/cloudinary";
@@ -11,6 +12,26 @@ const Testimonials = () => {
     queryKey: ["testimonials"],
     queryFn: getTestimonials,
   });
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedImage(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedImage]);
 
   const {
     currentSlide,
@@ -255,7 +276,28 @@ const Testimonials = () => {
                     cldImg={imagen}
                     alt="Testimonio de cliente"
                     draggable={false}
-                    onClick={isActive ? togglePause : undefined}
+                    onClick={
+                      isActive
+                        ? () => {
+                            togglePause();
+                            setSelectedImage(imagen.toURL());
+                          }
+                        : undefined
+                    }
+                    role={isActive ? "button" : undefined}
+                    tabIndex={isActive ? 0 : undefined}
+                    onKeyDown={
+                      isActive
+                        ? (event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              togglePause();
+                              setSelectedImage(imagen.toURL());
+                            }
+                          }
+                        : undefined
+                    }
+                    aria-label={isActive ? "Ampliar imagen del testimonio" : undefined}
                     className={`
                       block
                       h-full
@@ -322,6 +364,35 @@ const Testimonials = () => {
           <ChevronRight size={24} />
         </button>
       </div>
+
+      {/* VISOR AMPLIADO DE TESTIMONIOS */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-3 backdrop-blur-sm sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Imagen ampliada del testimonio"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            type="button"
+            className="absolute right-4 top-4 z-[1] flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[#b8943f] bg-[#100c16]/90 text-3xl leading-none text-[#e6c76a] shadow-[0_0_15px_rgba(216,184,90,0.2)] transition-colors hover:bg-[#2a1c30] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6c76a] sm:right-6 sm:top-6"
+            onClick={() => setSelectedImage(null)}
+            aria-label="Cerrar imagen ampliada"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+
+          <img
+            src={selectedImage}
+            alt="Testimonio de cliente ampliado"
+            className="max-h-[calc(100dvh-24px)] max-w-full select-none object-contain sm:max-h-[calc(100dvh-48px)]"
+            draggable={false}
+            onClick={(event) => event.stopPropagation()}
+            style={{ touchAction: "pan-x pan-y pinch-zoom" }}
+          />
+        </div>
+      )}
 
       {/* INDICADOR */}
 
