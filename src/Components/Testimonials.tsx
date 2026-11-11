@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AdvancedImage } from "@cloudinary/react";
 import { cld } from "../utils/cloudinary";
@@ -288,7 +288,7 @@ const Testimonials = () => {
                     tabIndex={isActive ? 0 : undefined}
                     onKeyDown={
                       isActive
-                        ? (event) => {
+                        ? (event: ReactKeyboardEvent<HTMLImageElement>) => {
                             if (event.key === "Enter" || event.key === " ") {
                               event.preventDefault();
                               togglePause();
