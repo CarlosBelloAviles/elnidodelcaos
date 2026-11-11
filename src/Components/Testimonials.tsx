@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type TouchEvent as ReactTouchEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AdvancedImage } from "@cloudinary/react";
 import { cld } from "../utils/cloudinary";
@@ -83,11 +83,11 @@ const Testimonials = () => {
       : (current + direction + testimonials.length) % testimonials.length);
   };
 
-  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = (event: ReactTouchEvent<HTMLDivElement>) => {
     touchStartX.current = event.changedTouches[0]?.clientX ?? null;
   };
 
-  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchEnd = (event: ReactTouchEvent<HTMLDivElement>) => {
     if (touchStartX.current === null) return;
     const distance = (event.changedTouches[0]?.clientX ?? touchStartX.current) - touchStartX.current;
     if (Math.abs(distance) > 45) changeSelectedImage(distance < 0 ? 1 : -1);
