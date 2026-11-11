@@ -376,7 +376,7 @@ const Testimonials = () => {
         >
           <button
             type="button"
-            className="absolute right-4 top-4 z-[1] flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[#b8943f] bg-[#100c16]/90 text-3xl leading-none text-[#e6c76a] shadow-[0_0_15px_rgba(216,184,90,0.2)] transition-colors hover:bg-[#2a1c30] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6c76a] sm:right-6 sm:top-6"
+            className="fixed right-4 top-4 z-[110] flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 border-[#d8b85a] bg-[#100c16] text-4xl leading-none text-[#f4df9b] shadow-[0_0_22px_rgba(216,184,90,0.55)] transition-all hover:scale-105 hover:bg-[#2a1c30] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6c76a] sm:right-6 sm:top-6"
             onClick={() => setSelectedImage(null)}
             aria-label="Cerrar imagen ampliada"
           >
